@@ -2,11 +2,11 @@
 
 namespace MyMessenger.Server.Console
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
-    }
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			System.Console.WriteLine("Hello World!");
+		}
+	}
 }
