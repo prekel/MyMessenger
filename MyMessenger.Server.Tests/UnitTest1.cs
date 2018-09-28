@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace Tests
+namespace MyMessenger.Server.Tests
 {
     public class Tests
     {
