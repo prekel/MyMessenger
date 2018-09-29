@@ -11,4 +11,8 @@
     <PackageReference Include="NLog.Config" Version="4.5.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MyMessenger.Core\MyMessenger.Core.csproj" />
+  </ItemGroup>
+
 </Project>
