@@ -1,0 +1,12 @@
+version: 0.1.{build}
+image: Ubuntu1804
+configuration: Release
+platform: Any CPU
+before_build:
+- pwsh: nuget restore
+build:
+  project: MyMessenger.sln
+  verbosity: minimal
+artifacts:
+- path: '\'
+  name: MyMessenger_All_Files
