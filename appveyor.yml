@@ -3,7 +3,7 @@ image: Ubuntu1804
 configuration: Release
 platform: Any CPU
 install:
-- pwsh: scripts\version.ps1
+- pwsh: scripts/version.ps1
 before_build:
 - pwsh: nuget restore
 build_script:
