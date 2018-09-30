@@ -1,0 +1,17 @@
+version: 0.1.{build}
+image:
+- Visual Studio 2017
+- Ubuntu1804
+configuration: Release
+platform: Any CPU
+install:
+- pwsh: scripts/version.ps1
+#before_build:
+#- pwsh: dotnet restore
+build_script:
+- pwsh: dotnet build /p:AssemblyVersion="$env:assembly_version" /verbosity:minimal /m
+test_script:
+- pwsh: dotnet test MyMessenger.Server.Tests --test-adapter-path:. --logger:Appveyor
+artifacts:
+- path: '\'
+  name: MyMessenger_All_Files
