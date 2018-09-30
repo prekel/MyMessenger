@@ -2,6 +2,7 @@ using NUnit.Framework;
 
 namespace MyMessenger.Server.Tests
 {
+	[TestFixture]
 	public class UnitTest1
 	{
 		[SetUp]

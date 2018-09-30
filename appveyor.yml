@@ -9,7 +9,7 @@ install:
 before_build:
 - pwsh: nuget restore
 build_script:
-- pwsh: msbuild /p:AssemblyVersion="$env:assembly_version" /verbosity:minimal /m
+- pwsh: dotnet build /p:AssemblyVersion="$env:assembly_version" /verbosity:minimal /m
 artifacts:
 - path: '\'
   name: MyMessenger_All_Files
