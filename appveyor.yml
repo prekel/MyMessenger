@@ -2,11 +2,12 @@ version: 0.1.{build}
 image: Visual Studio 2017
 configuration: Release
 platform: Any CPU
+install:
+- pwsh: scripts\version.ps1
 before_build:
 - pwsh: nuget restore
 build:
-  project: MyMessenger.sln
-  verbosity: minimal
+- pwsh: dotnet build /p:Version=$env:assembly_version
 artifacts:
 - path: '\'
   name: MyMessenger_All_Files
