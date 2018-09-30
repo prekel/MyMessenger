@@ -11,7 +11,7 @@ before_build:
 build_script:
 - pwsh: dotnet build /p:AssemblyVersion="$env:assembly_version" /verbosity:minimal /m
 test_script:
-- pwsh: dotnet test MyMessenger.Server.Tests --logger "trx;LogFileName=TestResults.xml"
+- pwsh: dotnet test --test-adapter-path:. --logger:Appveyor
 artifacts:
 - path: '\'
   name: MyMessenger_All_Files
