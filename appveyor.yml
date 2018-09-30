@@ -6,7 +6,7 @@ install:
 - pwsh: scripts\version.ps1
 before_build:
 - pwsh: nuget restore
-build:
+build_script:
 - pwsh: dotnet build /p:Version=$env:assembly_version
 artifacts:
 - path: '\'
