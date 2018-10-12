@@ -4,11 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.EntityFrameworkCore;
-using MySql.Data.EntityFrameworkCore.Extensions;
-using MySql.Data.MySqlClient;
-using Renci.SshNet;
-using Renci.SshNet.Common;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace MyMessenger.Server
 {
@@ -36,7 +32,7 @@ namespace MyMessenger.Server
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseMySQL("server=51.158.73.185;database=TestDB;user=vladislav;password=;SslMode=none");
+			optionsBuilder.UseMySql("server=51.158.73.185;database=TestDB;user=vladislav;password=;SslMode=none");
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
