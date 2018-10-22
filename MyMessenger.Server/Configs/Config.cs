@@ -1,4 +1,11 @@
-$HEADER$namespace $NAMESPACE$
+using Newtonsoft.Json;
+
+namespace MyMessenger.Server.Configs
 {
-  public class $CLASS$ {$END$}
+	[JsonObject]
+	public class Config
+	{
+		[JsonProperty]
+		public DbConfig DbConfig { get; set; }
+	}
 }

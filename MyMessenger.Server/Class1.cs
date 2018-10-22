@@ -4,6 +4,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using MyMessenger.Server.Configs;
+using Newtonsoft.Json;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace MyMessenger.Server
@@ -24,15 +26,23 @@ namespace MyMessenger.Server
 		public string Name { get; set; }
 		public virtual ICollection<Book> Books { get; set; }
 	}
+	
 	public class LibraryContext : DbContext
 	{
 		public DbSet<Book> Book { get; set; }
 
 		public DbSet<Publisher> Publisher { get; set; }
 
+		public static Config Config;
+		
+		public LibraryContext(Config config)
+		{
+			Config = config;
+		}
+		
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseMySql("server=51.158.73.185;database=TestDB;user=vladislav;password=;SslMode=none");
+			optionsBuilder.UseMySql(new ConnectionStringCompiler(Config.DbConfig).Compile(Config.DbConfig.Password));
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -56,67 +66,18 @@ namespace MyMessenger.Server
 	}
 	public class Program
 	{
-		public static void Main1(string[] args)
+		public static Config Config;
+		
+		public static void Main1(Config config)
 		{
-						InsertData();
-						PrintData();
-
-			//var passwd = Console.ReadLine();
-			//var connectionInfo = new PasswordConnectionInfo("51.158.73.185", "vladislav", passwd);
-			//connectionInfo.Timeout = TimeSpan.FromSeconds(30);
-
-			//using (var client = new SshClient(connectionInfo))
-			//{
-			//	try
-			//	{
-			//		Console.WriteLine("Trying SSH connection...");
-			//		client.Connect();
-			//		if (client.IsConnected)
-			//		{
-			//			Console.WriteLine("SSH connection is active: {0}", client.ConnectionInfo.ToString());
-			//		}
-			//		else
-			//		{
-			//			Console.WriteLine("SSH connection has failed: {0}", client.ConnectionInfo.ToString());
-			//		}
-
-			//		Console.WriteLine("\r\nTrying port forwarding...");
-			//		var portFwld = new ForwardedPortLocal(IPAddress.Loopback.ToString(), 22, "localhost", 3305);
-			//		client.AddForwardedPort(portFwld);
-			//		portFwld.Start();
-			//		if (portFwld.IsStarted)
-			//		{
-			//			Console.WriteLine("Port forwarded: {0}", portFwld.ToString());
-			//		}
-			//		else
-			//		{
-			//			Console.WriteLine("Port forwarding has failed.");
-			//		}
-
-			//	}
-			//	catch (SshException e)
-			//	{
-			//		Console.WriteLine("SSH client connection error: {0}", e.Message);
-			//	}
-			//	catch (System.Net.Sockets.SocketException e)
-			//	{
-			//		Console.WriteLine("Socket connection error: {0}", e.Message);
-			//	}
-
-			//}
-
-			//Console.WriteLine("\r\nTrying database connection...");
-			//DBConnect dbConnect = new DBConnect("localhost", "test_database", "root", "passwrod123", "4479");
-
-			//var ct = dbConnect.Count("packages");
-			//Console.WriteLine(ct.ToString());
-
-
+			Config = config;
+			InsertData();
+			PrintData();
 		}
 
 		private static void InsertData()
 		{
-			using (var context = new LibraryContext())
+			using (var context = new LibraryContext(Config))
 			{
 				// Creates the database if not exists
 				context.Database.EnsureCreated();
@@ -156,7 +117,7 @@ namespace MyMessenger.Server
 		private static void PrintData()
 		{
 			// Gets and prints all books in database
-			using (var context = new LibraryContext())
+			using (var context = new LibraryContext(Config))
 			{
 				var books = context.Book
 					.Include(p => p.Publisher);
