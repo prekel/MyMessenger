@@ -20,7 +20,7 @@ namespace MyMessenger.Server.Console
 			OutputEncoding = Encoding.UTF8;
 			//CancelKeyPress += Program_CancelKeyPress;
 
-			if (String.Join("; ", Directory.GetFiles(".")).Contains("config.json"))
+			if (File.Exists("config.json"))
 			{
 				//Log.Info("Загружается конфирурация");
 				Config = JsonConvert.DeserializeObject<Config>(new StreamReader("config.json").ReadToEnd());
@@ -34,7 +34,7 @@ namespace MyMessenger.Server.Console
 				{
 					DbConfig = new DbConfig()
 					{
-						Server = "vladislav",
+						Server = "localhost",
 						Port = 3306,
 						Name = "TestDb",
 						User = "vladislav",
@@ -62,7 +62,6 @@ namespace MyMessenger.Server.Console
 					dbpass.Clear();
 					continue;
 				}
-
 				dbpass.Append(key.KeyChar);
 				Write("*");
 			}

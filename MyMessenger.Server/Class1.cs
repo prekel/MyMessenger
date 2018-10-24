@@ -42,7 +42,7 @@ namespace MyMessenger.Server
 		
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseMySql(new ConnectionStringCompiler(Config.DbConfig).Compile(Config.DbConfig.Password));
+			optionsBuilder.UseMySql(new ConnectionStringCompiler(Config.DbConfig).Compile());
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

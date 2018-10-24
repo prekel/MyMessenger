@@ -7,8 +7,14 @@ namespace MyMessenger.Server
 	public class ConnectionStringCompiler
 	{
 		private DbConfig Config { get; set; }
-		public string Password { get; set; }
-	
+		private string _password;
+
+		private string Password
+		{
+			get => _password ?? Config.Password;
+			set => _password = value;
+		}
+
 		public ConnectionStringCompiler(DbConfig config)
 		{
 			Config = config;
