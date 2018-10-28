@@ -5,13 +5,13 @@ image:
 configuration: Release
 platform: Any CPU
 install:
-- pwsh: .\scripts\install.ps1
+- pwsh: scripts/install.ps1
 build_script:
-- pwsh: .\scripts\build.ps1
+- pwsh: scripts/build.ps1
 after_build:
-- pwsh: .\scripts\publish.ps1
+- pwsh: scripts/publish.ps1
 test_script:
-- pwsh: .\scripts\test.ps1
+- pwsh: scripts/test.ps1
 artifacts:
 - path: '\'
   name: MyMessenger_All_Files
