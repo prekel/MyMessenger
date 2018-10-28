@@ -6,6 +6,6 @@ namespace MyMessenger.Server.Entities
 	{
 		public int ID { get; set; }
 		public new Dialog Dialog { get; set; }
-		public new Account Author;
+		public new Account Author { get; set; }
 	}
 }
