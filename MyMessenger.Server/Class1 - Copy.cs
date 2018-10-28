@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using MyMessenger.Server.Configs;
+using MyMessenger.Server.Entities;
 using Newtonsoft.Json;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
