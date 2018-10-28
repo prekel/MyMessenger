@@ -46,7 +46,7 @@ namespace MyMessenger.Server.Tests
 		public void NotValidTest()
 		{
 			Assert.IsFalse(Crypto.IsPasswordValid("cat", Salt1, Hash1));
-			Assert.IsFalse(Crypto.IsPasswordValid(Password1, Salt2, Hash2));
+			Assert.IsFalse(Crypto.IsPasswordValid(Password3, Salt2, Hash2));
 			Assert.IsFalse(Crypto.IsPasswordValid(Password3, Salt2, Hash3));
 		}
 
