@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MyMessenger.Server.Configs;
 using MyMessenger.Server.Entities;
@@ -73,7 +72,7 @@ namespace MyMessenger.Server
 				Console.WriteLine();
 				foreach (var i in me)
 				{
-					//Console.WriteLine($"DialogId: {i.Dialog.ID:4} Author: {i.Author.ID:4} First: {i.Dialog.FirstMember:4} Second: {i.Dialog.SecondMember:4}");
+					Console.WriteLine($"DialogId: {i.Dialog.ID} Author: {i.Author.Nickname} First: {i.Dialog.FirstMember.Nickname} Second: {i.Dialog.SecondMember.Nickname}");
 					Console.WriteLine($"          {i.Text}");
 				}
 

@@ -20,7 +20,7 @@ namespace MyMessenger.Server
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder
-				//.UseLazyLoadingProxies()
+				.UseLazyLoadingProxies()
 				.UseMySql(new ConnectionStringCompiler(Config.DbConfig).Compile());
 		}
 
