@@ -16,6 +16,9 @@ namespace MyMessenger.Server.Console
 
 		public static void Main(string[] args)
 		{
+			var server = new Server();
+
+
 			//LogManager.Configuration.Variables["starttime"] = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-ffff");
 			OutputEncoding = Encoding.UTF8;
 			//CancelKeyPress += Program_CancelKeyPress;
@@ -69,7 +72,7 @@ namespace MyMessenger.Server.Console
 			Config.DbConfig.Password = dbpass.ToString();
 			dbpass = null;
 
-			MyMessenger.Server.Program2.Main2(Config);
+			//MyMessenger.Server.Program2.Main2(Config);
 		}
 	}
 }
