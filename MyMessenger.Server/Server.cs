@@ -4,14 +4,23 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
+using Newtonsoft.Json;
+
+using MyMessenger.Server.Configs;
+
 namespace MyMessenger.Server
 {
 	public class Server
 	{
-		private static readonly TcpListener listener = new TcpListener(IPAddress.Any, 20522);
-
-		public Server()
+		private readonly TcpListener listener = new TcpListener(IPAddress.Any, 20522);
+		private MessengerContext Context { get; set; }
+		private Config Config { get; set; }
+		
+		public Server(Config config)
 		{
+			Config = config;
+			//Context = new MessengerContext(Config);
+			
 			listener.Start();
 			Console.WriteLine("Started.");
 
@@ -25,14 +34,20 @@ namespace MyMessenger.Server
 			}
 		}
 
-		private static void ServeData(object clientSocket)
+		private void ServeData(object clientSocket)
 		{
 			try
 			{
+				var context = new MessengerContext(Config);
 				var client = (TcpClient)clientSocket;
+				
 				var s = client.GetStream();
 
-				var response = "Привет мир";
+				//var response = "Привет мир";
+				var gm = new GetMessages(context, new GetMessages.Query {DialogId = 1});
+				gm.Execute();
+				var res = gm.Result;
+				var response = JsonConvert.SerializeObject(res);
 				var data = Encoding.UTF8.GetBytes(response);
 				s.Write(data, 0, data.Length);
 			}

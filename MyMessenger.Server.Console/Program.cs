@@ -16,7 +16,6 @@ namespace MyMessenger.Server.Console
 
 		public static void Main(string[] args)
 		{
-			var server = new Server();
 
 
 			//LogManager.Configuration.Variables["starttime"] = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-ffff");
@@ -52,6 +51,7 @@ namespace MyMessenger.Server.Console
 					w.WriteLine(json);
 				}
 			}
+			
 
 			var dbpass = new StringBuilder();
 			Write("Enter database password: ");
@@ -72,6 +72,7 @@ namespace MyMessenger.Server.Console
 			Config.DbConfig.Password = dbpass.ToString();
 			dbpass = null;
 
+			var server = new Server(Config);
 			//MyMessenger.Server.Program2.Main2(Config);
 		}
 	}
