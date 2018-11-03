@@ -42,7 +42,7 @@ namespace MyMessenger.Client.Console
 			}
 
 			WriteLine("Запрос завершен...");
-			Read();
+			//Read();
 		}
 	}
 }

@@ -15,12 +15,13 @@ namespace MyMessenger.Server
 
 		public GetMessages(MessengerContext context, Query query)
 		{
+			Context = context;
 			Config = query;
 		}
 
 		public void Execute()
 		{
-			Result = from i in Context.Messages where i.Dialog.ID == Config.DialogId select i;
+			Result = from i in Context.Messages where ((Dialog)i.Dialog).Id == Config.DialogId select i;
 		}
 
 		public class Query

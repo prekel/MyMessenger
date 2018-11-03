@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -38,18 +39,21 @@ namespace MyMessenger.Server
 		{
 			try
 			{
-				var context = new MessengerContext(Config);
-				var client = (TcpClient)clientSocket;
-				
-				var s = client.GetStream();
+				using (var context = new MessengerContext(Config))
+				{
+					var client = (TcpClient) clientSocket;
 
-				//var response = "Привет мир";
-				var gm = new GetMessages(context, new GetMessages.Query {DialogId = 1});
-				gm.Execute();
-				var res = gm.Result;
-				var response = JsonConvert.SerializeObject(res);
-				var data = Encoding.UTF8.GetBytes(response);
-				s.Write(data, 0, data.Length);
+					var s = client.GetStream();
+
+					//var response = "Привет мир";
+					var gm = new GetMessages(context, new GetMessages.Query {DialogId = 1});
+					gm.Execute();
+					var res = gm.Result;
+					var list = res.ToList();
+					var response = JsonConvert.SerializeObject(list, Formatting.Indented);
+					var data = Encoding.UTF8.GetBytes(response);
+					s.Write(data, 0, data.Length);
+				}
 			}
 			catch (SocketException e)
 			{

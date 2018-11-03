@@ -72,7 +72,7 @@ namespace MyMessenger.Server
 				Console.WriteLine();
 				foreach (var i in me)
 				{
-					Console.WriteLine($"DialogId: {i.Dialog.ID} Author: {i.Author.Nickname} First: {i.Dialog.FirstMember.Nickname} Second: {i.Dialog.SecondMember.Nickname}");
+					//Console.WriteLine($"DialogId: {i.Dialog.ID} Author: {i.Author.Nickname} First: {i.Dialog.FirstMember.Nickname} Second: {i.Dialog.SecondMember.Nickname}");
 					Console.WriteLine($"          {i.Text}");
 				}
 
