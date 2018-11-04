@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
 using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server
@@ -21,7 +22,8 @@ namespace MyMessenger.Server
 
 		public void Execute()
 		{
-			Result = from i in Context.Messages where i.Dialog1.Id == Config.DialogId select i;
+			Result = (from i in Context.Messages where i.Dialog1.Id == Config.DialogId select i)
+				.Include(p => p.Author1);
 		}
 
 		public class Query

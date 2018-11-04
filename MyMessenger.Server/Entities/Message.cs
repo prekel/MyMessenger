@@ -4,7 +4,7 @@ using MyMessenger.Core;
 
 namespace MyMessenger.Server.Entities
 {
-	[JsonObject]
+	[JsonObject(MemberSerialization.OptIn)]
 	public class Message : IMessage
 	{
 		[JsonProperty]
@@ -13,16 +13,13 @@ namespace MyMessenger.Server.Entities
 		[JsonProperty]
 		public string Text { get; set; }
 
-		[JsonIgnore]
 		public IDialog Dialog => Dialog1;
 
-		[JsonIgnore]
 		public IAccount Author => Author1;
 
-		[JsonIgnore]
 		public virtual Dialog Dialog1 { get; set; }
 		
-		[JsonIgnore]
+		[JsonProperty]
 		public virtual Account Author1 { get; set; }
 	}
 }

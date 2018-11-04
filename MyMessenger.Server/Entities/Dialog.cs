@@ -5,19 +5,19 @@ using MyMessenger.Core;
 
 namespace MyMessenger.Server.Entities
 {
-	[JsonObject]
+	[JsonObject(MemberSerialization.OptIn)]
 	public class Dialog : IDialog
 	{
 		[JsonProperty] public int Id { get; set; }
 
-		[JsonIgnore] public virtual IList<Message> Messages { get; set; }
+		public virtual IList<Message> Messages { get; set; }
 
-		[JsonIgnore] public virtual Account FirstMember1 { get; set; }
+		public virtual Account FirstMember1 { get; set; }
 
-		[JsonIgnore] public virtual Account SecondMember1 { get; set; }
+		public virtual Account SecondMember1 { get; set; }
 
-		[JsonIgnore] public IAccount FirstMember => FirstMember1;
+		public IAccount FirstMember => FirstMember1;
 
-		[JsonIgnore] public IAccount SecondMember => SecondMember1;
+		public IAccount SecondMember => SecondMember1;
 	}
 }
