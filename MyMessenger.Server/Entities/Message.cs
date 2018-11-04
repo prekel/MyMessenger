@@ -14,9 +14,15 @@ namespace MyMessenger.Server.Entities
 		public string Text { get; set; }
 
 		[JsonIgnore]
-		public virtual IDialog Dialog { get; set; }
+		public IDialog Dialog => Dialog1;
+
+		[JsonIgnore]
+		public IAccount Author => Author1;
+
+		[JsonIgnore]
+		public virtual Dialog Dialog1 { get; set; }
 		
 		[JsonIgnore]
-		public virtual IAccount Author { get; set; }
+		public virtual Account Author1 { get; set; }
 	}
 }

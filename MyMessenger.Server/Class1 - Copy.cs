@@ -46,15 +46,15 @@ namespace MyMessenger.Server
 				};
 				context.Accounts.Add(a2);
 
-				var d1 = new Dialog { FirstMember = a1, SecondMember = a2 };
-				var d2 = new Dialog { FirstMember = a1, SecondMember = a2 };
+				var d1 = new Dialog { FirstMember1 = a1, SecondMember1 = a2 };
+				var d2 = new Dialog { FirstMember1 = a1, SecondMember1 = a2 };
 				context.Dialogs.Add(d1);
 				context.Dialogs.Add(d2);
 
-				context.Messages.Add(new Message { Text = "123text", Author = a1, Dialog = d1 });
-				context.Messages.Add(new Message { Text = "234text", Author = a2, Dialog = d1 });
-				context.Messages.Add(new Message { Text = "111text", Author = a1, Dialog = d2 });
-				context.Messages.Add(new Message { Text = "222text", Author = a1, Dialog = d2 });
+				context.Messages.Add(new Message { Text = "123text", Author1 = a1, Dialog1 = d1 });
+				context.Messages.Add(new Message { Text = "234text", Author1 = a2, Dialog1 = d1 });
+				context.Messages.Add(new Message { Text = "111text", Author1 = a1, Dialog1 = d2 });
+				context.Messages.Add(new Message { Text = "222text", Author1 = a1, Dialog1 = d2 });
 
 				context.SaveChanges();
 			}
@@ -68,7 +68,7 @@ namespace MyMessenger.Server
 				var m = context.Messages;
 				var a = context.Accounts;
 
-				var me = from i in context.Messages where i.Author.Nickname == "User1" select i;
+				var me = from i in context.Messages where i.Author1.Nickname == "User1" select i;
 				Console.WriteLine();
 				foreach (var i in me)
 				{

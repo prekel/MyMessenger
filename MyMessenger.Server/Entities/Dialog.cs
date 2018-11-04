@@ -12,9 +12,9 @@ namespace MyMessenger.Server.Entities
 
 		[JsonIgnore] public virtual IList<Message> Messages { get; set; }
 
-		[JsonIgnore] protected virtual Account FirstMember1 { get; set; }
+		[JsonIgnore] public virtual Account FirstMember1 { get; set; }
 
-		[JsonIgnore] protected virtual Account SecondMember1 { get; set; }
+		[JsonIgnore] public virtual Account SecondMember1 { get; set; }
 
 		[JsonIgnore] public IAccount FirstMember => FirstMember1;
 

@@ -43,11 +43,12 @@ namespace MyMessenger.Server
 			{
 				entity.HasKey(e => e.Id);
 
-				entity.HasOne(e => e.FirstMember)
-					.WithMany(e => ((Account)e).Dialogs);
-				entity.HasOne(e => e.SecondMember)
-					.WithMany(e => ((Account)e).Dialogs);
+				entity.HasOne(e => e.FirstMember1)
+					.WithMany(p => p.Dialogs);
+				//entity.HasOne(e => e.SecondMember1)
+				//	.WithMany(p => p.Dialogs);
 				entity.HasMany(e => e.Messages);
+				//	.WithOne(p => p.Dialog1);
 			});
 
 			modelBuilder.Entity<Message>(entity =>
@@ -55,10 +56,10 @@ namespace MyMessenger.Server
 				entity.HasKey(e => e.Id);
 				entity.Property(e => e.Text).IsRequired();
 
-				entity.HasOne(e => e.Author)
-					.WithMany(p => ((Account)p).Messages);
-				entity.HasOne(d => d.Dialog)
-					.WithMany(p => ((Dialog)p).Messages);
+				entity.HasOne(e => e.Author1)
+					.WithMany(p => p.Messages);
+				entity.HasOne(d => d.Dialog1)
+					.WithMany(p => p.Messages);
 			});
 		}
 	}

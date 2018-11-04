@@ -72,8 +72,8 @@ namespace MyMessenger.Server.Console
 			Config.DbConfig.Password = dbpass.ToString();
 			dbpass = null;
 
-			//var server = new Server(Config);
-			MyMessenger.Server.Program2.Main2(Config);
+			var server = new Server(Config);
+			//MyMessenger.Server.Program2.Main2(Config);
 		}
 	}
 }

@@ -21,7 +21,7 @@ namespace MyMessenger.Server
 
 		public void Execute()
 		{
-			Result = from i in Context.Messages where ((Dialog)i.Dialog).Id == Config.DialogId select i;
+			Result = from i in Context.Messages where i.Dialog1.Id == Config.DialogId select i;
 		}
 
 		public class Query
