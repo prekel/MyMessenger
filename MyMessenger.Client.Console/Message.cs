@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using MyMessenger.Core;
 using Newtonsoft.Json;
 
@@ -9,13 +10,16 @@ namespace MyMessenger.Client.Console
 	{
 		[JsonProperty]
 		public int Id { get; set; }
+
 		[JsonProperty]
 		public string Text { get; set; }
-		//[JsonProperty(ItemConverterType = typeof(IDialogConvert))]
-		[JsonProperty]
+
+		//[JsonProperty]
+		[JsonConverter(typeof(Dialog.Converter))]
 		public IDialog Dialog { get; set; }
-		//[JsonProperty(ItemConverterType = typeof(IAccountConvert))]
-		[JsonProperty]
+
+		//[JsonProperty]
+		[JsonConverter(typeof(Account.Converter))]
 		public IAccount Author { get; set; }
 		
 		public class Converter : JsonConverter

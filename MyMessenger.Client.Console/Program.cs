@@ -39,11 +39,11 @@ namespace MyMessenger.Client.Console
 				//var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString(), new IDialogConvert(), new IAccountConvert());
 				
 				var settings = new JsonSerializerSettings();
-				settings.Converters.Add(new Account.Converter());
-				settings.Converters.Add(new Dialog.Converter());
-				settings.Converters.Add(new Message.Converter());
+				//settings.Converters.Add(new Account.Converter());
+				//settings.Converters.Add(new Dialog.Converter());
+				//settings.Converters.Add(new Message.Converter());
 				
-				var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString(), settings);
+				var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString());//, settings);
 				
 				stream.Close();
 				client.Close();
