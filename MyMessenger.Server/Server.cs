@@ -11,6 +11,7 @@ using static System.Console;
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using MyMessenger.Server.Commands;
 using MyMessenger.Server.Configs;
 using MyMessenger.Server.Entities;
 
@@ -49,9 +50,9 @@ namespace MyMessenger.Server
 					var s = client.GetStream();
 					
 					var gm = new GetMessages(context, 
-						new GetMessages.Query {DialogId = 1});//, 
-							//Fields1 = GetMessages.Query.Fields.Author 
-							//          | GetMessages.Query.Fields.Dialog});
+						new GetMessages.Parameters {DialogId = 1});//, 
+							//Fields1 = GetMessages.Parameters.Fields.Author 
+							//          | GetMessages.Parameters.Fields.Dialog});
 					gm.Execute();
 					var res = gm.Result;
 					var list = res.ToList();
