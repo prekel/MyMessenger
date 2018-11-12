@@ -51,7 +51,7 @@ namespace MyMessenger.Server.Console
 					w.WriteLine(json);
 				}
 			}
-			
+
 
 			var dbpass = new StringBuilder();
 			Write("Enter database password: ");
@@ -72,8 +72,14 @@ namespace MyMessenger.Server.Console
 			Config.DbConfig.Password = dbpass.ToString();
 			dbpass = null;
 
-			var server = new Server(Config);
-			//MyMessenger.Server.Program2.Main2(Config);
+			if (args.Length > 0)
+			{
+				var server = new Server(Config);
+			}
+			else
+			{
+				Program2.Main2(Config);
+			}
 		}
 	}
 }
