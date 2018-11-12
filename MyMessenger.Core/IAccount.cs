@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace MyMessenger.Core
+﻿namespace MyMessenger.Core
 {
 	public interface IAccount
 	{

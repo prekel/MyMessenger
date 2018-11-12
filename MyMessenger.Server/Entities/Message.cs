@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+
 using MyMessenger.Core;
 
 namespace MyMessenger.Server.Entities

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyMessenger.Server
 {
-	public class Crypto
+	public static class Crypto
 	{
 		public static int GenerateSaltForPassword()
 		{

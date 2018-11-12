@@ -1,7 +1,9 @@
 using System;
 using System.Net;
-using MyMessenger.Core;
+
 using Newtonsoft.Json;
+
+using MyMessenger.Core;
 
 namespace MyMessenger.Client.Console
 {

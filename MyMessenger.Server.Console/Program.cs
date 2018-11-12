@@ -4,7 +4,9 @@ using System.Net;
 using System.Security;
 using System.Text;
 using static System.Console;
+
 using Newtonsoft.Json;
+
 using MyMessenger.Core;
 using MyMessenger.Server.Configs;
 
@@ -16,8 +18,6 @@ namespace MyMessenger.Server.Console
 
 		public static void Main(string[] args)
 		{
-
-
 			//LogManager.Configuration.Variables["starttime"] = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-ffff");
 			OutputEncoding = Encoding.UTF8;
 			//CancelKeyPress += Program_CancelKeyPress;

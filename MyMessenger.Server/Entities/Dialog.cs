@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+
 using MyMessenger.Core;
 
 namespace MyMessenger.Server.Entities

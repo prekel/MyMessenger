@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using MyMessenger.Core;
-using Newtonsoft.Json;
 using static System.Console;
+
+using Newtonsoft.Json;
+
+using MyMessenger.Core;
 
 namespace MyMessenger.Client.Console
 {

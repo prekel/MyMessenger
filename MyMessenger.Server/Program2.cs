@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+
 using Microsoft.EntityFrameworkCore;
-using MyMessenger.Server.Configs;
-using MyMessenger.Server.Entities;
 using Newtonsoft.Json;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+
+using MyMessenger.Server.Configs;
+using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server
 {
@@ -72,11 +74,8 @@ namespace MyMessenger.Server
 				Console.WriteLine();
 				foreach (var i in me)
 				{
-					//Console.WriteLine($"DialogId: {i.Dialog.ID} Author: {i.Author.Nickname} First: {i.Dialog.FirstMember.Nickname} Second: {i.Dialog.SecondMember.Nickname}");
 					Console.WriteLine($"          {i.Text}");
 				}
-
-				//var me2 = context.Messages.in
 			}
 		}
 	}
