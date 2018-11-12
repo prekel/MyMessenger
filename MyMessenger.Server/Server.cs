@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -10,6 +11,7 @@ using Newtonsoft.Json;
 
 using MyMessenger.Core;
 using MyMessenger.Server.Configs;
+using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server
 {
@@ -52,8 +54,8 @@ namespace MyMessenger.Server
 					gm.Execute();
 					var res = gm.Result;
 					var list = res.ToList();
-					var list1 = new List<IMessage>(list);
-					var response = JsonConvert.SerializeObject(list1, Formatting.Indented);
+					//var list1 = new List<IMessage>(list);
+					var response = JsonConvert.SerializeObject(list, Formatting.Indented);
 					var data = Encoding.UTF8.GetBytes(response);
 					s.Write(data, 0, data.Length);
 				}

@@ -18,7 +18,9 @@ namespace MyMessenger.Server.Entities
 		public byte[] PasswordHash { get; set; }
 		public int PasswordSalt { get; set; }
 
+		//[JsonProperty]
 		public virtual IList<Dialog> Dialogs { get; set; }
+		//[JsonProperty]
 		public virtual IList<Message> Messages { get; set; }
 	}
 }

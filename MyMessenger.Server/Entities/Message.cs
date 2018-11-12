@@ -13,13 +13,16 @@ namespace MyMessenger.Server.Entities
 		[JsonProperty]
 		public string Text { get; set; }
 
+		[JsonProperty]
 		public IDialog Dialog => Dialog1;
 
+		[JsonProperty]
 		public IAccount Author => Author1;
 
+		//[JsonProperty]
 		public virtual Dialog Dialog1 { get; set; }
 		
-		[JsonProperty]
+		//[JsonProperty]
 		public virtual Account Author1 { get; set; }
 	}
 }
