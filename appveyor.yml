@@ -5,13 +5,28 @@ image:
 configuration: Release
 platform: Any CPU
 install:
-- pwsh: scripts/version.ps1
-#before_build:
-#- pwsh: dotnet restore
+- pwsh: scripts/install.ps1
 build_script:
-- pwsh: dotnet build /p:AssemblyVersion="$env:assembly_version" /verbosity:minimal /m
+- pwsh: scripts/build.ps1
+after_build:
+- pwsh: scripts/publish.ps1
 test_script:
-- pwsh: dotnet test MyMessenger.Server.Tests --test-adapter-path:. --logger:Appveyor
+- pwsh: scripts/test.ps1
 artifacts:
 - path: '\'
   name: MyMessenger_All_Files
+- path: 'MyMessenger.Server.Console\bin\Release\netcoreapp2.1\publish\'
+  name: MyMessenger-$(APPVEYOR_BUILD_VERSION)
+deploy:
+- provider: FTP
+  host: 
+    secure: tgFBLOzwRuRs8x/0Mq7WEw==
+  protocol: sftp
+  username: vladislav
+  password:
+    secure: Ms8unA4ChOoYMeatsRrA/g==
+  folder: MyMessenger\MyMessenger-$(APPVEYOR_BUILD_VERSION)
+  application: MyMessenger-$(APPVEYOR_BUILD_VERSION)
+  on:
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 
+    SHOULD_DEPLOY: true
