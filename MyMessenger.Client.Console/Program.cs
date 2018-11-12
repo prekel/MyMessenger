@@ -27,9 +27,8 @@ namespace MyMessenger.Client.Console
 					}
 				};
 				var a = JsonConvert.SerializeObject(q);
-				var w = JsonConvert.DeserializeObject<Query>(a);
-
-
+				//var w = JsonConvert.DeserializeObject<Query>(a);
+				
 				var client = new TcpClient();
 				var server = args.Length == 1 ? IPAddress.Parse(args[0]) : IPAddress.Loopback;
 				client.Connect(server, 20522);
@@ -37,6 +36,9 @@ namespace MyMessenger.Client.Console
 				var data = new byte[256];
 				var response = new StringBuilder();
 				var stream = client.GetStream();
+
+				data = Encoding.UTF8.GetBytes(a);
+				stream.Write(data, 0, data.Length);
 
 				do
 				{

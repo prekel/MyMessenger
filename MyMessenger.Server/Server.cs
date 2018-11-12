@@ -11,6 +11,7 @@ using static System.Console;
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using MyMessenger.Core.Parameters;
 using MyMessenger.Server.Commands;
 using MyMessenger.Server.Configs;
 using MyMessenger.Server.Entities;
@@ -47,19 +48,42 @@ namespace MyMessenger.Server
 				{
 					var client = (TcpClient) clientSocket;
 
+					var data1 = new byte[256];
+					var response1 = new StringBuilder();
+					var stream = client.GetStream();
+
+					do
+					{
+						var bytes = stream.Read(data1, 0, data1.Length);
+						response1.Append(Encoding.UTF8.GetString(data1, 0, bytes));
+					}
+					while (stream.DataAvailable);
+
+					var q = JsonConvert.DeserializeObject<Query>(response1.ToString());
+
 					var s = client.GetStream();
-					
-					var gm = new GetMessages(context, 
-						new GetMessages.Parameters {DialogId = 1});//, 
-							//Fields1 = GetMessages.Parameters.Fields.Author 
-							//          | GetMessages.Parameters.Fields.Dialog});
-					gm.Execute();
-					var res = gm.Result;
-					var list = res.ToList();
-					var response = JsonConvert.SerializeObject(list, Formatting.Indented);
-					var data = Encoding.UTF8.GetBytes(response);
-					s.Write(data, 0, data.Length);
-					
+
+					if (q.Config.CommandName == "GetMessages")
+					{
+						var gm = new GetMessages(context, q.Config);
+						gm.Execute();
+						var res = gm.Result;
+						var list = res.ToList();
+						var response = JsonConvert.SerializeObject(list, Formatting.Indented);
+						var data = Encoding.UTF8.GetBytes(response);
+						s.Write(data, 0, data.Length);
+					}
+					if (q.Config.CommandName == "Register")
+					{
+						var gm = new Register(context, q.Config);
+						gm.Execute();
+						//var res = gm.Result;
+						//var list = res.ToList();
+						//var response = JsonConvert.SerializeObject(list, Formatting.Indented);
+						//var data = Encoding.UTF8.GetBytes(response);
+						//s.Write(data, 0, data.Length);
+					}
+
 					s.Close();
 					client.Close();
 				}
