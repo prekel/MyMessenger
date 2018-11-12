@@ -55,11 +55,12 @@ namespace MyMessenger.Server
 			Result = r;
 		}
 
-		public class Query
+		public class Query 
 		{
 			public int DialogId { get; set; }
 			public Fields Fields1 { get; set; }
 
+			[Flags]
 			public enum Fields
 			{
 				Author = 1,

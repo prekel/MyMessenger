@@ -50,7 +50,10 @@ namespace MyMessenger.Server
 					var s = client.GetStream();
 
 					//var response = "Привет мир";
-					var gm = new GetMessages(context, new GetMessages.Query {DialogId = 1});
+					var gm = new GetMessages(context, 
+						new GetMessages.Query {DialogId = 1});//, 
+							//Fields1 = GetMessages.Query.Fields.Author 
+							//          | GetMessages.Query.Fields.Dialog});
 					gm.Execute();
 					var res = gm.Result;
 					var list = res.ToList();
