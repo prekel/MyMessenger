@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using MyMessenger.Core;
+using Newtonsoft.Json;
 using static System.Console;
 
 namespace MyMessenger.Client.Console
@@ -29,6 +32,15 @@ namespace MyMessenger.Client.Console
 
 				WriteLine(response.ToString());
 
+				//var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString(), new IDialogConvert(), new IAccountConvert());
+				
+				var settings = new JsonSerializerSettings();
+				settings.Converters.Add(new Account.Converter());
+				settings.Converters.Add(new Dialog.Converter());
+				settings.Converters.Add(new Message.Converter());
+				
+				var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString(), settings);
+				
 				stream.Close();
 				client.Close();
 			}
