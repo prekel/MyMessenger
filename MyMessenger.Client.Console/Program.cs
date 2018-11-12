@@ -31,6 +31,10 @@ namespace MyMessenger.Client.Console
 				while (stream.DataAvailable);
 
 				WriteLine(response.ToString());
+				
+				var r = "Привет мир1";
+				var data1 = Encoding.UTF8.GetBytes(r);
+				stream.Write(data1, 0, data1.Length);
 
 				//var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString(), new IDialogConvert(), new IAccountConvert());
 				

@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Collections.Generic;
+using static System.Console;
 
 using Newtonsoft.Json;
 
@@ -61,6 +62,9 @@ namespace MyMessenger.Server
 					var response = JsonConvert.SerializeObject(list, Formatting.Indented);
 					var data = Encoding.UTF8.GetBytes(response);
 					s.Write(data, 0, data.Length);
+					
+					s.Close();
+					client.Close();
 				}
 			}
 			catch (SocketException e)
