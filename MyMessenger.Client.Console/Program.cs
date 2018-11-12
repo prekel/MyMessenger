@@ -34,18 +34,11 @@ namespace MyMessenger.Client.Console
 
 				WriteLine(response.ToString());
 				
-				var r = "Привет мир1";
-				var data1 = Encoding.UTF8.GetBytes(r);
-				stream.Write(data1, 0, data1.Length);
-
-				//var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString(), new IDialogConvert(), new IAccountConvert());
+				//var r = "Привет мир1";
+				//var data1 = Encoding.UTF8.GetBytes(r);
+				//stream.Write(data1, 0, data1.Length);
 				
-				var settings = new JsonSerializerSettings();
-				//settings.Converters.Add(new Account.Converter());
-				//settings.Converters.Add(new Dialog.Converter());
-				//settings.Converters.Add(new Message.Converter());
-				
-				var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString());//, settings);
+				var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString());
 				
 				stream.Close();
 				client.Close();
@@ -58,9 +51,6 @@ namespace MyMessenger.Client.Console
 			{
 				WriteLine("Exception: {0}", e.Message);
 			}
-
-			WriteLine("Запрос завершен...");
-			//Read();
 		}
 	}
 }
