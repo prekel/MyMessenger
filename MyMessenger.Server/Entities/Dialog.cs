@@ -1,14 +1,29 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using MyMessenger.Core;
 
 namespace MyMessenger.Server.Entities
 {
-	public class Dialog : Core.Dialog
+	[JsonObject(MemberSerialization.OptIn)]
+	public class Dialog : IDialog
 	{
-		public int ID { get; set; }
+		[JsonProperty] 
+		public int Id { get; set; }
+
+		//[JsonProperty]
 		public virtual IList<Message> Messages { get; set; }
 
-		public new virtual Account FirstMember { get; set; }
-		public new virtual Account SecondMember { get; set; }
+		//[JsonProperty]
+		public virtual Account FirstMember1 { get; set; }
+
+		//[JsonProperty]
+		public virtual Account SecondMember1 { get; set; }
+
+		[JsonProperty]
+		public IAccount FirstMember => FirstMember1;
+
+		[JsonProperty]
+		public IAccount SecondMember => SecondMember1;
 	}
 }
