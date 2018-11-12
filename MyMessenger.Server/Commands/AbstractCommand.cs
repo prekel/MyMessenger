@@ -6,13 +6,13 @@ namespace MyMessenger.Server.Commands
 {
 	public abstract class AbstractCommand : ICommand
 	{
-		protected abstract AbstractParameters AbstractConfig { get; set; }
+		protected AbstractParameters Config { get; set; }
 		protected MessengerContext Context { get; set; }
 
 		protected AbstractCommand(MessengerContext context, AbstractParameters config)
 		{
 			Context = context;
-			AbstractConfig = config;
+			Config = config;
 		}
 
 		public abstract void Execute();

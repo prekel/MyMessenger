@@ -7,21 +7,21 @@ namespace MyMessenger.Server.Commands
 {
 	public class GetMessages : AbstractCommand
 	{
-		protected override AbstractParameters AbstractConfig { get; set; }
-		private Parameters Config { get => (Parameters)AbstractConfig; set => AbstractConfig = value; }
+		//protected override AbstractParameters AbstractConfig { get; set; }
+		private Parameters Config1 { get => (Parameters)Config; set => Config = value; }
 		
 		public IQueryable<Message> Result { get; private set; }
 
 		public GetMessages(MessengerContext context, Parameters parameters) : base(context, parameters)
 		{
-			Context = context;
-			Config = parameters;
+			//Context = context;
+			//Config = parameters;
 		}
 
 
 		public override void Execute()
 		{
-			var r = from i in Context.Messages where i.Dialog1.Id == Config.DialogId select i;
+			var r = from i in Context.Messages where i.Dialog1.Id == Config1.DialogId select i;
 			//if (AbstractConfig.Fields1.HasFlag(Parameters.Fields.Author))
 			//{
 			//	var r1 = r.Include(p => p.Author1);

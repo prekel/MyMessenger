@@ -6,19 +6,22 @@ namespace MyMessenger.Server.Commands
 {
 	public class Register : AbstractCommand
 	{
-		protected override AbstractParameters AbstractConfig { get; set; }
-		private Parameters Config { get => (Parameters)AbstractConfig; set => AbstractConfig = value; }
+		private Parameters Config1 { get => (Parameters)Config; set => Config = value; }
+
+		public Register(MessengerContext context, AbstractParameters config) : base(context, config)
+		{
+		}
 
 		public override void Execute()
 		{
 			throw new NotImplementedException();
 		}
 
-
 		public class Parameters : AbstractParameters
 		{
 			public int Login { get; set; }
 			public string Password { get; set; }
 		}
+
 	}
 }
