@@ -14,31 +14,12 @@ namespace MyMessenger.Client.Console
 		[JsonProperty]
 		public string Text { get; set; }
 
-		//[JsonProperty]
-		[JsonConverter(typeof(Dialog.Converter))]
+		[JsonProperty]
+		[JsonConverter(typeof(InterfaceConverter<Dialog>))]
 		public IDialog Dialog { get; set; }
 
-		//[JsonProperty]
-		[JsonConverter(typeof(Account.Converter))]
+		[JsonProperty]
+		[JsonConverter(typeof(InterfaceConverter<Account>))]
 		public IAccount Author { get; set; }
-		
-		public class Converter : JsonConverter
-		{
-			public override bool CanConvert(Type objectType)
-			{
-				return (objectType == typeof(IMessage));
-			}
-
-			public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-				JsonSerializer serializer)
-			{
-				return serializer.Deserialize(reader, typeof(Message));
-			}
-
-			public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-			{
-				serializer.Serialize(writer, value, typeof(Message));
-			}
-		}
 	}
 }

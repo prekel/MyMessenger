@@ -16,7 +16,7 @@ namespace MyMessenger.Client.Console
 			try
 			{
 				var client = new TcpClient();
-				var server = IPAddress.Loopback;
+				var server = args.Length == 1 ? IPAddress.Parse(args[0]) : IPAddress.Loopback;
 				client.Connect(server, 20522);
 
 				var data = new byte[256];
