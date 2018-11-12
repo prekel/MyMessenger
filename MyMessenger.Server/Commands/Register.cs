@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
+using MyMessenger.Core.Parameters;
 using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server.Commands
 {
 	public class Register : AbstractCommand
 	{
-		private Parameters Config1 { get => (Parameters)Config; set => Config = value; }
+		private RegisterParameters Config1 { get => (RegisterParameters)Config; set => Config = value; }
 
 		public Register(MessengerContext context, AbstractParameters config) : base(context, config)
 		{
@@ -24,12 +26,6 @@ namespace MyMessenger.Server.Commands
 			};
 			Context.Accounts.Add(a);
 			Context.SaveChanges();
-		}
-
-		public class Parameters : AbstractParameters
-		{
-			public string Nickname { get; set; }
-			public string Password { get; set; }
 		}
 
 	}

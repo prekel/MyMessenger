@@ -1,27 +1,27 @@
 using System;
 using System.Linq;
+
 using Microsoft.EntityFrameworkCore;
+
+using MyMessenger.Core.Parameters;
 using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server.Commands
 {
 	public class GetMessages : AbstractCommand
 	{
-		//protected override AbstractParameters AbstractConfig { get; set; }
-		private Parameters Config1 { get => (Parameters)Config; set => Config = value; }
+		private GetMessagesParameters Config1 { get => (GetMessagesParameters)Config; set => Config = value; }
 		
 		public IQueryable<Message> Result { get; private set; }
-
-		public GetMessages(MessengerContext context, Parameters parameters) : base(context, parameters)
+		
+		public GetMessages(MessengerContext context, AbstractParameters config) : base(context, config)
 		{
-			//Context = context;
-			//Config = parameters;
 		}
-
 
 		public override void Execute()
 		{
 			var r = from i in Context.Messages where i.Dialog1.Id == Config1.DialogId select i;
+
 			//if (AbstractConfig.Fields1.HasFlag(Parameters.Fields.Author))
 			//{
 			//	var r1 = r.Include(p => p.Author1);
@@ -46,23 +46,6 @@ namespace MyMessenger.Server.Commands
 			//}
 
 			Result = r;
-		}
-
-		public class Parameters : AbstractParameters
-		{
-			public int DialogId { get; set; }
-
-			//public Fields Fields1 { get; set; }
-
-			//[Flags]
-			//public enum Fields
-			//{
-			//	Author = 1,
-			//	AuthorDialogs = 2,
-			//	Dialog = 4,
-			//	DialogFirstMember = 8,
-			//	DialogSecondMember = 16
-			//}
 		}
 	}
 }
