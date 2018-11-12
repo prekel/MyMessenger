@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server.Commands
 {
@@ -14,12 +15,20 @@ namespace MyMessenger.Server.Commands
 
 		public override void Execute()
 		{
-			throw new NotImplementedException();
+			var salt = Crypto.GenerateSaltForPassword();
+			var a = new Account
+			{
+				Nickname = Config1.Nickname,
+				PasswordHash = Crypto.ComputePasswordHash(Config1.Password, salt),
+				PasswordSalt = salt
+			};
+			Context.Accounts.Add(a);
+			Context.SaveChanges();
 		}
 
 		public class Parameters : AbstractParameters
 		{
-			public int Login { get; set; }
+			public string Nickname { get; set; }
 			public string Password { get; set; }
 		}
 
