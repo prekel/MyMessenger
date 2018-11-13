@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Client;
+using MyMessenger.Client.Commands;
 
 namespace MyMessenger.Client.Console
 {
@@ -37,11 +38,27 @@ namespace MyMessenger.Client.Console
 					Write("> ");
 					var s = ReadLine();
 					var p = s.Split();
+					var cmd = p[0];
 
 					var client = new TcpClient();
 					var server = args.Length == 1 ? IPAddress.Parse(args[0]) : IPAddress.Loopback;
 					client.Connect(server, 20522);
 					var stream = client.GetStream();
+
+					if (GetMessages.CommandNames.Contains(cmd))
+					{
+						var gm = new GetMessages(stream, Int32.Parse(p[1]));
+						gm.Execute();
+						var res = gm.Result;
+
+						WriteLine($"{res.Count} сообщения:");
+						foreach (var i in res)
+						{
+							WriteLine("--------");
+							WriteLine($"Автор: {i.Author.Nickname}");
+							WriteLine($"Текст: {i.Text}");
+						}
+					}
 
 					if (p[0] == "register")
 					{
