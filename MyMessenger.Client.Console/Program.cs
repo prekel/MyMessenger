@@ -77,6 +77,12 @@ namespace MyMessenger.Client.Console
 						reg.Execute();
 					}
 
+					if (SendMessage.CommandNames.Contains(cmd))
+					{
+						var send = new SendMessage(stream, p[1], Int32.Parse(p[2]), p[3]);
+						send.Execute();
+					}
+
 					//if (p[0] == "register")
 					//{
 					//	var nickname = p[1];
