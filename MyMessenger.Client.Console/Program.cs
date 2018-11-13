@@ -49,39 +49,50 @@ namespace MyMessenger.Client.Console
 					client.Connect(server, 20522);
 					var stream = client.GetStream();
 
+					AbstractCommand command = null;
+					
 					if (GetMessages.CommandNames.Contains(cmd))
 					{
-						var gm = new GetMessages(stream, p[1], Int32.Parse(p[2]));
-						gm.Execute();
-						var res = gm.Result;
+						command = new GetMessages(stream, p[1], Int32.Parse(p[2]));
+						command.Execute();
+						
+						//WriteLine(re);
+						
+						//var res = ((GetMessages) command).Response;
 
-						WriteLine($"{res.Count} сообщения:");
-						foreach (var i in res)
-						{
-							WriteLine("--------");
-							WriteLine($"Автор: {i.Author.Nickname}");
-							WriteLine($"Текст: {i.Text}");
-						}
+						//WriteLine($"{res.Content.Count} сообщения:");
+						//foreach (var i in res.Content)
+						//{
+						//	WriteLine("--------");
+						//	WriteLine($"Автор: {i.Author.Nickname}");
+						//	WriteLine($"Текст: {i.Text}");
+						//}
 					}
 
 					if (Login.CommandNames.Contains(cmd))
 					{
-						var login = new Login(stream, p[1], p[2]);
-						login.Execute();
-						WriteLine(login.Token);
+						command = new Login(stream, p[1], p[2]);
+						command.Execute();
+						//WriteLine(((Login)command).Response.Token);
 					}
 
 					if (Register.CommandNames.Contains(cmd))
 					{
-						var reg = new Register(stream, p[1], p[2]);
-						reg.Execute();
+						command = new Register(stream, p[1], p[2]);
+						command.Execute();
 					}
 
 					if (SendMessage.CommandNames.Contains(cmd))
 					{
-						var send = new SendMessage(stream, p[1], Int32.Parse(p[2]), p[3]);
-						send.Execute();
+						command = new SendMessage(stream, p[1], Int32.Parse(p[2]), p[3]);
+						command.Execute();
 					}
+
+					stream.Close();
+					client.Close();
+					
+					if (command is null) continue;
+					WriteLine(command.RawResponse);
 
 					//if (p[0] == "register")
 					//{
@@ -159,8 +170,6 @@ namespace MyMessenger.Client.Console
 					//	var token = JsonConvert.DeserializeObject<string>(response.ToString());
 					//}
 
-					stream.Close();
-					client.Close();
 				}
 
 

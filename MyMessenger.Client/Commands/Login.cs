@@ -6,6 +6,7 @@ using System.Text;
 using Newtonsoft.Json;
 
 using MyMessenger.Core.Parameters;
+using MyMessenger.Core.Responses;
 
 namespace MyMessenger.Client.Commands
 {
@@ -13,9 +14,9 @@ namespace MyMessenger.Client.Commands
 	{
 		public static ICollection<string> CommandNames { get; } = new List<string>(new[] { "login", "l" });
 
-		public IList<Message> Result { get; private set; }
+		public LoginResponse Response { get; private set; }
 
-		public string Token { get; private set; }
+		//public string Token { get; private set; }
 
 		private LoginParameters Config1 { get => (LoginParameters)Config; set => Config = value; }
 
@@ -35,28 +36,9 @@ namespace MyMessenger.Client.Commands
 
 		public override void Execute()
 		{
-			//var q = new Query
-			//{
-			//	Config = Config1
-			//};
-			//var a = JsonConvert.SerializeObject(q);
-
-			//var data = Encoding.UTF8.GetBytes(a);
-			//Stream.Write(data, 0, data.Length);
-
 			CreateSendQuery();
 
-			Token = JsonConvert.DeserializeObject<string>(ReceiveResponse());
-
-			//data = new byte[256];
-			//var response = new StringBuilder();
-			//do
-			//{
-			//	var bytes = Stream.Read(data, 0, data.Length);
-			//	response.Append(Encoding.UTF8.GetString(data, 0, bytes));
-			//} while (Stream.DataAvailable);
-
-			//Result = JsonConvert.DeserializeObject<List<Message>>(response.ToString());
+			Response = JsonConvert.DeserializeObject<LoginResponse>(ReceiveResponse());
 		}
 	}
 }

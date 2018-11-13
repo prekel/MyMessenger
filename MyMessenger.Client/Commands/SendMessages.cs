@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
-using MyMessenger.Core;
+
 using Newtonsoft.Json;
+
+using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
+using MyMessenger.Core.Responses;
 
 namespace MyMessenger.Client.Commands
 {
@@ -14,6 +17,8 @@ namespace MyMessenger.Client.Commands
 
 		//public IList<Message> Result { get; private set; }
 
+		public SendMessageResponse Response { get; private set; }
+		
 		private SendMessageParameters Config1
 		{
 			get => (SendMessageParameters) Config;
@@ -38,9 +43,7 @@ namespace MyMessenger.Client.Commands
 		{
 			CreateSendQuery();
 
-			//var response = ReceiveResponse();
-
-			//Result = JsonConvert.DeserializeObject<List<Message>>(response);
+			Response = JsonConvert.DeserializeObject<SendMessageResponse>(ReceiveResponse());
 		}
 	}
 }

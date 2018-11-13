@@ -5,6 +5,7 @@ using System.Text;
 using MyMessenger.Core;
 using Newtonsoft.Json;
 using MyMessenger.Core.Parameters;
+using MyMessenger.Core.Responses;
 
 namespace MyMessenger.Client.Commands
 {
@@ -12,7 +13,7 @@ namespace MyMessenger.Client.Commands
 	{
 		public static ICollection<string> CommandNames { get; } = new List<string>(new[] {"getmessages", "gm"});
 
-		public IList<Message> Result { get; private set; }
+		public GetMessagesResponse Response { get; private set; }
 
 		private GetMessagesParameters Config1
 		{
@@ -36,10 +37,8 @@ namespace MyMessenger.Client.Commands
 		public override void Execute()
 		{
 			CreateSendQuery();
-
-			var response = ReceiveResponse();
-
-			Result = JsonConvert.DeserializeObject<List<Message>>(response);
+			
+			Response = JsonConvert.DeserializeObject<GetMessagesResponse>(ReceiveResponse(), new InterfaceConverter<IMessage, Message>());
 		}
 	}
 }
