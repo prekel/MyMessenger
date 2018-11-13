@@ -4,7 +4,9 @@ using System.Net;
 using System.Security;
 using System.Text;
 using static System.Console;
+
 using Newtonsoft.Json;
+
 using MyMessenger.Core;
 using MyMessenger.Server.Configs;
 
@@ -16,8 +18,6 @@ namespace MyMessenger.Server.Console
 
 		public static void Main(string[] args)
 		{
-
-
 			//LogManager.Configuration.Variables["starttime"] = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-ffff");
 			OutputEncoding = Encoding.UTF8;
 			//CancelKeyPress += Program_CancelKeyPress;
@@ -51,7 +51,7 @@ namespace MyMessenger.Server.Console
 					w.WriteLine(json);
 				}
 			}
-			
+
 
 			var dbpass = new StringBuilder();
 			Write("Enter database password: ");
@@ -72,8 +72,14 @@ namespace MyMessenger.Server.Console
 			Config.DbConfig.Password = dbpass.ToString();
 			dbpass = null;
 
-			var server = new Server(Config);
-			//MyMessenger.Server.Program2.Main2(Config);
+			if (args.Length > 0)
+			{
+				var server = new Server(Config);
+			}
+			else
+			{
+				Program2.Main2(Config);
+			}
 		}
 	}
 }

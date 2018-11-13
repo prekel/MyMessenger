@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 using Newtonsoft.Json;
+
 using MyMessenger.Core;
 
 namespace MyMessenger.Server.Entities
