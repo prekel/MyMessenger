@@ -11,7 +11,7 @@ namespace MyMessenger.Client.Commands
 {
 	public class GetMessages : AbstractCommand
 	{
-		public new static ICollection<string> CommandNames { get; } = new List<string>(new[] { "getmessages", "gm" });
+		public static ICollection<string> CommandNames { get; } = new List<string>(new[] { "getmessages", "gm" });
 
 		public IList<Message> Result { get; private set; }
 
@@ -32,24 +32,11 @@ namespace MyMessenger.Client.Commands
 
 		public override void Execute()
 		{
-			var q = new Query
-			{
-				Config = Config1
-			};
-			var a = JsonConvert.SerializeObject(q);
+			CreateSendQuery();
 
-			var data = Encoding.UTF8.GetBytes(a);
-			Stream.Write(data, 0, data.Length);
+			var response = ReceiveResponse();
 
-			data = new byte[256];
-			var response = new StringBuilder();
-			do
-			{
-				var bytes = Stream.Read(data, 0, data.Length);
-				response.Append(Encoding.UTF8.GetString(data, 0, bytes));
-			} while (Stream.DataAvailable);
-
-			Result = JsonConvert.DeserializeObject<List<Message>>(response.ToString());
+			Result = JsonConvert.DeserializeObject<List<Message>>(response);
 		}
 	}
 }
