@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessenger.Server", "MyMes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessenger.Core", "MyMessenger.Core\MyMessenger.Core.csproj", "{ED9CA92D-DC95-4428-835C-1C47876034C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client.Console", "MyMessenger.Client.Console\MyMessenger.Client.Console.csproj", "{03CD07FF-146D-4974-89D5-C01E105162E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessenger.Client.Console", "MyMessenger.Client.Console\MyMessenger.Client.Console.csproj", "{03CD07FF-146D-4974-89D5-C01E105162E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client", "MyMessenger.Client\MyMessenger.Client.csproj", "{870AF8B3-509B-43B9-A425-663383CB3EFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessenger.Client", "MyMessenger.Client\MyMessenger.Client.csproj", "{870AF8B3-509B-43B9-A425-663383CB3EFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
