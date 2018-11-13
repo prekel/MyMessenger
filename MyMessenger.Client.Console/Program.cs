@@ -71,22 +71,28 @@ namespace MyMessenger.Client.Console
 						WriteLine(login.Token);
 					}
 
-					if (p[0] == "register")
+					if (Register.CommandNames.Contains(cmd))
 					{
-						var nickname = p[1];
-						var pass = p[2];
-						var q = new Query
-						{
-							Config = new RegisterParameters
-							{
-								Nickname = nickname,
-								Password = pass
-							}
-						};
-						var a = JsonConvert.SerializeObject(q);
-						var data = Encoding.UTF8.GetBytes(a);
-						stream.Write(data, 0, data.Length);
+						var reg = new Register(stream, p[1], p[2]);
+						reg.Execute();
 					}
+
+					//if (p[0] == "register")
+					//{
+					//	var nickname = p[1];
+					//	var pass = p[2];
+					//	var q = new Query
+					//	{
+					//		Config = new RegisterParameters
+					//		{
+					//			Nickname = nickname,
+					//			Password = pass
+					//		}
+					//	};
+					//	var a = JsonConvert.SerializeObject(q);
+					//	var data = Encoding.UTF8.GetBytes(a);
+					//	stream.Write(data, 0, data.Length);
+					//}
 
 					//if (p[0] == "getmessages")
 					//{
