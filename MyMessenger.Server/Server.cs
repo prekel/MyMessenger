@@ -63,7 +63,7 @@ namespace MyMessenger.Server
 
 					var s = client.GetStream();
 
-					if (q.Config.CommandName == "GetMessages")
+					if (q.Config.CommandName == CommandType.GetMessages)
 					{
 						var gm = new GetMessages(context, q.Config);
 						gm.Execute();
@@ -73,7 +73,7 @@ namespace MyMessenger.Server
 						var data = Encoding.UTF8.GetBytes(response);
 						s.Write(data, 0, data.Length);
 					}
-					if (q.Config.CommandName == "Register")
+					if (q.Config.CommandName == CommandType.Register)
 					{
 						var gm = new Register(context, q.Config);
 						gm.Execute();

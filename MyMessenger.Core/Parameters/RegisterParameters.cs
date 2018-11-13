@@ -8,7 +8,7 @@ namespace MyMessenger.Core.Parameters
 	[JsonObject]
 	public class RegisterParameters : AbstractParameters
 	{
-		public override string CommandName { get; set; } = "Register";
+		public override CommandType CommandName { get; set; } = CommandType.Register;
 
 		[JsonProperty]
 		public string Nickname { get; set; }
