@@ -37,12 +37,12 @@ namespace MyMessenger.Client.Console
 					Write("> ");
 					var s = ReadLine();
 					var p = s.Split();
-					
-				var client = new TcpClient();
-				var server = args.Length == 1 ? IPAddress.Parse(args[0]) : IPAddress.Loopback;
+
+					var client = new TcpClient();
+					var server = args.Length == 1 ? IPAddress.Parse(args[0]) : IPAddress.Loopback;
 					client.Connect(server, 20522);
 					var stream = client.GetStream();
-					
+
 					if (p[0] == "register")
 					{
 						var nickname = p[1];
@@ -90,6 +90,11 @@ namespace MyMessenger.Client.Console
 							WriteLine($"Автор: {i.Author.Nickname}");
 							WriteLine($"Текст: {i.Text}");
 						}
+					}
+
+					if (p[0] == "login")
+					{
+						var 
 					}
 
 					stream.Close();
