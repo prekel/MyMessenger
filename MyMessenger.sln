@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessenger.Core", "MyMesse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client.Console", "MyMessenger.Client.Console\MyMessenger.Client.Console.csproj", "{03CD07FF-146D-4974-89D5-C01E105162E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client", "MyMessenger.Client\MyMessenger.Client.csproj", "{870AF8B3-509B-43B9-A425-663383CB3EFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{03CD07FF-146D-4974-89D5-C01E105162E0}.Release|x64.Build.0 = Release|Any CPU
 		{03CD07FF-146D-4974-89D5-C01E105162E0}.Release|x86.ActiveCfg = Release|Any CPU
 		{03CD07FF-146D-4974-89D5-C01E105162E0}.Release|x86.Build.0 = Release|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Debug|x64.Build.0 = Debug|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Debug|x86.Build.0 = Debug|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Release|x64.ActiveCfg = Release|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Release|x64.Build.0 = Release|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Release|x86.ActiveCfg = Release|Any CPU
+		{870AF8B3-509B-43B9-A425-663383CB3EFC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
