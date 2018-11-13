@@ -7,10 +7,6 @@ namespace MyMessenger.Core.Responses
 		/// </summary>
 		Ok, 
 		/// <summary>
-		/// Доступ закрыт (например при попытке получить сообщения не своего диалога)
-		/// </summary>
-		AccessDenied, 
-		/// <summary>
 		/// Неправильное имя пользователя
 		/// </summary>
 		WrongNickname,
@@ -18,6 +14,10 @@ namespace MyMessenger.Core.Responses
 		/// Неправильный пароль
 		/// </summary>
 		WrongPassword,
+		/// <summary>
+		/// Доступ закрыт (например при попытке получить сообщения не своего диалога)
+		/// </summary>
+		AccessDenied, 
 		/// <summary>
 		/// Имя пользователя уже существует
 		/// </summary>
@@ -37,6 +37,14 @@ namespace MyMessenger.Core.Responses
 		/// <summary>
 		/// Внутренняя ошибка сервера
 		/// </summary>
-		InternalServerError
+		InternalServerError,
+		/// <summary>
+		/// Пользователь с таким именем не существует
+		/// </summary>
+		NicknameNotFound,
+		/// <summary>
+		/// Диалог с таким идентификатором не существует
+		/// </summary>
+		DialogNotFound
 	}
 }

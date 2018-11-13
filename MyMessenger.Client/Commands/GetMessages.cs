@@ -38,7 +38,7 @@ namespace MyMessenger.Client.Commands
 		{
 			CreateSendQuery();
 			
-			Response = JsonConvert.DeserializeObject<GetMessagesResponse>(ReceiveResponse());
+			Response = JsonConvert.DeserializeObject<GetMessagesResponse>(ReceiveResponse(), new InterfaceConverter<IMessage, Message>());
 		}
 	}
 }

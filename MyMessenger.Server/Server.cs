@@ -80,9 +80,11 @@ namespace MyMessenger.Server
 						{
 							var gm = new GetMessages(context, Tokens, q.Config);
 							gm.Execute();
-							var res = gm.Result;
-							var list = res.ToList();
-							var response = JsonConvert.SerializeObject(list, Formatting.Indented);
+
+
+							//var res = gm.Result;
+							//var list = res.ToList();
+							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
 							var data = Encoding.UTF8.GetBytes(response);
 							s.Write(data, 0, data.Length);
 						}
@@ -96,14 +98,20 @@ namespace MyMessenger.Server
 							//var response = JsonConvert.SerializeObject(list, Formatting.Indented);
 							//var data = Encoding.UTF8.GetBytes(response);
 							//s.Write(data, 0, data.Length);
+							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							var data = Encoding.UTF8.GetBytes(response);
+							s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.Login)
 						{
 							var gm = new Login(context, Tokens, q.Config);
 							gm.Execute();
-							var res = gm.Token;
-							var response = JsonConvert.SerializeObject(res, Formatting.Indented);
+							//var res = gm.Token;
+							//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
+							//var data = Encoding.UTF8.GetBytes(response);
+							//s.Write(data, 0, data.Length);
+							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
 							var data = Encoding.UTF8.GetBytes(response);
 							s.Write(data, 0, data.Length);
 						}
@@ -116,6 +124,9 @@ namespace MyMessenger.Server
 							//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
 							//var data = Encoding.UTF8.GetBytes(response);
 							//s.Write(data, 0, data.Length);
+							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							var data = Encoding.UTF8.GetBytes(response);
+							s.Write(data, 0, data.Length);
 						}
 					}
 					catch (Exception e)
