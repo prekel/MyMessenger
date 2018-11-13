@@ -94,7 +94,29 @@ namespace MyMessenger.Client.Console
 
 					if (p[0] == "login")
 					{
-						var 
+						var nickname = p[1];
+						var pass = p[2];
+						var q = new Query
+						{
+							Config = new LoginParameters
+							{
+								Login = nickname,
+								Password = pass
+							}
+						};
+						var a = JsonConvert.SerializeObject(q);
+						var data = Encoding.UTF8.GetBytes(a);
+						stream.Write(data, 0, data.Length);
+						
+						data = new byte[256];
+						var response = new StringBuilder();
+						do
+						{
+							var bytes = stream.Read(data, 0, data.Length);
+							response.Append(Encoding.UTF8.GetString(data, 0, bytes));
+						} while (stream.DataAvailable);
+
+						var token = JsonConvert.DeserializeObject<string>(response.ToString());
 					}
 
 					stream.Close();
