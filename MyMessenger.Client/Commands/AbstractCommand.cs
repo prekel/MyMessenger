@@ -11,7 +11,7 @@ namespace MyMessenger.Client.Commands
 	public abstract class AbstractCommand : ICommand
 	{
 		protected AbstractParameters Config { get; set; }
-		protected NetworkStream Stream { get; set; }
+		private NetworkStream Stream { get; set; }
 
 		//public static ICollection<string> CommandNames { get; }
 

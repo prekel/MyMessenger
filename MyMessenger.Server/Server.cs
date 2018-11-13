@@ -24,7 +24,7 @@ namespace MyMessenger.Server
 		private MessengerContext Context { get; set; }
 		private Config Config { get; set; }
 		
-		private IDictionary<string, int> Tokens { get; set; } = new Dictionary<string, int>();
+		private IDictionary<string, IAccount> Tokens { get; set; } = new Dictionary<string, IAccount>();
 		
 		public Server(Config config)
 		{
@@ -67,7 +67,7 @@ namespace MyMessenger.Server
 
 					if (q.Config.CommandName == CommandType.GetMessages)
 					{
-						var gm = new GetMessages(context, q.Config);
+						var gm = new GetMessages(context, Tokens, q.Config);
 						gm.Execute();
 						var res = gm.Result;
 						var list = res.ToList();
@@ -87,7 +87,7 @@ namespace MyMessenger.Server
 					}
 					if (q.Config.CommandName == CommandType.Login)
 					{
-						var gm = new Login(context, q.Config, Tokens);
+						var gm = new Login(context, Tokens, q.Config);
 						gm.Execute();
 						var res = gm.Token;
 						var response = JsonConvert.SerializeObject(res, Formatting.Indented);

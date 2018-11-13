@@ -51,7 +51,7 @@ namespace MyMessenger.Client.Console
 
 					if (GetMessages.CommandNames.Contains(cmd))
 					{
-						var gm = new GetMessages(stream, Int32.Parse(p[1]));
+						var gm = new GetMessages(stream, p[1], Int32.Parse(p[2]));
 						gm.Execute();
 						var res = gm.Result;
 
