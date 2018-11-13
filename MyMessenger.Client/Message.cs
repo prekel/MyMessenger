@@ -1,11 +1,8 @@
-using System;
-using System.Net;
-
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
 
-namespace MyMessenger.Client.Console
+namespace MyMessenger.Client
 {
 	[JsonObject]
 	public class Message : IMessage

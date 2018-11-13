@@ -1,10 +1,8 @@
-using System;
-
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
 
-namespace MyMessenger.Client.Console
+namespace MyMessenger.Client
 {
 	[JsonObject]
 	public class Account : IAccount

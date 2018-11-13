@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
+using MyMessenger.Client;
 
 namespace MyMessenger.Client.Console
 {
