@@ -4,7 +4,7 @@ namespace MyMessenger.Core.Parameters
 	{
 		public override CommandType CommandName { get; set; } = CommandType.Login;
 		
-		public string Login { get; set; }
+		public string Nickname { get; set; }
 		public string Password { get; set; }
 	}
 }

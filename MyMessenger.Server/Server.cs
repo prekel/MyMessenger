@@ -120,10 +120,17 @@ namespace MyMessenger.Server
 						{
 							var gm = new SendMessage(context, Tokens, q.Config);
 							gm.Execute();
-							//var res = gm.Token;
-							//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
+
+							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							var data = Encoding.UTF8.GetBytes(response);
+							s.Write(data, 0, data.Length);
+						}
+
+						if (q.Config.CommandName == CommandType.CreateDialog)
+						{
+							var gm = new CreateDialog(context, Tokens, q.Config);
+							gm.Execute();
+
 							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
 							var data = Encoding.UTF8.GetBytes(response);
 							s.Write(data, 0, data.Length);

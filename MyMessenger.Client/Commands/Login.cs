@@ -29,7 +29,7 @@ namespace MyMessenger.Client.Commands
 		{
 			Config1 = new LoginParameters
 			{
-				Login = nickname,
+				Nickname = nickname,
 				Password = pass
 			};
 		}

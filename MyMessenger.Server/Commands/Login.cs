@@ -28,7 +28,7 @@ namespace MyMessenger.Server.Commands
 			var resp = new LoginResponse();
 			Response = resp;
 			
-			var account1 = Context.Accounts.Where(p => p.Nickname == Config1.Login);
+			var account1 = Context.Accounts.Where(p => p.Nickname == Config1.Nickname);
 			if (!account1.Any())
 			{
 				Code = ResponseCode.WrongNickname;

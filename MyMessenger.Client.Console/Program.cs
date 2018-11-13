@@ -50,30 +50,29 @@ namespace MyMessenger.Client.Console
 					var stream = client.GetStream();
 
 					AbstractCommand command = null;
-					
+					var needoutraw = true;
+
 					if (GetMessages.CommandNames.Contains(cmd))
 					{
 						command = new GetMessages(stream, p[1], Int32.Parse(p[2]));
 						command.Execute();
-						
-						//WriteLine(re);
-						
-						//var res = ((GetMessages) command).Response;
+						needoutraw = false;
 
-						//WriteLine($"{res.Content.Count} сообщения:");
-						//foreach (var i in res.Content)
-						//{
-						//	WriteLine("--------");
-						//	WriteLine($"Автор: {i.Author.Nickname}");
-						//	WriteLine($"Текст: {i.Text}");
-						//}
+						var res = ((GetMessages)command).Response;
+						WriteLine($"{res.Content.Count} сообщения:");
+						foreach (var i in res.Content)
+						{
+							WriteLine("--------");
+							WriteLine($"Автор: {i.Author.Nickname}");
+							WriteLine($"Текст: {i.Text}");
+						}
 					}
 
 					if (Login.CommandNames.Contains(cmd))
 					{
 						command = new Login(stream, p[1], p[2]);
 						command.Execute();
-						//WriteLine(((Login)command).Response.Token);
+						//WriteLine(((Nickname)command).Response.Token);
 					}
 
 					if (Register.CommandNames.Contains(cmd))
@@ -88,98 +87,20 @@ namespace MyMessenger.Client.Console
 						command.Execute();
 					}
 
+					if (CreateDialog.CommandNames.Contains(cmd))
+					{
+						command = Int32.TryParse(p[2], out var sid) ? new CreateDialog(stream, p[1], sid) : new CreateDialog(stream, p[1], p[2]);
+
+						command.Execute();
+					}
+
 					stream.Close();
 					client.Close();
-					
+
 					if (command is null) continue;
-					WriteLine(command.RawResponse);
-
-					//if (p[0] == "register")
-					//{
-					//	var nickname = p[1];
-					//	var pass = p[2];
-					//	var q = new Query
-					//	{
-					//		Config = new RegisterParameters
-					//		{
-					//			Nickname = nickname,
-					//			Password = pass
-					//		}
-					//	};
-					//	var a = JsonConvert.SerializeObject(q);
-					//	var data = Encoding.UTF8.GetBytes(a);
-					//	stream.Write(data, 0, data.Length);
-					//}
-
-					//if (p[0] == "getmessages")
-					//{
-					//	var dialogid = p[1];
-					//	var q = new Query
-					//	{
-					//		Config = new GetMessagesParameters
-					//		{
-					//			DialogId = Int32.Parse(dialogid)
-					//		}
-					//	};
-					//	var a = JsonConvert.SerializeObject(q);
-					//	var data = Encoding.UTF8.GetBytes(a);
-					//	stream.Write(data, 0, data.Length);
-
-					//	data = new byte[256];
-					//	var response = new StringBuilder();
-					//	do
-					//	{
-					//		var bytes = stream.Read(data, 0, data.Length);
-					//		response.Append(Encoding.UTF8.GetString(data, 0, bytes));
-					//	} while (stream.DataAvailable);
-
-					//	var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString());
-					//	WriteLine($"{res.Count} сообщения:");
-					//	foreach (var i in res)
-					//	{
-					//		WriteLine("--------");
-					//		WriteLine($"Автор: {i.Author.Nickname}");
-					//		WriteLine($"Текст: {i.Text}");
-					//	}
-					//}
-
-					//if (p[0] == "login")
-					//{
-					//	var nickname = p[1];
-					//	var pass = p[2];
-					//	var q = new Query
-					//	{
-					//		Config = new LoginParameters
-					//		{
-					//			Login = nickname,
-					//			Password = pass
-					//		}
-					//	};
-					//	var a = JsonConvert.SerializeObject(q);
-					//	var data = Encoding.UTF8.GetBytes(a);
-					//	stream.Write(data, 0, data.Length);
-						
-					//	data = new byte[256];
-					//	var response = new StringBuilder();
-					//	do
-					//	{
-					//		var bytes = stream.Read(data, 0, data.Length);
-					//		response.Append(Encoding.UTF8.GetString(data, 0, bytes));
-					//	} while (stream.DataAvailable);
-
-					//	var token = JsonConvert.DeserializeObject<string>(response.ToString());
-					//}
-
+					if (needoutraw) WriteLine(command.RawResponse);
 				}
 
-
-				//WriteLine(response.ToString());
-
-				//var r = "Привет мир1";
-				//var data1 = Encoding.UTF8.GetBytes(r);
-				//stream.Write(data1, 0, data1.Length);
-
-				//var res = JsonConvert.DeserializeObject<List<Message>>(response.ToString());
 			}
 			catch (SocketException e)
 			{
