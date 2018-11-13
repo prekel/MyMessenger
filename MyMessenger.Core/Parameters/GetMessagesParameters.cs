@@ -12,6 +12,9 @@ namespace MyMessenger.Core.Parameters
 
 		[JsonProperty]
 		public int DialogId { get; set; }
+		
+		[JsonProperty]
+		public string Token { get; set; }
 
 		//public Fields Fields1 { get; set; }
 

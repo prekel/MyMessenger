@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 using MyMessenger.Core.Parameters;
+using MyMessenger.Core.Responses;
 using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server.Commands
@@ -17,6 +19,15 @@ namespace MyMessenger.Server.Commands
 
 		public override void Execute()
 		{
+			var resp = new RegisterResponse();
+			Response = resp;
+			
+			if (Context.Accounts.Any(p => p.Nickname == Config1.Nickname))
+			{
+				Code = ResponseCode.NicknameAlreadyExists;
+				return;
+			}
+
 			var salt = Crypto.GenerateSaltForPassword();
 			var a = new Account
 			{
@@ -26,6 +37,7 @@ namespace MyMessenger.Server.Commands
 			};
 			Context.Accounts.Add(a);
 			Context.SaveChanges();
+			Code = ResponseCode.Ok;
 		}
 
 	}

@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.EntityFrameworkCore;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
@@ -11,19 +8,21 @@ using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server.Commands
 {
-	public class GetMessages : AbstractCommand
+	public class SendMessage : AbstractCommand
 	{
-		private GetMessagesParameters Config1 { get => (GetMessagesParameters)Config; set => Config = value; }
+		private SendMessageParameters Config1 { get => (SendMessageParameters)Config; set => Config = value; }
 		
-		public IQueryable<Message> Result { get; private set; }
-		
-		public GetMessages(MessengerContext context, IDictionary<string, IAccount> tokens, AbstractParameters config) : base(context, tokens, config)
+		public SendMessage(MessengerContext context, AbstractParameters config) : base(context, config)
+		{
+		}
+
+		public SendMessage(MessengerContext context, IDictionary<string, IAccount> tokens, AbstractParameters config) : base(context, tokens, config)
 		{
 		}
 
 		public override void Execute()
 		{
-			var resp = new GetMessagesResponse();
+			var resp = new SendMessageResponse();
 			Response = resp;
 			
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
@@ -34,13 +33,15 @@ namespace MyMessenger.Server.Commands
 				return;
 			}
 			
-			
-			// Запрос сообщений из базы
-			var r = from i in Context.Messages where i.Dialog1.Id == Config1.DialogId select i;
-			Result = r;
-
+			var m = new Message
+			{
+				Author1 = new Account {Id = Tokens[Config1.Token].Id},
+				Dialog1 = new Dialog {Id = Config1.DialogId},
+				Text = Config1.Text
+			};
+			Context.Messages.Add(m);
+			Context.SaveChanges();
 			Code = ResponseCode.Ok;
-			resp.Content = r.ToList<IMessage>();
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace MyMessenger.Client.Commands
 	public abstract class AbstractCommand : ICommand
 	{
 		protected AbstractParameters Config { get; set; }
-		protected NetworkStream Stream { get; set; }
+		private NetworkStream Stream { get; set; }
 
 		//public static ICollection<string> CommandNames { get; }
 
@@ -20,10 +20,12 @@ namespace MyMessenger.Client.Commands
 			Stream = stream;
 		}
 
-		public AbstractCommand(NetworkStream stream, AbstractParameters config) : this(stream)
+		protected AbstractCommand(NetworkStream stream, AbstractParameters config) : this(stream)
 		{
 			Config = config;
 		}
+		
+		public string RawResponse { get; private set; }
 
 		protected void CreateSendQuery()
 		{
@@ -31,7 +33,7 @@ namespace MyMessenger.Client.Commands
 			{
 				Config = Config
 			};
-			var a = JsonConvert.SerializeObject(q);
+			var a = JsonConvert.SerializeObject(q, Formatting.Indented);
 
 			var data = Encoding.UTF8.GetBytes(a);
 			Stream.Write(data, 0, data.Length);
@@ -47,7 +49,8 @@ namespace MyMessenger.Client.Commands
 				response.Append(Encoding.UTF8.GetString(data, 0, bytes));
 			} while (Stream.DataAvailable);
 
-			return response.ToString();
+			RawResponse = response.ToString();
+			return RawResponse;
 		}
 
 		public abstract void Execute();

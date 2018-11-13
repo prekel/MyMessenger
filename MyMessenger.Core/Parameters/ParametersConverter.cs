@@ -23,6 +23,14 @@ namespace MyMessenger.Core.Parameters
 			{
 				serializer.Serialize(writer, value, typeof(LoginParameters));
 			}
+			if (value.CommandName == CommandType.SendMessage)
+			{
+				serializer.Serialize(writer, value, typeof(SendMessageParameters));
+			}
+			if (value.CommandName == CommandType.CreateDialog)
+			{
+				serializer.Serialize(writer, value, typeof(CreateDialogParameters));
+			}
 		}
 
 		public override AbstractParameters ReadJson(JsonReader reader, Type objectType, AbstractParameters existingValue, bool hasExistingValue,
@@ -39,9 +47,17 @@ namespace MyMessenger.Core.Parameters
 			{
 				ret = obj.ToObject<GetMessagesParameters>();
 			}
-			else //if (a.CommandName == "GetMessages")
+			else if (command == CommandType.Login)
 			{
 				ret = obj.ToObject<LoginParameters>();
+			}
+			else if (command == CommandType.SendMessage)
+			{
+				ret = obj.ToObject<SendMessageParameters>();
+			}
+			else // if (command == CommandType.GetMessages)
+			{
+				ret = obj.ToObject<CreateDialogParameters>();
 			}
 			return ret;
 		}

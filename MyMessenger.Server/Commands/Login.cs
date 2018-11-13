@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Microsoft.EntityFrameworkCore.Internal;
+using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
+using MyMessenger.Core.Responses;
 
 namespace MyMessenger.Server.Commands
 {
@@ -13,22 +15,40 @@ namespace MyMessenger.Server.Commands
 		
 		public string Token { get; private set; }
 
-		private IDictionary<string, int> Tokens { get; set; }
-		
-		public Login(MessengerContext context, AbstractParameters config, IDictionary<string, int> tokens) : base(context, config)
+		private Login(MessengerContext context, AbstractParameters config) : base(context, config)
 		{
-			Tokens = tokens;
 		}
 
+		public Login(MessengerContext context, IDictionary<string, IAccount> tokens, AbstractParameters config) : base(context, tokens, config)
+		{
+		}
+		
 		public override void Execute()
 		{
-			var account = Context.Accounts.First(p => p.Nickname == Config1.Login);
+			var resp = new LoginResponse();
+			Response = resp;
+			
+			var account1 = Context.Accounts.Where(p => p.Nickname == Config1.Nickname);
+			if (!account1.Any())
+			{
+				Code = ResponseCode.WrongNickname;
+				return;
+			}
+
+			var account = account1.First();
+			
 			if (Crypto.IsPasswordValid(Config1.Password, account.PasswordSalt, account.PasswordHash))
 			{
+				Code = ResponseCode.Ok;
 				var r = new Random();
-				var token = r.Next().ToString();
-				Tokens[token] = account.Id;
+				var token = r.Next(1000, 9999).ToString();
+				Tokens[token] = account;
 				Token = token;
+				resp.Token = token;
+			}
+			else
+			{
+				Code = ResponseCode.WrongPassword;
 			}
 		}
 	}
