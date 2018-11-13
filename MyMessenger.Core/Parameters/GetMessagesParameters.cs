@@ -8,7 +8,7 @@ namespace MyMessenger.Core.Parameters
 	[JsonObject]
 	public class GetMessagesParameters : AbstractParameters
 	{
-		public override string CommandName { get; set; } = "GetMessages";
+		public override CommandType CommandName { get; set; } = CommandType.GetMessages;
 
 		[JsonProperty]
 		public int DialogId { get; set; }

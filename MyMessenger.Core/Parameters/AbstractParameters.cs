@@ -6,6 +6,6 @@ namespace MyMessenger.Core.Parameters
 	public abstract class AbstractParameters
 	{
 		[JsonProperty]
-		public abstract string CommandName { get; set; }
+		public abstract CommandType CommandName { get; set; }
 	}
 }

@@ -1,4 +1,4 @@
-namespace MyMessenger.Server.Commands
+namespace MyMessenger.Core
 {
 	public interface ICommand
 	{
