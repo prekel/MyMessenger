@@ -3,6 +3,7 @@ using System.Linq;
 
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
+using MyMessenger.Core.Responses;
 using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server.Commands
@@ -21,9 +22,16 @@ namespace MyMessenger.Server.Commands
 
 		public override void Execute()
 		{
+			var resp = new SendMessageResponse();
+			Response = resp;
+			
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
 			var d = Context.Dialogs.First(p => p.Id == Config1.DialogId);
-			if (d.FirstMember.Id != Tokens[Config1.Token].Id && d.SecondMember.Id != Tokens[Config1.Token].Id) return;
+			if (d.FirstMember.Id != Tokens[Config1.Token].Id && d.SecondMember.Id != Tokens[Config1.Token].Id)
+			{
+				Code = ResponseCode.AccessDenied;
+				return;
+			}
 			
 			var m = new Message
 			{
@@ -33,6 +41,7 @@ namespace MyMessenger.Server.Commands
 			};
 			Context.Messages.Add(m);
 			Context.SaveChanges();
+			Code = ResponseCode.Ok;
 		}
 	}
 }
