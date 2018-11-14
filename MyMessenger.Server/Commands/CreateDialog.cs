@@ -34,10 +34,13 @@ namespace MyMessenger.Server.Commands
 				return;
 			}
 
+			var first = Context.Accounts.First(p => p.Id == Tokens[Config1.Token].Id);
+			var second = Context.Accounts.First(p => p.Id == secmemid);
+
 			var d = new Dialog
 			{
-				FirstMember1 = new Account { Id = Tokens[Config1.Token].Id },
-				SecondMember1 = new Account { Id = secmemid }
+				FirstMember1 = first,
+				SecondMember1 = second
 			};
 
 			Context.Dialogs.Add(d);

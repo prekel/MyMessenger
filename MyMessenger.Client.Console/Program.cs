@@ -17,6 +17,7 @@ namespace MyMessenger.Client.Console
 		public static void Main(string[] args)
 		{
 			OutputEncoding = Encoding.UTF8;
+			InputEncoding = Encoding.Unicode;
 
 			try
 			{
@@ -112,6 +113,19 @@ namespace MyMessenger.Client.Console
 								WriteLine($"Автор: {m.Author.Nickname}");
 								WriteLine($"Текст: {m.Text}");
 							}
+						}
+
+						if (cmd == "test")
+						{
+							WriteLine(p[1]);
+						}
+						if (cmd == "utf8")
+						{
+							InputEncoding = Encoding.UTF8;
+						}
+						if (cmd == "utf16")
+						{
+							InputEncoding = Encoding.Unicode;
 						}
 					}
 					catch (Exception e)
