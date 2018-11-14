@@ -24,6 +24,7 @@ namespace MyMessenger.Server
 		private Config Config { get; set; }
 
 		private IDictionary<string, IAccount> Tokens { get; set; } = new Dictionary<string, IAccount>();
+		private IDictionary<int, MessageNotifier> Notifiers { get; set; } = new Dictionary<int, MessageNotifier>();
 
 		public Server(Config config)
 		{
@@ -75,7 +76,6 @@ namespace MyMessenger.Server
 
 					try
 					{
-						// TODO: должны отправлять Response
 						if (q.Config.CommandName == CommandType.GetMessages)
 						{
 							var gm = new GetMessages(context, Tokens, q.Config);
@@ -118,7 +118,18 @@ namespace MyMessenger.Server
 
 						if (q.Config.CommandName == CommandType.SendMessage)
 						{
-							var gm = new SendMessage(context, Tokens, q.Config);
+							var id = ((SendMessageParameters)q.Config).DialogId;
+							MessageNotifier notifier;
+							if (Notifiers.ContainsKey(id))
+							{
+								notifier = Notifiers[id];
+							}
+							else
+							{
+								notifier = Notifiers[id] = new MessageNotifier();
+							}
+							
+							var gm = new SendMessage(context, Tokens, notifier, q.Config);
 							gm.Execute();
 
 							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
@@ -139,6 +150,7 @@ namespace MyMessenger.Server
 						if (q.Config.CommandName == CommandType.DialogSession)
 						{
 							var gm = new DialogSession(context, Tokens, q.Config);
+							
 							gm.Execute();
 
 							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);

@@ -17,10 +17,29 @@ namespace MyMessenger.Server.Commands
 		
 		//public IQueryable<Message> Result { get; private set; }
 		
-		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, AbstractParameters config) : base(context, tokens, config)
+		private MessageNotifier Notifier { get; set; }
+		
+		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, MessageNotifier notifier, AbstractParameters config) : base(context, tokens, config)
 		{
+			Notifier = notifier;
+			Notifier.NewMessage += NotifierOnNewMessage;
 		}
 
+		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, MessageNotifier notifier) : base(context, tokens)
+		{
+			Notifier = notifier;
+			Notifier.NewMessage += NotifierOnNewMessage;
+		}
+
+		private void NotifierOnNewMessage(object sender, MessageNotifierEventArgs e)
+		{
+			var resp = new DialogSessionResponse();
+			Response = resp;
+
+			resp.Message = e.Message;
+			
+		}
+		
 		public override void Execute()
 		{
 			var resp = new DialogSessionResponse();
