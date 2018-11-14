@@ -12,12 +12,16 @@ namespace MyMessenger.Server.Commands
 	{
 		private SendMessageParameters Config1 { get => (SendMessageParameters)Config; set => Config = value; }
 		
-		public SendMessage(MessengerContext context, AbstractParameters config) : base(context, config)
+		private MessageNotifier Notifier { get; set; }
+		
+		public SendMessage(MessengerContext context, MessageNotifier notifier, AbstractParameters config) : base(context, config)
 		{
+			Notifier = notifier;
 		}
 
-		public SendMessage(MessengerContext context, IDictionary<string, IAccount> tokens, AbstractParameters config) : base(context, tokens, config)
+		public SendMessage(MessengerContext context, IDictionary<string, IAccount> tokens, MessageNotifier notifier, AbstractParameters config) : base(context, tokens, config)
 		{
+			Notifier = notifier;
 		}
 
 		public override void Execute()
@@ -42,6 +46,8 @@ namespace MyMessenger.Server.Commands
 			Context.Messages.Add(m);
 			Context.SaveChanges();
 			Code = ResponseCode.Ok;
+			
+			Notifier.MessageSent(m);
 		}
 	}
 }

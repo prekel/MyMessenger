@@ -4,9 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using static System.Console;
-
 using Newtonsoft.Json;
-
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Client;
@@ -52,55 +50,83 @@ namespace MyMessenger.Client.Console
 					AbstractCommand command = null;
 					var needoutraw = true;
 
-					if (GetMessages.CommandNames.Contains(cmd))
-					{
-						command = new GetMessages(stream, p[1], Int32.Parse(p[2]));
-						command.Execute();
-						needoutraw = false;
 
-						var res = ((GetMessages)command).Response;
-						WriteLine($"{res.Content.Count} сообщения:");
-						foreach (var i in res.Content)
+					try
+					{
+						if (GetMessages.CommandNames.Contains(cmd))
 						{
-							WriteLine("--------");
-							WriteLine($"Автор: {i.Author.Nickname}");
-							WriteLine($"Текст: {i.Text}");
+							command = new GetMessages(stream, p[1], Int32.Parse(p[2]));
+							command.Execute();
+							needoutraw = false;
+
+							var res = ((GetMessages) command).Response;
+							WriteLine($"{res.Content.Count} сообщения:");
+							foreach (var i in res.Content)
+							{
+								WriteLine("--------");
+								WriteLine($"Автор: {i.Author.Nickname}");
+								WriteLine($"Текст: {i.Text}");
+							}
+						}
+
+						if (Login.CommandNames.Contains(cmd))
+						{
+							command = new Login(stream, p[1], p[2]);
+							command.Execute();
+							//WriteLine(((Nickname)command).Response.Token);
+						}
+
+						if (Register.CommandNames.Contains(cmd))
+						{
+							command = new Register(stream, p[1], p[2]);
+							command.Execute();
+						}
+
+						if (SendMessage.CommandNames.Contains(cmd))
+						{
+							command = new SendMessage(stream, p[1], Int32.Parse(p[2]), p[3]);
+							command.Execute();
+						}
+
+						if (CreateDialog.CommandNames.Contains(cmd))
+						{
+							command = Int32.TryParse(p[2], out var sid)
+								? new CreateDialog(stream, p[1], sid)
+								: new CreateDialog(stream, p[1], p[2]);
+
+							command.Execute();
+						}
+						
+						if (DialogSession.CommandNames.Contains(cmd))
+						{
+							command = new DialogSession(stream, p[1], Int32.Parse(p[2]));
+							command.Execute();
+							//needoutraw = false;
+
+							while (true)
+							{
+								var ds = (DialogSession) command;
+								ds.Receive();
+								var m = ds.Response.Message;
+								WriteLine("--------");
+								WriteLine($"Автор: {m.Author.Nickname}");
+								WriteLine($"Текст: {m.Text}");
+							}
 						}
 					}
-
-					if (Login.CommandNames.Contains(cmd))
+					catch (Exception e)
 					{
-						command = new Login(stream, p[1], p[2]);
-						command.Execute();
-						//WriteLine(((Nickname)command).Response.Token);
+						WriteLine(e);
 					}
-
-					if (Register.CommandNames.Contains(cmd))
+					finally
 					{
-						command = new Register(stream, p[1], p[2]);
-						command.Execute();
+						stream.Close();
+						client.Close();
 					}
-
-					if (SendMessage.CommandNames.Contains(cmd))
-					{
-						command = new SendMessage(stream, p[1], Int32.Parse(p[2]), p[3]);
-						command.Execute();
-					}
-
-					if (CreateDialog.CommandNames.Contains(cmd))
-					{
-						command = Int32.TryParse(p[2], out var sid) ? new CreateDialog(stream, p[1], sid) : new CreateDialog(stream, p[1], p[2]);
-
-						command.Execute();
-					}
-
-					stream.Close();
-					client.Close();
 
 					if (command is null) continue;
 					if (needoutraw) WriteLine(command.RawResponse);
 				}
-
 			}
 			catch (SocketException e)
 			{
