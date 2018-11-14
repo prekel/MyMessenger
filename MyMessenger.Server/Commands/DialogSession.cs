@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.EntityFrameworkCore;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
@@ -13,26 +12,30 @@ namespace MyMessenger.Server.Commands
 {
 	public class DialogSessionEventArgs : EventArgs
 	{
-		public DialogSessionResponse Response;
+		public DialogSessionResponse Response { get; private set; }
+
+		public DialogSessionEventArgs(DialogSessionResponse response)
+		{
+			Response = response;
+		}
 	}
-	
+
 	public class DialogSession : AbstractCommand
 	{
-		private DialogSessionParameters Config1 { get => (DialogSessionParameters)Config; set => Config = value; }
-		
-		//public IQueryable<Message> Result { get; private set; }
-		
-		private MessageNotifier Notifier { get; set; }
-		
-		public
-		
-		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, MessageNotifier notifier, AbstractParameters config) : base(context, tokens, config)
+		private DialogSessionParameters Config1
 		{
-			Notifier = notifier;
-			Notifier.NewMessage += NotifierOnNewMessage;
+			get => (DialogSessionParameters) Config;
+			set => Config = value;
 		}
 
-		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, MessageNotifier notifier) : base(context, tokens)
+		//public IQueryable<Message> Result { get; private set; }
+
+		private MessageNotifier Notifier { get; set; }
+
+		public EventHandler<DialogSessionEventArgs> NewMessage;
+
+		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, MessageNotifier notifier,
+			AbstractParameters config) : base(context, tokens, config)
 		{
 			Notifier = notifier;
 			Notifier.NewMessage += NotifierOnNewMessage;
@@ -42,24 +45,41 @@ namespace MyMessenger.Server.Commands
 		{
 			var resp = new DialogSessionResponse();
 			Response = resp;
+			
+			// Проверка на принадлежность того, кто сделал запрос, к диалогу
+			var d = Context.Dialogs.First(p => p.Id == Config1.DialogId);
+			if (d.FirstMember.Id != Tokens[Config1.Token].Id && d.SecondMember.Id != Tokens[Config1.Token].Id)
+			{
+				Code = ResponseCode.AccessDenied;
+				return;
+			}
 
 			resp.Message = e.Message;
+			resp.Code = ResponseCode.Ok;
 			
+			NewMessage?.Invoke(this, new DialogSessionEventArgs(resp));
 		}
-		
+
+		[Obsolete]
 		public override void Execute()
 		{
 			var resp = new DialogSessionResponse();
 			Response = resp;
 			
-//			// Проверка на принадлежность того, кто сделал запрос, к диалогу
-//			var d = Context.Dialogs.First(p => p.Id == Config1.DialogId);
-//			if (d.FirstMember.Id != Tokens[Config1.Token].Id && d.SecondMember.Id != Tokens[Config1.Token].Id)
-//			{
-//				Code = ResponseCode.AccessDenied;
-//				return;
-//			}
-//			
+			// Проверка на принадлежность того, кто сделал запрос, к диалогу
+			var d = Context.Dialogs.First(p => p.Id == Config1.DialogId);
+			if (d.FirstMember.Id != Tokens[Config1.Token].Id && d.SecondMember.Id != Tokens[Config1.Token].Id)
+			{
+				Code = ResponseCode.AccessDenied;
+				return;
+			}
+			
+			var gm = new GetMessages(Context, Tokens,
+				new GetMessagesParameters { DialogId = Config1.DialogId, Token = Config1.Token });
+			gm.Execute();
+			var m = ((GetMessagesResponse)gm.Response).Content.Last();
+			resp.Message = m;
+			Code = ResponseCode.Ok;
 //			
 //			// Запрос сообщений из базы
 //			var r = from i in Context.Messages where i.Dialog1.Id == Config1.DialogId select i;

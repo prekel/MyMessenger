@@ -96,6 +96,23 @@ namespace MyMessenger.Client.Console
 
 							command.Execute();
 						}
+						
+						if (DialogSession.CommandNames.Contains(cmd))
+						{
+							command = new DialogSession(stream, p[1], Int32.Parse(p[2]));
+							command.Execute();
+							//needoutraw = false;
+
+							while (true)
+							{
+								var ds = (DialogSession) command;
+								ds.Receive();
+								var m = ds.Response.Message;
+								WriteLine("--------");
+								WriteLine($"Автор: {m.Author.Nickname}");
+								WriteLine($"Текст: {m.Text}");
+							}
+						}
 					}
 					catch (Exception e)
 					{

@@ -118,7 +118,7 @@ namespace MyMessenger.Server
 
 						if (q.Config.CommandName == CommandType.SendMessage)
 						{
-							var id = ((SendMessageParameters)q.Config).DialogId;
+							var id = ((SendMessageParameters) q.Config).DialogId;
 							MessageNotifier notifier;
 							if (Notifiers.ContainsKey(id))
 							{
@@ -128,7 +128,7 @@ namespace MyMessenger.Server
 							{
 								notifier = Notifiers[id] = new MessageNotifier();
 							}
-							
+
 							var gm = new SendMessage(context, Tokens, notifier, q.Config);
 							gm.Execute();
 
@@ -146,16 +146,32 @@ namespace MyMessenger.Server
 							var data = Encoding.UTF8.GetBytes(response);
 							s.Write(data, 0, data.Length);
 						}
-						
+
 						if (q.Config.CommandName == CommandType.DialogSession)
 						{
-							var gm = new DialogSession(context, Tokens, q.Config);
-							
-							gm.Execute();
+							var id = ((DialogSessionParameters) q.Config).DialogId;
+							MessageNotifier notifier;
+							if (Notifiers.ContainsKey(id))
+							{
+								notifier = Notifiers[id];
+							}
+							else
+							{
+								notifier = Notifiers[id] = new MessageNotifier();
+							}
 
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
+							var gm = new DialogSession(context, Tokens, notifier, q.Config);
+
+							gm.NewMessage += (sender, args) =>
+							{
+								var response = JsonConvert.SerializeObject(args.Response, Formatting.Indented);
+								var data = Encoding.UTF8.GetBytes(response);
+								s.Write(data, 0, data.Length);
+							};
+							while (true)
+							{
+								Thread.Sleep(1);
+							}
 						}
 					}
 					catch (Exception e)

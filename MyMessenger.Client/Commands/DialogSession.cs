@@ -38,6 +38,11 @@ namespace MyMessenger.Client.Commands
 		{
 			CreateSendQuery();
 			
+			//Response = JsonConvert.DeserializeObject<DialogSessionResponse>(ReceiveResponse(), new InterfaceConverter<IMessage, Message>());
+		}
+
+		public void Receive()
+		{
 			Response = JsonConvert.DeserializeObject<DialogSessionResponse>(ReceiveResponse(), new InterfaceConverter<IMessage, Message>());
 		}
 	}
