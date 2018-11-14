@@ -29,7 +29,7 @@ namespace MyMessenger.Server
 
 		public string Compile()
 		{
-			return $"server={Config.Server};port={Config.Port};database={Config.Name};user={Config.User};password={Password};SslMode={Config.SslMode}";
+			return $"server={Config.Server};port={Config.Port};database={Config.Name};user={Config.User};password={Password};SslMode={Config.SslMode};CharSet={Config.CharSet};";
 		}
 	}
 }
