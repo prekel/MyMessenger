@@ -11,6 +11,11 @@ using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server.Commands
 {
+	public class DialogSessionEventArgs : EventArgs
+	{
+		public DialogSessionResponse Response;
+	}
+	
 	public class DialogSession : AbstractCommand
 	{
 		private DialogSessionParameters Config1 { get => (DialogSessionParameters)Config; set => Config = value; }
@@ -18,6 +23,8 @@ namespace MyMessenger.Server.Commands
 		//public IQueryable<Message> Result { get; private set; }
 		
 		private MessageNotifier Notifier { get; set; }
+		
+		public
 		
 		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, MessageNotifier notifier, AbstractParameters config) : base(context, tokens, config)
 		{
