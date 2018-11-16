@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -40,7 +41,7 @@ namespace MyMessenger.Client.Console
 				{
 					Write("> ");
 					var s = ReadLine();
-					var p = s.Split();
+					var p = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 					var cmd = p[0];
 
 					var client = new TcpClient();
@@ -51,7 +52,6 @@ namespace MyMessenger.Client.Console
 					AbstractCommand command = null;
 					var needoutraw = true;
 
-
 					try
 					{
 						if (GetMessages.CommandNames.Contains(cmd))
@@ -60,7 +60,7 @@ namespace MyMessenger.Client.Console
 							command.Execute();
 							needoutraw = false;
 
-							var res = ((GetMessages) command).Response;
+							var res = ((GetMessages)command).Response;
 							WriteLine($"{res.Content.Count} сообщения:");
 							foreach (var i in res.Content)
 							{
@@ -85,7 +85,18 @@ namespace MyMessenger.Client.Console
 
 						if (SendMessage.CommandNames.Contains(cmd))
 						{
-							command = new SendMessage(stream, p[1], Int32.Parse(p[2]), p[3]);
+							string message;
+							if (s.Count(_ => _ == '"') == 2)
+							{
+								var first = s.IndexOf('"');
+								var last = s.LastIndexOf('"');
+								message = s.Substring(first + 1, last - first - 1);
+							}
+							else
+							{
+								message = p[3];
+							}
+							command = new SendMessage(stream, p[1], Int32.Parse(p[2]), message);
 							command.Execute();
 						}
 
@@ -97,7 +108,7 @@ namespace MyMessenger.Client.Console
 
 							command.Execute();
 						}
-						
+
 						if (DialogSession.CommandNames.Contains(cmd))
 						{
 							command = new DialogSession(stream, p[1], Int32.Parse(p[2]));
@@ -106,7 +117,7 @@ namespace MyMessenger.Client.Console
 
 							while (true)
 							{
-								var ds = (DialogSession) command;
+								var ds = (DialogSession)command;
 								ds.Receive();
 								var m = ds.Response.Message;
 								WriteLine("--------");
