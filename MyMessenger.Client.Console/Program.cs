@@ -17,8 +17,27 @@ namespace MyMessenger.Client.Console
 	{
 		public static void Main(string[] args)
 		{
+			var arglist = new List<string>(args);
+			
+			if (!IPAddress.TryParse(arglist.FirstOrDefault() ?? "", out var ip))
+			{
+				ip = IPAddress.Loopback;
+			}
+			
 			OutputEncoding = Encoding.UTF8;
-			InputEncoding = Encoding.Unicode;
+			//InputEncoding = Encoding.Unicode;
+			if (args.Contains("utf16"))
+			{
+				InputEncoding = Encoding.Unicode;
+			}
+			if (args.Contains("utf8"))
+			{
+				InputEncoding = Encoding.UTF8;
+			}
+			if (args.Contains("windows-1251") || args.Contains("1251"))
+			{
+				InputEncoding = Encoding.GetEncoding(1251);
+			}
 
 			try
 			{
@@ -45,8 +64,10 @@ namespace MyMessenger.Client.Console
 					var cmd = p[0];
 
 					var client = new TcpClient();
-					var server = args.Length == 1 ? IPAddress.Parse(args[0]) : IPAddress.Loopback;
-					client.Connect(server, 20522);
+
+					
+					
+					client.Connect(ip, 20522);
 					var stream = client.GetStream();
 
 					AbstractCommand command = null;
