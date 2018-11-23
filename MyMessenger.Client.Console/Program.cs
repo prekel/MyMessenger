@@ -39,6 +39,8 @@ namespace MyMessenger.Client.Console
 				InputEncoding = Encoding.GetEncoding(1251);
 			}
 
+			System.Console.CancelKeyPress += ConsoleOnCancelKeyPress;
+			
 			try
 			{
 				//var q = new Query
@@ -182,6 +184,11 @@ namespace MyMessenger.Client.Console
 			{
 				WriteLine("Exception: {0}", e.Message);
 			}
+		}
+
+		private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs e)
+		{
+			//throw new NotImplementedException();
 		}
 	}
 }

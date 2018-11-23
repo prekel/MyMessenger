@@ -19,9 +19,9 @@ namespace MyMessenger.Server.Commands
 			Notifier = notifier;
 		}
 
-		public SendMessage(MessengerContext context, IDictionary<string, IAccount> tokens, MessageNotifier notifier, AbstractParameters config) : base(context, tokens, config)
+		public SendMessage(MessengerContext context, IDictionary<string, IAccount> tokens, Notifiers notifiers, AbstractParameters config) : base(context, tokens, config)
 		{
-			Notifier = notifier;
+			Notifier = notifiers[Config1.Token];
 		}
 
 		public override void Execute()

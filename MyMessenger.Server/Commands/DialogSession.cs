@@ -34,10 +34,10 @@ namespace MyMessenger.Server.Commands
 
 		public EventHandler<DialogSessionEventArgs> NewMessage;
 
-		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, MessageNotifier notifier,
+		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, Notifiers notifiers,
 			AbstractParameters config) : base(context, tokens, config)
 		{
-			Notifier = notifier;
+			Notifier = notifiers[Config1.Token];
 			Notifier.NewMessage += NotifierOnNewMessage;
 		}
 

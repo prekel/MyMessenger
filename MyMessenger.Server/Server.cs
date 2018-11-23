@@ -23,8 +23,10 @@ namespace MyMessenger.Server
 		private MessengerContext Context { get; set; }
 		private Config Config { get; set; }
 
-		private IDictionary<string, IAccount> Tokens { get; set; } = new Dictionary<string, IAccount>();
-		private IDictionary<int, MessageNotifier> Notifiers { get; set; } = new Dictionary<int, MessageNotifier>();
+		private IDictionary<string, IAccount> Tokens { get; } = new Dictionary<string, IAccount>();
+		//private IDictionary<int, MessageNotifier> Notifiers { get; set; } = new Dictionary<int, MessageNotifier>();
+		
+		private Notifiers Notifiers { get; } = new Notifiers();
 
 		public Server(Config config)
 		{
@@ -118,18 +120,18 @@ namespace MyMessenger.Server
 
 						if (q.Config.CommandName == CommandType.SendMessage)
 						{
-							var id = ((SendMessageParameters) q.Config).DialogId;
-							MessageNotifier notifier;
-							if (Notifiers.ContainsKey(id))
-							{
-								notifier = Notifiers[id];
-							}
-							else
-							{
-								notifier = Notifiers[id] = new MessageNotifier();
-							}
+							//var id = ((SendMessageParameters) q.Config).DialogId;
+							//MessageNotifier notifier;
+							//if (Notifiers.ContainsKey(id))
+							//{
+							//	notifier = Notifiers[id];
+							//}
+							//else
+							//{
+							//	notifier = Notifiers[id] = new MessageNotifier();
+							//}
 
-							var gm = new SendMessage(context, Tokens, notifier, q.Config);
+							var gm = new SendMessage(context, Tokens, Notifiers, q.Config);
 							gm.Execute();
 
 							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
@@ -149,18 +151,18 @@ namespace MyMessenger.Server
 
 						if (q.Config.CommandName == CommandType.DialogSession)
 						{
-							var id = ((DialogSessionParameters) q.Config).DialogId;
-							MessageNotifier notifier;
-							if (Notifiers.ContainsKey(id))
-							{
-								notifier = Notifiers[id];
-							}
-							else
-							{
-								notifier = Notifiers[id] = new MessageNotifier();
-							}
+							//var id = ((DialogSessionParameters) q.Config).DialogId;
+							//MessageNotifier notifier;
+							//if (Notifiers.ContainsKey(id))
+							//{
+							//	notifier = Notifiers[id];
+							//}
+							//else
+							//{
+							//	notifier = Notifiers[id] = new MessageNotifier();
+							//}
 
-							var gm = new DialogSession(context, Tokens, notifier, q.Config);
+							var gm = new DialogSession(context, Tokens, Notifiers, q.Config);
 
 							gm.NewMessage += (sender, args) =>
 							{
