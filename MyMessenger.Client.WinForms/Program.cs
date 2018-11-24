@@ -15,7 +15,19 @@ namespace MyMessenger.Client.WinForms
 		{
 			Form form = new MainForm();
 			form.ClientSize = new Size(400, 330);
-			form.Text = "Graphs app";
+			form.Text = "test app";
+
+			var tb = new TextBox {Bounds = new Rectangle(100, 200, 200, 200)};
+			tb.KeyDown += (sender, eventArgs) =>
+			{
+				if (eventArgs.KeyCode != Keys.Enter) return;
+				form.Text = tb.Text;
+				tb.Clear();
+			};
+			form.Controls.Add(tb);
+
+			Application.Run(form);
+
 			GraphItem[] data = new GraphItem[]
 			{
 				new GraphItem(0, 0),
@@ -30,8 +42,7 @@ namespace MyMessenger.Client.WinForms
 			Control ctrl = new GraphControl(data, 0, 0, 320, 320);
 			ctrl.Show();
 			ctrl.Location = new Point(10, 10);
-			form.Controls.Add(ctrl);
-			Application.Run(form);
+			//form.Controls.Add(ctrl);
 		}
 	}
 
