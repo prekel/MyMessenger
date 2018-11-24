@@ -4,18 +4,18 @@ namespace MyMessenger.Server
 {
 	public class Notifiers
 	{
-		private IDictionary<string, MessageNotifier> _notifiers = new Dictionary<string, MessageNotifier>();
+		private IDictionary<int, MessageNotifier> _notifiers = new Dictionary<int, MessageNotifier>();
 		
-		public MessageNotifier this[string token]
+		public MessageNotifier this[int dialog]
 		{
 			get
 			{
-				if (_notifiers.ContainsKey(token))
+				if (_notifiers.ContainsKey(dialog))
 				{
-					return _notifiers[token];
+					return _notifiers[dialog];
 				}
-				_notifiers[token] = new MessageNotifier();
-				return _notifiers[token];
+				_notifiers[dialog] = new MessageNotifier();
+				return _notifiers[dialog];
 			}
 			//set
 			//{

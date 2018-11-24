@@ -21,7 +21,7 @@ namespace MyMessenger.Server.Commands
 
 		public SendMessage(MessengerContext context, IDictionary<string, IAccount> tokens, Notifiers notifiers, AbstractParameters config) : base(context, tokens, config)
 		{
-			Notifier = notifiers[Config1.Token];
+			Notifier = notifiers[Config1.DialogId];
 		}
 
 		public override void Execute()

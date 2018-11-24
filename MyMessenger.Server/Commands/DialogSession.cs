@@ -37,7 +37,7 @@ namespace MyMessenger.Server.Commands
 		public DialogSession(MessengerContext context, IDictionary<string, IAccount> tokens, Notifiers notifiers,
 			AbstractParameters config) : base(context, tokens, config)
 		{
-			Notifier = notifiers[Config1.Token];
+			Notifier = notifiers[Config1.DialogId];
 			Notifier.NewMessage += NotifierOnNewMessage;
 		}
 
