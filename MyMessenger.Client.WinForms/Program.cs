@@ -1,6 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
+using MyMessenger.Client.Commands;
 
 namespace MyMessenger.Client.WinForms
 {
@@ -13,35 +19,107 @@ namespace MyMessenger.Client.WinForms
 
 		public static void Main(string[] args)
 		{
+			var arglist = new List<string>(args);
+
+			if (!IPAddress.TryParse(arglist.FirstOrDefault() ?? "", out var ip))
+			{
+				ip = IPAddress.Loopback;
+			}
+
+			var token = "";
+
 			Form form = new MainForm();
-			form.ClientSize = new Size(400, 330);
+			form.ClientSize = new Size(600, 330);
 			form.Text = "test app";
 
-			var tb = new TextBox {Bounds = new Rectangle(100, 200, 200, 200)};
-			tb.KeyDown += (sender, eventArgs) =>
+			var logintb = new TextBox {Bounds = new Rectangle(50, 50, 200, 100)};
+			form.Controls.Add(logintb);
+			var passtb = new TextBox {Bounds = new Rectangle(50, 100, 200, 100)};
+			form.Controls.Add(passtb);
+
+			var loginbtn = new Button
 			{
-				if (eventArgs.KeyCode != Keys.Enter) return;
-				form.Text = tb.Text;
-				tb.Clear();
+				Bounds = new Rectangle(50, 150, 200, 50),
+				Text = "Login"
 			};
-			form.Controls.Add(tb);
+			loginbtn.Click += (sender, eventArgs) =>
+			{
+				var client = new TcpClient();
+
+				client.Connect(ip, 20522);
+				var stream = client.GetStream();
+				var command = new Login(stream, logintb.Text, passtb.Text);
+				command.Execute();
+				Console.WriteLine(command.RawResponse);
+				token = command.Response.Token;
+			};
+			form.Controls.Add(loginbtn);
+
+			var dsid = new TextBox
+			{
+				Bounds = new Rectangle(300, 50, 200, 100)
+			};
+			form.Controls.Add(dsid);
+
+			var ds = new TextBox
+			{
+				Bounds = new Rectangle(300, 100, 200, 100),
+				Multiline = true,
+				ScrollBars = ScrollBars.Vertical
+			};
+			form.Controls.Add(ds);
+
+			var dscbtn = new Button
+			{
+				Bounds = new Rectangle(300, 300, 200, 100),
+				Text = "Connect"
+			};
+			dscbtn.Click += (sender, eventArgs) =>
+			{
+				new Thread(o =>
+				{
+					var a = (object[]) o;
+					var token1 = (string) a[0];
+					var id = (int) a[1];
+					
+					var client = new TcpClient();
+					client.Connect(ip, 20522);
+					var stream = client.GetStream();
+
+					var command = new DialogSession(stream, token1, id);
+					command.Execute();
+					while (true)
+					{
+						var ds1 = command;
+						ds1.Receive();
+						var m = ds1.Response.Message;
+						ds.AppendText("--------\n");
+						ds.AppendText($"Автор: {m.Author.Nickname}\n");
+						ds.AppendText($"Текст: {m.Text}\n");
+						ds.Update();
+						Console.WriteLine(ds1.RawResponse);
+						//break;
+					}
+				}).Start(new object[] {token, Int32.Parse(dsid.Text)});
+			};
+			form.Controls.Add(dscbtn);
 
 			Application.Run(form);
 
-			GraphItem[] data = new GraphItem[]
-			{
-				new GraphItem(0, 0),
-				new GraphItem(10, 10),
-				new GraphItem(20, 35),
-				new GraphItem(30, 40),
-				new GraphItem(60, 80),
-				new GraphItem(70, 30),
-				new GraphItem(75, 50),
-				new GraphItem(100, 90)
-			};
-			Control ctrl = new GraphControl(data, 0, 0, 320, 320);
-			ctrl.Show();
-			ctrl.Location = new Point(10, 10);
+			//GraphItem[] data = new GraphItem[]
+			//{
+			//	new GraphItem(0, 0),
+			//	new GraphItem(10, 10),
+			//	new GraphItem(20, 35),
+			//	new GraphItem(30, 40),
+			//	new GraphItem(60, 80),
+			//	new GraphItem(70, 30),
+			//	new GraphItem(75, 50),
+			//	new GraphItem(100, 90)
+			//};
+			//Control ctrl = new GraphControl(data, 0, 0, 320, 320);
+			//ctrl.Show();
+			//ctrl.Location = new Point(10, 10);
 			//form.Controls.Add(ctrl);
 		}
 	}

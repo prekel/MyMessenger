@@ -9,4 +9,9 @@
         <Reference Include="System.Windows.Forms"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\MyMessenger.Client\MyMessenger.Client.csproj"/>
+        <ProjectReference Include="..\MyMessenger.Core\MyMessenger.Core.csproj"/>
+    </ItemGroup>
+
 </Project>
