@@ -35,6 +35,7 @@ namespace MyMessenger.Server
 				entity.Property(e => e.Nickname).IsRequired();
 				entity.Property(e => e.PasswordHash).IsRequired();
 				entity.Property(e => e.PasswordSalt).IsRequired();
+				entity.Property(e => e.RegistrationDateTime).IsRequired();
 
 				entity.HasMany(e => e.Dialogs);
 				entity.HasMany(e => e.Messages);
@@ -56,6 +57,7 @@ namespace MyMessenger.Server
 			{
 				entity.HasKey(e => e.Id);
 				entity.Property(e => e.Text).IsRequired();
+				entity.Property(e => e.SendDateTime).IsRequired();
 
 				entity.HasOne(e => e.Author1)
 					.WithMany(p => p.Messages);

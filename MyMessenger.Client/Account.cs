@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using System;
 
 namespace MyMessenger.Client
 {
@@ -12,5 +13,8 @@ namespace MyMessenger.Client
 
 		[JsonProperty]
 		public string Nickname { get; set; }
+
+		[JsonProperty]
+		public DateTime RegistrationDateTime { get; set; }
 	}
 }

@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using System;
 
 namespace MyMessenger.Client
 {
@@ -20,5 +21,8 @@ namespace MyMessenger.Client
 		[JsonProperty]
 		[JsonConverter(typeof(InterfaceConverter<Account>))]
 		public IAccount Author { get; set; }
+
+		[JsonProperty]
+		public DateTime SendDateTime { get; set; }
 	}
 }

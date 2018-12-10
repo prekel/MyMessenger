@@ -36,7 +36,8 @@ namespace MyMessenger.Server
 				{
 					Nickname = "User1",
 					PasswordHash = Crypto.ComputePasswordHash("123456", s),
-					PasswordSalt = s
+					PasswordSalt = s,
+					RegistrationDateTime = DateTime.Now
 				};
 				context.Accounts.Add(a1);
 				s = Crypto.GenerateSaltForPassword();
@@ -44,7 +45,8 @@ namespace MyMessenger.Server
 				{
 					Nickname = "User2",
 					PasswordHash = Crypto.ComputePasswordHash("123456", s),
-					PasswordSalt = s
+					PasswordSalt = s,
+					RegistrationDateTime = DateTime.Now
 				};
 				context.Accounts.Add(a2);
 
@@ -53,10 +55,34 @@ namespace MyMessenger.Server
 				context.Dialogs.Add(d1);
 				context.Dialogs.Add(d2);
 
-				context.Messages.Add(new Message { Text = "123text", Author1 = a1, Dialog1 = d1 });
-				context.Messages.Add(new Message { Text = "234text", Author1 = a2, Dialog1 = d1 });
-				context.Messages.Add(new Message { Text = "111text", Author1 = a1, Dialog1 = d2 });
-				context.Messages.Add(new Message { Text = "222text", Author1 = a1, Dialog1 = d2 });
+				context.Messages.Add(new Message
+				{
+					Text = "123text",
+					Author1 = a1,
+					Dialog1 = d1,
+					SendDateTime = DateTime.Now
+				});
+				context.Messages.Add(new Message
+				{
+					Text = "234text",
+					Author1 = a2,
+					Dialog1 = d1,
+					SendDateTime = DateTime.Now
+				});
+				context.Messages.Add(new Message
+				{
+					Text = "111text",
+					Author1 = a1,
+					Dialog1 = d2,
+					SendDateTime = DateTime.Now
+				});
+				context.Messages.Add(new Message
+				{
+					Text = "222text",
+					Author1 = a1,
+					Dialog1 = d2,
+					SendDateTime = DateTime.Now
+				});
 
 				context.SaveChanges();
 			}
@@ -74,7 +100,7 @@ namespace MyMessenger.Server
 				Console.WriteLine();
 				foreach (var i in me)
 				{
-					Console.WriteLine($"          {i.Text}");
+					Console.WriteLine($"          {i.Text} {i.SendDateTime}");
 				}
 			}
 		}

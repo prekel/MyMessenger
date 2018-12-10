@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using System;
 
 namespace MyMessenger.Server.Entities
 {
@@ -24,5 +25,7 @@ namespace MyMessenger.Server.Entities
 		public virtual IList<Dialog> Dialogs { get; set; }
 		//[JsonProperty]
 		public virtual IList<Message> Messages { get; set; }
+
+		public DateTime RegistrationDateTime { get; set; }
 	}
 }

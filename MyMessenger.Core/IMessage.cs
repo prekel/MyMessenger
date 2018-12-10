@@ -8,6 +8,8 @@ namespace MyMessenger.Core
 		
 		string Text { get; }
 
+		DateTime SendDateTime { get; }
+
 		IDialog Dialog { get; }
 
 		IAccount Author { get; }

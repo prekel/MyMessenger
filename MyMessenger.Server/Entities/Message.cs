@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using System;
 
 namespace MyMessenger.Server.Entities
 {
@@ -25,5 +26,7 @@ namespace MyMessenger.Server.Entities
 		
 		//[JsonProperty]
 		public virtual Account Author1 { get; set; }
+
+		public DateTime SendDateTime { get; set; }
 	}
 }
