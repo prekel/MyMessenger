@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using System.Collections.Generic;
 
 namespace MyMessenger.Client
 {
@@ -17,5 +18,7 @@ namespace MyMessenger.Client
 		[JsonProperty]
 		[JsonConverter(typeof(InterfaceConverter<Account>))]
 		public IAccount SecondMember { get; set; }
+
+		public IList<IAccount> Members { get; set; }
 	}
 }

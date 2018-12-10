@@ -10,7 +10,7 @@ namespace MyMessenger.Server.Entities
 	[JsonObject(MemberSerialization.OptIn)]
 	public class Dialog : IDialog
 	{
-		[JsonProperty] 
+		[JsonProperty]
 		public int Id { get; set; }
 
 		//[JsonProperty]
@@ -27,5 +27,10 @@ namespace MyMessenger.Server.Entities
 
 		[JsonProperty]
 		public IAccount SecondMember => SecondMember1;
+		
+		public virtual IList<IAccount> Members {get; set;}
+
+		[JsonProperty]
+		public IList<Account> Members1 => (IList<Account>)Members;
 	}
 }
