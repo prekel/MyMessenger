@@ -17,187 +17,202 @@ using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server
 {
-	public class Server
-	{
-		private readonly TcpListener _listener = new TcpListener(IPAddress.Any, 20522);
-		private MessengerContext Context { get; set; }
-		private Config Config { get; set; }
+    public class Server
+    {
+        private readonly TcpListener _listener = new TcpListener(IPAddress.Any, 20522);
+        private MessengerContext Context { get; set; }
+        private Config Config { get; set; }
 
-		private IDictionary<string, IAccount> Tokens { get; } = new Dictionary<string, IAccount>();
-		//private IDictionary<int, MessageNotifier> Notifiers { get; set; } = new Dictionary<int, MessageNotifier>();
-		
-		private Notifiers Notifiers { get; } = new Notifiers();
+        private IDictionary<string, IAccount> Tokens { get; } = new Dictionary<string, IAccount>();
+        //private IDictionary<int, MessageNotifier> Notifiers { get; set; } = new Dictionary<int, MessageNotifier>();
 
-		public Server(Config config)
-		{
-			Config = config;
+        private Notifiers Notifiers { get; } = new Notifiers();
 
-			_listener.Start();
-			WriteLine("Started.");
+        public Server(Config config)
+        {
+            Config = config;
 
-			while (true)
-			{
-				var client = _listener.AcceptTcpClient();
-				WriteLine("Connected!");
+            _listener.Start();
+            WriteLine("Started.");
 
-				new Thread(ServeData).Start(client);
-			}
-		}
+            while (true)
+            {
+                var client = _listener.AcceptTcpClient();
+                WriteLine("Connected!");
 
-		private void ServeData(object clientSocket)
-		{
-			try
-			{
-				using (var context = new MessengerContext(Config))
-				{
-					var client = (TcpClient) clientSocket;
+                new Thread(ServeData).Start(client);
+            }
+        }
 
-					var data1 = new byte[256];
-					var response1 = new StringBuilder();
-					var stream = client.GetStream();
+        private void ServeData(object clientSocket)
+        {
+            try
+            {
+                using (var context = new MessengerContext(Config))
+                {
+                    var client = (TcpClient)clientSocket;
 
-					do
-					{
-						var bytes = stream.Read(data1, 0, data1.Length);
-						response1.Append(Encoding.UTF8.GetString(data1, 0, bytes));
-					} while (stream.DataAvailable);
+                    var data1 = new byte[256];
+                    var response1 = new StringBuilder();
+                    var stream = client.GetStream();
 
-
-					Query q;
-					try
-					{
-						q = JsonConvert.DeserializeObject<Query>(response1.ToString());
-					}
-					catch
-					{
-						return;
-					}
+                    do
+                    {
+                        var bytes = stream.Read(data1, 0, data1.Length);
+                        response1.Append(Encoding.UTF8.GetString(data1, 0, bytes));
+                    } while (stream.DataAvailable);
 
 
-					var s = client.GetStream();
+                    Query q;
+                    try
+                    {
+                        q = JsonConvert.DeserializeObject<Query>(response1.ToString());
+                    }
+                    catch
+                    {
+                        return;
+                    }
 
-					try
-					{
-						if (q.Config.CommandName == CommandType.GetMessages)
-						{
-							var gm = new GetMessages(context, Tokens, q.Config);
-							gm.Execute();
+
+                    var s = client.GetStream();
+
+                    try
+                    {
+                        if (q.Config.CommandName == CommandType.GetMessages)
+                        {
+                            var gm = new GetMessages(context, Tokens, q.Config);
+                            gm.Execute();
 
 
-							//var res = gm.Result;
-							//var list = res.ToList();
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
-						}
+                            //var res = gm.Result;
+                            //var list = res.ToList();
+                            var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+                            var data = Encoding.UTF8.GetBytes(response);
+                            s.Write(data, 0, data.Length);
+                        }
 
-						if (q.Config.CommandName == CommandType.Register)
-						{
-							var gm = new Register(context, q.Config);
-							gm.Execute();
-							//var res = gm.Result;
-							//var list = res.ToList();
-							//var response = JsonConvert.SerializeObject(list, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
-						}
+                        if (q.Config.CommandName == CommandType.Register)
+                        {
+                            var gm = new Register(context, q.Config);
+                            gm.Execute();
+                            //var res = gm.Result;
+                            //var list = res.ToList();
+                            //var response = JsonConvert.SerializeObject(list, Formatting.Indented);
+                            //var data = Encoding.UTF8.GetBytes(response);
+                            //s.Write(data, 0, data.Length);
+                            var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+                            var data = Encoding.UTF8.GetBytes(response);
+                            s.Write(data, 0, data.Length);
+                        }
 
-						if (q.Config.CommandName == CommandType.Login)
-						{
-							var gm = new Login(context, Tokens, q.Config);
-							gm.Execute();
-							//var res = gm.Token;
-							//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
-						}
+                        if (q.Config.CommandName == CommandType.Login)
+                        {
+                            var gm = new Login(context, Tokens, q.Config);
+                            gm.Execute();
+                            //var res = gm.Token;
+                            //var response = JsonConvert.SerializeObject(res, Formatting.Indented);
+                            //var data = Encoding.UTF8.GetBytes(response);
+                            //s.Write(data, 0, data.Length);
+                            var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+                            var data = Encoding.UTF8.GetBytes(response);
+                            s.Write(data, 0, data.Length);
+                        }
 
-						if (q.Config.CommandName == CommandType.SendMessage)
-						{
-							//var id = ((SendMessageParameters) q.Config).DialogId;
-							//MessageNotifier notifier;
-							//if (Notifiers.ContainsKey(id))
-							//{
-							//	notifier = Notifiers[id];
-							//}
-							//else
-							//{
-							//	notifier = Notifiers[id] = new MessageNotifier();
-							//}
+                        if (q.Config.CommandName == CommandType.SendMessage)
+                        {
+                            //var id = ((SendMessageParameters) q.Config).DialogId;
+                            //MessageNotifier notifier;
+                            //if (Notifiers.ContainsKey(id))
+                            //{
+                            //	notifier = Notifiers[id];
+                            //}
+                            //else
+                            //{
+                            //	notifier = Notifiers[id] = new MessageNotifier();
+                            //}
 
-							var gm = new SendMessage(context, Tokens, Notifiers, q.Config);
-							gm.Execute();
+                            var gm = new SendMessage(context, Tokens, Notifiers, q.Config);
+                            gm.Execute();
 
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
-						}
+                            var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+                            var data = Encoding.UTF8.GetBytes(response);
+                            s.Write(data, 0, data.Length);
+                        }
 
-						if (q.Config.CommandName == CommandType.CreateDialog)
-						{
-							var gm = new CreateDialog(context, Tokens, q.Config);
-							gm.Execute();
+                        if (q.Config.CommandName == CommandType.CreateDialog)
+                        {
+                            var gm = new CreateDialog(context, Tokens, q.Config);
+                            gm.Execute();
 
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
-						}
+                            var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+                            var data = Encoding.UTF8.GetBytes(response);
+                            s.Write(data, 0, data.Length);
+                        }
 
-						if (q.Config.CommandName == CommandType.DialogSession)
-						{
-							//var id = ((DialogSessionParameters) q.Config).DialogId;
-							//MessageNotifier notifier;
-							//if (Notifiers.ContainsKey(id))
-							//{
-							//	notifier = Notifiers[id];
-							//}
-							//else
-							//{
-							//	notifier = Notifiers[id] = new MessageNotifier();
-							//}
+                        if (q.Config.CommandName == CommandType.DialogSession)
+                        {
+                            //var id = ((DialogSessionParameters) q.Config).DialogId;
+                            //MessageNotifier notifier;
+                            //if (Notifiers.ContainsKey(id))
+                            //{
+                            //	notifier = Notifiers[id];
+                            //}
+                            //else
+                            //{
+                            //	notifier = Notifiers[id] = new MessageNotifier();
+                            //}
 
-							var gm = new DialogSession(context, Tokens, Notifiers, q.Config);
+                            var gm = new DialogSession(context, Tokens, Notifiers, q.Config);
 
-							gm.NewMessage += (sender, args) =>
-							{
-								var response = JsonConvert.SerializeObject(args.Response, Formatting.Indented);
-								var data = Encoding.UTF8.GetBytes(response);
-								s.Write(data, 0, data.Length);
-							};
+                            gm.NewMessage += (sender, args) =>
+                            {
+                                var response = JsonConvert.SerializeObject(args.Response, Formatting.Indented);
+                                var data = Encoding.UTF8.GetBytes(response);
+                                try
+                                {
+                                    s.Write(data, 0, data.Length);
+                                }
+                                catch (SocketException)
+                                {
+									Notifiers[((DialogSessionParameters)q.Config).DialogId] = null;
+                                    gm.NewMessage = null;
+                                }
+                            };
+							gm.NewMessage += OnNewMessage;
+
 							while (true)
-							{
-								Thread.Sleep(1);
-							}
-						}
-					}
-					catch (Exception e)
-					{
-						WriteLine(e);
+                            {
+                                Thread.Sleep(1);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        WriteLine(e);
 
-						var res = new CommonResponse {Code = ResponseCode.UnknownError};
-						var response = JsonConvert.SerializeObject(res, Formatting.Indented);
-						var data = Encoding.UTF8.GetBytes(response);
-						s.Write(data, 0, data.Length);
+                        var res = new CommonResponse { Code = ResponseCode.UnknownError };
+                        var response = JsonConvert.SerializeObject(res, Formatting.Indented);
+                        var data = Encoding.UTF8.GetBytes(response);
+                        s.Write(data, 0, data.Length);
 
-						s.Close();
-						client.Close();
-						return;
-					}
+                        s.Close();
+                        client.Close();
+                        return;
+                    }
 
 
-					s.Close();
-					client.Close();
-				}
-			}
-			catch (SocketException e)
-			{
-			}
+                    s.Close();
+                    client.Close();
+                }
+            }
+            catch (SocketException e)
+            {
+            }
+        }
+
+		public void OnNewMessage(object sender, EventArgs args)
+		{
+
 		}
-	}
+    }
 }
