@@ -24,7 +24,7 @@ namespace MyMessenger.Server.Commands
 	{
 		private DialogSessionParameters Config1
 		{
-			get => (DialogSessionParameters) Config;
+			get => (DialogSessionParameters)Config;
 			set => Config = value;
 		}
 
@@ -45,7 +45,7 @@ namespace MyMessenger.Server.Commands
 		{
 			var resp = new DialogSessionResponse();
 			Response = resp;
-			
+
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
 			var d = Context.Dialogs.First(p => p.Id == Config1.DialogId);
 			if (d.FirstMember.Id != Tokens[Config1.Token].Id && d.SecondMember.Id != Tokens[Config1.Token].Id)
@@ -56,7 +56,7 @@ namespace MyMessenger.Server.Commands
 
 			resp.Message = e.Message;
 			resp.Code = ResponseCode.Ok;
-			
+
 			NewMessage?.Invoke(this, new DialogSessionEventArgs(resp));
 		}
 
@@ -65,7 +65,7 @@ namespace MyMessenger.Server.Commands
 		{
 			var resp = new DialogSessionResponse();
 			Response = resp;
-			
+
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
 			var d = Context.Dialogs.First(p => p.Id == Config1.DialogId);
 			if (d.FirstMember.Id != Tokens[Config1.Token].Id && d.SecondMember.Id != Tokens[Config1.Token].Id)
@@ -73,20 +73,20 @@ namespace MyMessenger.Server.Commands
 				Code = ResponseCode.AccessDenied;
 				return;
 			}
-			
+
 			var gm = new GetMessages(Context, Tokens,
 				new GetMessagesParameters { DialogId = Config1.DialogId, Token = Config1.Token });
 			gm.Execute();
 			var m = ((GetMessagesResponse)gm.Response).Content.Last();
 			resp.Message = m;
 			Code = ResponseCode.Ok;
-//			
-//			// Запрос сообщений из базы
-//			var r = from i in Context.Messages where i.Dialog1.Id == Config1.DialogId select i;
-//			Result = r;
-//
-//			Code = ResponseCode.Ok;
-//			resp.Content = r.ToList<IMessage>();
+			//			
+			//			// Запрос сообщений из базы
+			//			var r = from i in Context.Messages where i.Dialog1.Id == Config1.DialogId select i;
+			//			Result = r;
+			//
+			//			Code = ResponseCode.Ok;
+			//			resp.Content = r.ToList<IMessage>();
 		}
 	}
 }
