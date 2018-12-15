@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyMessenger.Server.Entities
 {
@@ -17,10 +18,14 @@ namespace MyMessenger.Server.Entities
 		public virtual IList<Message> Messages { get; set; }
 
 		//[JsonProperty]
+		[NotMapped]
 		public virtual Account FirstMember1 { get; set; }
 
 		//[JsonProperty]
+		[NotMapped]
 		public virtual Account SecondMember1 { get; set; }
+
+		public virtual List<Account> Members1 { get; set; }
 
 		[JsonProperty]
 		public IAccount FirstMember => FirstMember1;
@@ -28,9 +33,7 @@ namespace MyMessenger.Server.Entities
 		[JsonProperty]
 		public IAccount SecondMember => SecondMember1;
 		
-		public virtual IList<IAccount> Members {get; set;}
-
 		[JsonProperty]
-		public IList<Account> Members1 => (IList<Account>)Members;
+		public IList<IAccount> Members => (IList<IAccount>)Members;
 	}
 }

@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 using MyMessenger.Core;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyMessenger.Server.Entities
 {
@@ -22,6 +23,7 @@ namespace MyMessenger.Server.Entities
 		public int PasswordSalt { get; set; }
 
 		//[JsonProperty]
+		[NotMapped]
 		public virtual IList<Dialog> Dialogs { get; set; }
 		//[JsonProperty]
 		public virtual IList<Message> Messages { get; set; }

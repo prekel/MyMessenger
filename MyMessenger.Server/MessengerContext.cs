@@ -37,7 +37,7 @@ namespace MyMessenger.Server
 				entity.Property(e => e.PasswordSalt).IsRequired();
 				entity.Property(e => e.RegistrationDateTime).IsRequired();
 
-				entity.HasMany(e => e.Dialogs);
+				//entity.HasMany(e => e.Dialogs);
 				entity.HasMany(e => e.Messages);
 			});
 
@@ -45,7 +45,7 @@ namespace MyMessenger.Server
 			{
 				entity.HasKey(e => e.Id);
 
-				//entity.HasOne(e => e.FirstMember1)
+				//entity.HasOne(e => e.FirstMember1);
 				//	.WithMany(p => p.Dialogs);
 				//entity.HasOne(e => e.SecondMember1)
 				//	.WithMany(p => p.Dialogs);

@@ -174,7 +174,8 @@ namespace MyMessenger.Server
                                 }
                                 catch (SocketException)
                                 {
-									Notifiers[((DialogSessionParameters)q.Config).DialogId] = null;
+									var conf = (DialogSessionParameters)q.Config;
+									Notifiers[conf.DialogId, conf.Token] = null;
                                     gm.NewMessage = null;
                                 }
                             };

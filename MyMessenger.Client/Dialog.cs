@@ -19,6 +19,8 @@ namespace MyMessenger.Client
 		[JsonConverter(typeof(InterfaceConverter<Account>))]
 		public IAccount SecondMember { get; set; }
 
+		[JsonProperty]
+		[JsonConverter(typeof(InterfaceConverter<Account>))]
 		public IList<IAccount> Members { get; set; }
 	}
 }

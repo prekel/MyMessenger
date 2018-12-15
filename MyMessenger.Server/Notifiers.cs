@@ -4,15 +4,15 @@ namespace MyMessenger.Server
 {
 	public class Notifiers
 	{
-		private IDictionary<int, Dictionary<int, MessageNotifier>> _notifiers = new Dictionary<int, Dictionary<int, MessageNotifier>>();
+		private IDictionary<int, Dictionary<string, MessageNotifier>> _notifiers = new Dictionary<int, Dictionary<string, MessageNotifier>>();
 
-		public MessageNotifier this[int dialog, int token]
+		public MessageNotifier this[int dialog, string token]
 		{
 			get
 			{
 				if (!_notifiers.ContainsKey(dialog))
 				{
-					_notifiers[dialog] = new Dictionary<int, MessageNotifier>();
+					_notifiers[dialog] = new Dictionary<string, MessageNotifier>();
 				}
 				if (_notifiers[dialog].ContainsKey(token))
 				{
@@ -22,10 +22,13 @@ namespace MyMessenger.Server
 				_notifiers[dialog].Add(token, new MessageNotifier());
 				return _notifiers[dialog][token];
 			}
-			//set
-			//{
-			//	
-			//}
+			set
+			{
+				if (_notifiers.ContainsKey(dialog) && _notifiers[dialog].ContainsKey(token))
+				{
+					_notifiers[dialog][token] = value;
+				}
+			}
 		}
 	}
 }

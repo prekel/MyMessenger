@@ -50,8 +50,8 @@ namespace MyMessenger.Server
 				};
 				context.Accounts.Add(a2);
 
-				var d1 = new Dialog { FirstMember1 = a1, SecondMember1 = a2 };
-				var d2 = new Dialog { FirstMember1 = a1, SecondMember1 = a2 };
+				var d1 = new Dialog { FirstMember1 = a1, SecondMember1 = a2, Members1 = new List<Account>() { a1, a2 } };
+				var d2 = new Dialog { FirstMember1 = a1, SecondMember1 = a2, Members1 = new List<Account>() { a1, a2 } };
 				context.Dialogs.Add(d1);
 				context.Dialogs.Add(d2);
 
@@ -101,6 +101,11 @@ namespace MyMessenger.Server
 				foreach (var i in me)
 				{
 					Console.WriteLine($"          {i.Text} {i.SendDateTime}");
+				}
+				Console.WriteLine();
+				foreach (var i in context.Dialogs)
+				{
+					Console.WriteLine($"          {i.Id} {String.Join("; ", from j in i.Members select j.Nickname)}");
 				}
 			}
 		}
