@@ -35,6 +35,10 @@ namespace MyMessenger.Core.Parameters
 			{
 				serializer.Serialize(writer, value, typeof(DialogSessionParameters));
 			}
+			if (value.CommandName == CommandType.GetMessageLongPool)
+			{
+				serializer.Serialize(writer, value, typeof(GetMessageLongPoolParameters));
+			}
 		}
 
 		public override AbstractParameters ReadJson(JsonReader reader, Type objectType, AbstractParameters existingValue, bool hasExistingValue,
@@ -63,9 +67,13 @@ namespace MyMessenger.Core.Parameters
 			{
 				ret = obj.ToObject<CreateDialogParameters>();
 			}
-			else // if (command == CommandType.GetMessages)
+			if (command == CommandType.DialogSession)
 			{
 				ret = obj.ToObject<DialogSessionParameters>();
+			}
+			else // if (command == CommandType.GetMessages)
+			{
+				ret = obj.ToObject<GetMessageLongPoolParameters>();
 			}
 			return ret;
 		}
