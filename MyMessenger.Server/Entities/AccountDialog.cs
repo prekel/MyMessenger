@@ -13,9 +13,9 @@ namespace MyMessenger.Server.Entities
 	public class AccountDialog
 	{
 		public int AccountId { get; set; }
-		public Account Account { get; set; }
+		public virtual Account Account { get; set; }
 
 		public int DialogId { get; set; }
-		public Dialog Dialog { get; set; }
+		public virtual Dialog Dialog { get; set; }
 	}
 }

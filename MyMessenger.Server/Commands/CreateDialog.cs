@@ -39,8 +39,8 @@ namespace MyMessenger.Server.Commands
 
 			var d = new Dialog
 			{
-				FirstMember1 = first,
-				SecondMember1 = second
+				//FirstMember1 = first,
+				//SecondMember1 = second
 			};
 
 			Context.Dialogs.Add(d);

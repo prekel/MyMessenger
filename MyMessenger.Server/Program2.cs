@@ -37,21 +37,38 @@ namespace MyMessenger.Server
 					Nickname = "User1",
 					PasswordHash = Crypto.ComputePasswordHash("123456", s),
 					PasswordSalt = s,
-					RegistrationDateTime = DateTime.Now
+					RegistrationDateTime = DateTime.Now,
+					//Dialogs = new List<AccountDialog>()
 				};
-				context.Accounts.Add(a1);
 				s = Crypto.GenerateSaltForPassword();
 				var a2 = new Account()
 				{
 					Nickname = "User2",
 					PasswordHash = Crypto.ComputePasswordHash("123456", s),
 					PasswordSalt = s,
-					RegistrationDateTime = DateTime.Now
+					RegistrationDateTime = DateTime.Now,
+					//Dialogs = new List<AccountDialog>()
 				};
-				context.Accounts.Add(a2);
 
-				var d1 = new Dialog { FirstMember1 = a1, SecondMember1 = a2, Members1 = new List<Account>() { a1, a2 } };
-				var d2 = new Dialog { FirstMember1 = a1, SecondMember1 = a2, Members1 = new List<Account>() { a1, a2 } };
+
+				var d1 = new Dialog();
+				var d2 = new Dialog();
+
+				var ac11 = new AccountDialog { Account = a1, Dialog = d1 };
+				//a1.Dialogs.Add(ac11); d1.Members.Add(ac11);
+				var ac12 = new AccountDialog { Account = a1, Dialog = d2 };
+				//a1.Dialogs.Add(ac12); d2.Members.Add(ac12);
+				var ac21 = new AccountDialog { Account = a2, Dialog = d1 };
+				//a2.Dialogs.Add(ac21); d1.Members.Add(ac21);
+				var ac22 = new AccountDialog { Account = a2, Dialog = d2 };
+				//a2.Dialogs.Add(ac22); d2.Members.Add(ac22);
+				context.AccountsDialogs.Add(ac11);
+				context.AccountsDialogs.Add(ac12);
+				context.AccountsDialogs.Add(ac21);
+				context.AccountsDialogs.Add(ac22);
+
+				context.Accounts.Add(a1);
+				context.Accounts.Add(a2);
 				context.Dialogs.Add(d1);
 				context.Dialogs.Add(d2);
 
@@ -105,7 +122,7 @@ namespace MyMessenger.Server
 				Console.WriteLine();
 				foreach (var i in context.Dialogs)
 				{
-					Console.WriteLine($"          {i.DialogId} {String.Join("; ", from j in i.Members select j.Nickname)}");
+					Console.WriteLine($"          {i.DialogId} {String.Join("; ", from j in i.Members select j.Account.Nickname)}");
 				}
 			}
 		}

@@ -28,11 +28,11 @@ namespace MyMessenger.Server.Commands
 			
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
 			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
-			if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
-			{
-				Code = ResponseCode.AccessDenied;
-				return;
-			}
+			 //if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
+			 //{
+			 //	Code = ResponseCode.AccessDenied;
+			 //	return;
+			 //}
 			
 			
 			// Запрос сообщений из базы

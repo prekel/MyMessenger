@@ -48,11 +48,11 @@ namespace MyMessenger.Server.Commands
 
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
 			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
-			if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
-			{
-				Code = ResponseCode.AccessDenied;
-				return;
-			}
+			 //if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
+			 //{
+			 //	Code = ResponseCode.AccessDenied;
+			 //	return;
+			 //
 
 			resp.Message = e.Message;
 			resp.Code = ResponseCode.Ok;
@@ -68,11 +68,11 @@ namespace MyMessenger.Server.Commands
 
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
 			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
-			if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
-			{
-				Code = ResponseCode.AccessDenied;
-				return;
-			}
+			 //if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
+			 //{
+			 //	Code = ResponseCode.AccessDenied;
+			 //	return;
+			 //}
 
 			var gm = new GetMessages(Context, Tokens,
 				new GetMessagesParameters { DialogId = Config1.DialogId, Token = Config1.Token });
