@@ -34,6 +34,6 @@ namespace MyMessenger.Server.Entities
 		public IAccount SecondMember => SecondMember1;
 		
 		[JsonProperty]
-		public IList<IAccount> Members => (IList<IAccount>)Members;
+		public IList<IAccount> Members => (IList<IAccount>)Members1;
 	}
 }

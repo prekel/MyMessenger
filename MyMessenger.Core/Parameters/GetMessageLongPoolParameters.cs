@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 
 namespace MyMessenger.Core.Parameters
@@ -11,5 +12,8 @@ namespace MyMessenger.Core.Parameters
 
 		[JsonProperty] 
 		public string Token { get; set; }
+
+		[JsonProperty] 
+		public TimeSpan TimeSpan { get; set; }
 	}
 }

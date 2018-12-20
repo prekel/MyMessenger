@@ -1,6 +1,7 @@
 using System;
 using MyMessenger.Core;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace MyMessenger.Server
 {
@@ -11,11 +12,20 @@ namespace MyMessenger.Server
 		public void MessageSent(IMessage message)
 		{
 			OnNewMessage(message);
+			CancellationTokenSource.Cancel();
 		}
 
 		protected virtual void OnNewMessage(IMessage message)
 		{
 			NewMessage?.Invoke(this, new MessageNotifierEventArgs(message));
+		}
+
+		private CancellationTokenSource CancellationTokenSource { get; } = new CancellationTokenSource();
+
+		public CancellationToken CancellationToken => CancellationTokenSource.Token;
+
+		public MessageNotifier()
+		{
 		}
 
 		#region IDisposable Support

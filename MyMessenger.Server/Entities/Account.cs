@@ -30,4 +30,4 @@ namespace MyMessenger.Server.Entities
 
 		public DateTime RegistrationDateTime { get; set; }
 	}
-}
+}  

@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
@@ -11,44 +14,46 @@ namespace MyMessenger.Server.Commands
 	{
 		private GetMessageLongPoolParameters Config1
 		{
-			get => (GetMessageLongPoolParameters) Config;
+			get => (GetMessageLongPoolParameters)Config;
 			set => Config = value;
 		}
 
 		public IQueryable<Message> Result { get; private set; }
 
-		public GetMessageLongPool(MessengerContext context, IDictionary<string, IAccount> tokens,
+		private Notifiers Notifiers { get; set; }
+
+		public GetMessageLongPool(MessengerContext context, IDictionary<string, IAccount> tokens, Notifiers notifiers,
 			AbstractParameters config) : base(context, tokens, config)
 		{
+			Notifiers = notifiers;
 		}
+
+		private IMessage Message { get; set; }
 
 		public override void Execute()
 		{
 			var resp = new GetMessageLongPoolResponse();
 			Response = resp;
 
-			var mn = new MessageNotifier();
+			var t = Task.Run(() => { Task.Delay(Config1.TimeSpan.Milliseconds).Wait(); });
 
-			mn.NewMessage += MnOnNewMessage;
+			Notifiers[Config1.DialogId, Config1.Token].NewMessage += MnOnNewMessage;
+
+			try
+			{
+				t.Wait(Notifiers[Config1.DialogId, Config1.Token].CancellationToken);
+				Code = ResponseCode.LongPoolTimeSpanExpired;
+			}
+			catch (OperationCanceledException)
+			{
+				Code = ResponseCode.Ok;
+				resp.Content = new List<IMessage> { Message };
+			}
 		}
 
 		private void MnOnNewMessage(object sender, MessageNotifierEventArgs e)
 		{
-			// Проверка на принадлежность того, кто сделал запрос, к диалогу
-			var d = Context.Dialogs.First(p => p.Id == Config1.DialogId);
-			if (d.FirstMember.Id != Tokens[Config1.Token].Id && d.SecondMember.Id != Tokens[Config1.Token].Id)
-			{
-				Code = ResponseCode.AccessDenied;
-				return;
-			}
-
-
-			// Запрос сообщений из базы
-			var r = from i in Context.Messages where i.Dialog1.Id == Config1.DialogId select i;
-			Result = r;
-
-			Code = ResponseCode.Ok;
-			resp.Content = r.ToList<IMessage>();
+			Message = e.Message;
 		}
 	}
 }

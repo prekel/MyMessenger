@@ -18,5 +18,8 @@ namespace MyMessenger.Core.Parameters
 
 		[JsonProperty]
 		public int? SecondMemberId { get; set; }
+
+		[JsonProperty]
+		public string MembersIds { get; set; }
 	}
 }

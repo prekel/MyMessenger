@@ -49,10 +49,11 @@ namespace MyMessenger.Server
 				//	.WithMany(p => p.Dialogs);
 				//entity.HasOne(e => e.SecondMember1)
 				//	.WithMany(p => p.Dialogs);
-				entity.HasMany(e => e.Messages);
+				entity.OwnsMany(e => e.Messages);
 				//	.WithOne(p => p.Dialog1);
 
 				entity.HasMany(e => e.Members1);
+				//entity.OwnsMany(e => e.Members1);
 			});
 
 			modelBuilder.Entity<Message>(entity =>
