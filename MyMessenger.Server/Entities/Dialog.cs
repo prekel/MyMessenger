@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 
 using MyMessenger.Core;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MyMessenger.Server.Entities
 {
@@ -12,28 +13,24 @@ namespace MyMessenger.Server.Entities
 	public class Dialog : IDialog
 	{
 		[JsonProperty]
-		public int Id { get; set; }
-
-		//[JsonProperty]
-		public virtual IList<Message> Messages { get; set; }
-
-		//[JsonProperty]
-		[NotMapped]
-		public virtual Account FirstMember1 { get; set; }
-
-		//[JsonProperty]
-		[NotMapped]
-		public virtual Account SecondMember1 { get; set; }
-
-		public virtual List<Account> Members1 { get; set; }
-
-		[JsonProperty]
-		public IAccount FirstMember => FirstMember1;
-
-		[JsonProperty]
-		public IAccount SecondMember => SecondMember1;
+		public int DialogId { get; set; }
 		
 		[JsonProperty]
-		public IList<IAccount> Members => (IList<IAccount>)Members1;
+		public IList<IAccount> MembersA => (IList<IAccount>)Members.Select(p => p.Account);
+		
+		public virtual IList<Message> Messages { get; set; }
+
+		public virtual List<AccountDialog> Members { get; set; }
+
+		//[JsonProperty]
+		//[NotMapped]
+		//public virtual Account FirstMember1 { get; set; }
+		//[JsonProperty]
+		//[NotMapped]
+		//public virtual Account SecondMember1 { get; set; }
+		//[JsonProperty]
+		//public IAccount FirstMember => FirstMember1;
+		//[JsonProperty]
+		//public IAccount SecondMember => SecondMember1;
 	}
 }

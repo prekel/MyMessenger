@@ -58,29 +58,29 @@ namespace MyMessenger.Server
 				context.Messages.Add(new Message
 				{
 					Text = "123text",
-					Author1 = a1,
-					Dialog1 = d1,
+					Author = a1,
+					Dialog = d1,
 					SendDateTime = DateTime.Now
 				});
 				context.Messages.Add(new Message
 				{
 					Text = "234text",
-					Author1 = a2,
-					Dialog1 = d1,
+					Author = a2,
+					Dialog = d1,
 					SendDateTime = DateTime.Now
 				});
 				context.Messages.Add(new Message
 				{
 					Text = "111text",
-					Author1 = a1,
-					Dialog1 = d2,
+					Author = a1,
+					Dialog = d2,
 					SendDateTime = DateTime.Now
 				});
 				context.Messages.Add(new Message
 				{
 					Text = "222text",
-					Author1 = a1,
-					Dialog1 = d2,
+					Author = a1,
+					Dialog = d2,
 					SendDateTime = DateTime.Now
 				});
 
@@ -96,7 +96,7 @@ namespace MyMessenger.Server
 				var m = context.Messages;
 				var a = context.Accounts;
 
-				var me = from i in context.Messages where i.Author1.Nickname == "User1" select i;
+				var me = from i in context.Messages where i.Author.Nickname == "User1" select i;
 				Console.WriteLine();
 				foreach (var i in me)
 				{
@@ -105,7 +105,7 @@ namespace MyMessenger.Server
 				Console.WriteLine();
 				foreach (var i in context.Dialogs)
 				{
-					Console.WriteLine($"          {i.Id} {String.Join("; ", from j in i.Members select j.Nickname)}");
+					Console.WriteLine($"          {i.DialogId} {String.Join("; ", from j in i.Members select j.Nickname)}");
 				}
 			}
 		}

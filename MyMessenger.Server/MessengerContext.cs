@@ -31,7 +31,7 @@ namespace MyMessenger.Server
 
 			modelBuilder.Entity<Account>(entity =>
 			{
-				entity.HasKey(e => e.Id);
+				entity.HasKey(e => e.AccountId);
 				entity.Property(e => e.Nickname).IsRequired();
 				entity.Property(e => e.PasswordHash).IsRequired();
 				entity.Property(e => e.PasswordSalt).IsRequired();
@@ -43,14 +43,14 @@ namespace MyMessenger.Server
 
 			modelBuilder.Entity<Dialog>(entity =>
 			{
-				entity.HasKey(e => e.Id);
+				entity.HasKey(e => e.DialogId);
 
 				//entity.HasOne(e => e.FirstMember1);
 				//	.WithMany(p => p.Dialogs);
 				//entity.HasOne(e => e.SecondMember1)
 				//	.WithMany(p => p.Dialogs);
 				entity.OwnsMany(e => e.Messages);
-				//	.WithOne(p => p.Dialog1);
+				//	.WithOne(p => p.Dialog);
 
 				entity.HasMany(e => e.Members1);
 				//entity.OwnsMany(e => e.Members1);
@@ -58,13 +58,13 @@ namespace MyMessenger.Server
 
 			modelBuilder.Entity<Message>(entity =>
 			{
-				entity.HasKey(e => e.Id);
+				entity.HasKey(e => e.MessageId);
 				entity.Property(e => e.Text).IsRequired();
 				entity.Property(e => e.SendDateTime).IsRequired();
 
-				entity.HasOne(e => e.Author1)
+				entity.HasOne(e => e.Author)
 					.WithMany(p => p.Messages);
-				entity.HasOne(d => d.Dialog1)
+				entity.HasOne(d => d.Dialog)
 					.WithMany(p => p.Messages);
 			});
 		}

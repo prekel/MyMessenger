@@ -9,7 +9,7 @@ namespace MyMessenger.Client
 	public class Dialog : IDialog
 	{
 		[JsonProperty]
-		public int Id { get; set; }
+		public int DialogId { get; set; }
 
 		[JsonProperty]
 		[JsonConverter(typeof(InterfaceConverter<Account>))]

@@ -4,7 +4,7 @@ namespace MyMessenger.Core
 {
 	public interface IAccount
 	{
-		int Id { get; set; }
+		int AccountId { get; set; }
 
 		DateTime RegistrationDateTime { get; }
 

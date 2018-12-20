@@ -21,9 +21,9 @@ namespace MyMessenger.Core.Parameters
 		//[Flags]
 		//public enum Fields
 		//{
-		//	Author = 1,
+		//	AuthorA = 1,
 		//	AuthorDialogs = 2,
-		//	Dialog = 4,
+		//	DialogA = 4,
 		//	DialogFirstMember = 8,
 		//	DialogSecondMember = 16
 		//}

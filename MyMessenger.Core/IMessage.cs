@@ -4,14 +4,14 @@ namespace MyMessenger.Core
 {
 	public interface IMessage
 	{
-		int Id { get; set; }
+		int MessageId { get; set; }
 		
 		string Text { get; }
 
 		DateTime SendDateTime { get; }
 
-		IDialog Dialog { get; }
+		IDialog DialogA { get; }
 
-		IAccount Author { get; }
+		IAccount AuthorA { get; }
 	}
 }

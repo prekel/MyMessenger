@@ -27,15 +27,15 @@ namespace MyMessenger.Server.Commands
 
 			var secmemid = Config1.SecondMemberId.HasValue
 				? Config1.SecondMemberId.Value
-				: Context.Accounts.FirstOr(p => p.Nickname == Config1.SecondMemberNickname, new Account { Id = -1 }).Id;
+				: Context.Accounts.FirstOr(p => p.Nickname == Config1.SecondMemberNickname, new Account { AccountId = -1 }).AccountId;
 			if (secmemid == -1)
 			{
 				Code = ResponseCode.NicknameNotFound;
 				return;
 			}
 
-			var first = Context.Accounts.First(p => p.Id == Tokens[Config1.Token].Id);
-			var second = Context.Accounts.First(p => p.Id == secmemid);
+			var first = Context.Accounts.First(p => p.AccountId == Tokens[Config1.Token].AccountId);
+			var second = Context.Accounts.First(p => p.AccountId == secmemid);
 
 			var d = new Dialog
 			{
@@ -47,7 +47,7 @@ namespace MyMessenger.Server.Commands
 			Context.SaveChanges();
 
 			Code = ResponseCode.Ok;
-			resp.DialogId = d.Id;
+			resp.DialogId = d.DialogId;
 		}
 	}
 }

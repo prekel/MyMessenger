@@ -9,7 +9,7 @@ namespace MyMessenger.Client
 	public class Account : IAccount
 	{
 		[JsonProperty]
-		public int Id { get; set; }
+		public int AccountId { get; set; }
 
 		[JsonProperty]
 		public string Nickname { get; set; }

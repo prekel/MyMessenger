@@ -14,20 +14,20 @@ namespace MyMessenger.Server.Entities
 	public class Account : IAccount
 	{
 		[JsonProperty]
-		public int Id { get; set; }
+		public int AccountId { get; set; }
+
 		[JsonProperty]
 		public string Nickname { get; set; }
+
+		[JsonProperty]
+		public DateTime RegistrationDateTime { get; set; }
 
 		[MaxLength(32)]
 		public byte[] PasswordHash { get; set; }
 		public int PasswordSalt { get; set; }
+		
+		public virtual IList<AccountDialog> Dialogs { get; set; }
 
-		//[JsonProperty]
-		[NotMapped]
-		public virtual IList<Dialog> Dialogs { get; set; }
-		//[JsonProperty]
 		public virtual IList<Message> Messages { get; set; }
-
-		public DateTime RegistrationDateTime { get; set; }
 	}
 }  

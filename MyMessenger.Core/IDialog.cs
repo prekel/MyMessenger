@@ -5,11 +5,11 @@ namespace MyMessenger.Core
 {
 	public interface IDialog
 	{
-		int Id { get; set; }
+		int DialogId { get; set; }
 
-		IList<IAccount> Members { get; }
+		IList<IAccount> MembersA { get; }
 
-		IAccount FirstMember { get; }
-		IAccount SecondMember { get; }
+		//IAccount FirstMember { get; }
+		//IAccount SecondMember { get; }
 	}
 }

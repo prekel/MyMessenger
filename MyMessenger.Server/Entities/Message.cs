@@ -10,23 +10,22 @@ namespace MyMessenger.Server.Entities
 	public class Message : IMessage
 	{
 		[JsonProperty]
-		public int Id { get; set; }
+		public int MessageId { get; set; }
 
 		[JsonProperty]
 		public string Text { get; set; }
 
 		[JsonProperty]
-		public IDialog Dialog => Dialog1;
+		public IDialog DialogA => Dialog;
 
 		[JsonProperty]
-		public IAccount Author => Author1;
+		public IAccount AuthorA => Author;
 
-		//[JsonProperty]
-		public virtual Dialog Dialog1 { get; set; }
-		
-		//[JsonProperty]
-		public virtual Account Author1 { get; set; }
-
+		[JsonProperty]
 		public DateTime SendDateTime { get; set; }
+		
+		public virtual Dialog Dialog { get; set; }
+		
+		public virtual Account Author { get; set; }
 	}
 }

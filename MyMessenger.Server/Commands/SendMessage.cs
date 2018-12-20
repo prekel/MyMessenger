@@ -30,8 +30,8 @@ namespace MyMessenger.Server.Commands
 			Response = resp;
 			
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
-			var d = Context.Dialogs.First(p => p.Id == Config1.DialogId);
-			if (d.FirstMember.Id != Tokens[Config1.Token].Id && d.SecondMember.Id != Tokens[Config1.Token].Id)
+			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
+			if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
 			{
 				Code = ResponseCode.AccessDenied;
 				return;
@@ -39,8 +39,8 @@ namespace MyMessenger.Server.Commands
 			
 			var m = new Message
 			{
-				Author1 = new Account {Id = Tokens[Config1.Token].Id},
-				Dialog1 = new Dialog {Id = Config1.DialogId},
+				Author = new Account {AccountId = Tokens[Config1.Token].AccountId},
+				Dialog = new Dialog {DialogId = Config1.DialogId},
 				Text = Config1.Text
 			};
 			Context.Messages.Add(m);

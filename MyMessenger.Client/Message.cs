@@ -9,18 +9,18 @@ namespace MyMessenger.Client
 	public class Message : IMessage
 	{
 		[JsonProperty]
-		public int Id { get; set; }
+		public int MessageId { get; set; }
 
 		[JsonProperty]
 		public string Text { get; set; }
 
 		[JsonProperty]
 		[JsonConverter(typeof(InterfaceConverter<Dialog>))]
-		public IDialog Dialog { get; set; }
+		public IDialog DialogA { get; set; }
 
 		[JsonProperty]
 		[JsonConverter(typeof(InterfaceConverter<Account>))]
-		public IAccount Author { get; set; }
+		public IAccount AuthorA { get; set; }
 
 		[JsonProperty]
 		public DateTime SendDateTime { get; set; }
