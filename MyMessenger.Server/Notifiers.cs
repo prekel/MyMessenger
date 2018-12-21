@@ -32,6 +32,6 @@ namespace MyMessenger.Server
 			}
 		}
 
-		public IEnumerable<MessageNotifier> this[int dialog] => _notifiers[dialog].Values.ToList();
+		public IEnumerable<MessageNotifier> this[int dialog] => _notifiers.ContainsKey(dialog) ? _notifiers[dialog].Values.ToList() : new List<MessageNotifier>();
 	}
 }
