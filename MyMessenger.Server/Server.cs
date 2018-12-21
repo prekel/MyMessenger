@@ -184,6 +184,16 @@ namespace MyMessenger.Server
                             var data = Encoding.UTF8.GetBytes(response);
                             s.Write(data, 0, data.Length);
                         }
+
+                        if (q.Config.CommandName == CommandType.GetDialogById)
+                        {
+                            var gm = new GetDialogById(context, Tokens, q.Config);
+                            gm.Execute();
+
+                            var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+                            var data = Encoding.UTF8.GetBytes(response);
+                            s.Write(data, 0, data.Length);
+                        }
 					}
                     catch (Exception e)
                     {

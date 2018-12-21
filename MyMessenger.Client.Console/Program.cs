@@ -179,6 +179,13 @@ namespace MyMessenger.Client.Console
 							command.Execute();
 						}
 
+						if (GetDialogById.CommandNames.Contains(cmd))
+						{
+							command = new GetDialogById(stream, p[1], Int32.Parse(p[2]));
+
+							command.Execute();
+						}
+
 						if (cmd == "test")
 						{
 							WriteLine(p[1]);
