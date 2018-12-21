@@ -7,7 +7,7 @@ namespace MyMessenger.Core
 	{
 		int DialogId { get; set; }
 
-		IList<IAccount> MembersA { get; }
+		IEnumerable<IAccount> MembersA { get; }
 
 		//IAccount FirstMember { get; }
 		//IAccount SecondMember { get; }

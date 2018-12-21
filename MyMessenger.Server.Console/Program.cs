@@ -38,7 +38,7 @@ namespace MyMessenger.Server.Console
 					{
 						Server = "localhost",
 						Port = 3306,
-						Name = "MyMessenger2",
+						Name = "MyMessenger3",
 						User = "root",
 						SslMode = "none"
 					}

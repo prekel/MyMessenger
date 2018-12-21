@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using MyMessenger.Core;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MyMessenger.Server.Entities
 {
@@ -18,6 +19,9 @@ namespace MyMessenger.Server.Entities
 
 		[JsonProperty]
 		public string Nickname { get; set; }
+
+		[JsonProperty]
+		public IEnumerable<IDialog> DialogsA => Dialogs.Select(p => p.Dialog);
 
 		[JsonProperty]
 		public DateTime RegistrationDateTime { get; set; }

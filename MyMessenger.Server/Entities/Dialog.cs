@@ -16,7 +16,7 @@ namespace MyMessenger.Server.Entities
 		public int DialogId { get; set; }
 		
 		[JsonProperty]
-		public IList<IAccount> MembersA => (IList<IAccount>)Members.Select(p => p.Account);
+		public IEnumerable<IAccount> MembersA => Members.Select(p => p.Account);
 		
 		public virtual IList<Message> Messages { get; set; }
 
