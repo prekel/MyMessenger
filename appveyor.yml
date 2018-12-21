@@ -15,7 +15,7 @@ test_script:
 artifacts:
 - path: '\'
   name: MyMessenger_All_Files
-- path: 'MyMessenger.Server.Console\bin\Release\netcoreapp2.1\publish\'
+- path: 'MyMessenger.Server.Console\bin\Release\netcoreapp2.2\publish\'
   name: MyMessenger-$(APPVEYOR_BUILD_VERSION)
 deploy:
 - provider: FTP
