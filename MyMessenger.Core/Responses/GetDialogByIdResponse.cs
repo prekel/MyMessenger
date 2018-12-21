@@ -3,9 +3,10 @@ using Newtonsoft.Json;
 
 namespace MyMessenger.Core.Responses
 {
-	public class GetMessageLongPoolResponse : AbstractResponse
+	[JsonObject]
+	public class GetDialogByIdResponse : AbstractResponse
 	{
 		[JsonProperty]
-		public IMessage Content { get; set; }
+		public IDialog Dialog { get; set; }
 	}
 }

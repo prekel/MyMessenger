@@ -3,9 +3,10 @@ using Newtonsoft.Json;
 
 namespace MyMessenger.Core.Responses
 {
-	public class GetMessageLongPoolResponse : AbstractResponse
+	[JsonObject]
+	public class GetAccountByIdResponse : AbstractResponse
 	{
 		[JsonProperty]
-		public IMessage Content { get; set; }
+		public IAccount Account { get; set; }
 	}
 }
