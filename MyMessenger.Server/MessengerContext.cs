@@ -32,7 +32,8 @@ namespace MyMessenger.Server
 
 			modelBuilder.Entity<AccountDialog>(entity =>
 			{
-				entity.HasKey(t => new {t.AccountId, t.DialogId});
+				//entity.HasKey(t => new { t.AccountId, t.DialogId });
+				entity.HasKey(t => t.AccountDialogId);
 
 				entity.HasOne(ad => ad.Account)
 					.WithMany(a => a.Dialogs)
@@ -67,6 +68,7 @@ namespace MyMessenger.Server
 			modelBuilder.Entity<Message>(entity =>
 			{
 				entity.HasKey(e => e.MessageId);
+
 				entity.Property(e => e.Text).IsRequired();
 				entity.Property(e => e.SendDateTime).IsRequired();
 
