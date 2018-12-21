@@ -13,10 +13,19 @@ namespace MyMessenger.Core.Parameters
 		[JsonProperty]
 		public string Token { get; set; }
 
-		[JsonProperty]
-		public string SecondMemberNickname { get; set; }
+		//[JsonProperty]
+		//public string SecondMemberNickname { get; set; }
+
+		//[JsonProperty]
+		//public int? SecondMemberId { get; set; }
 
 		[JsonProperty]
-		public int? SecondMemberId { get; set; }
+		public IList<string> MembersNicknames { get; set; }
+
+		[JsonProperty]
+		public IList<int> MembersIds { get; set; }
+
+		//[JsonProperty]
+		//public string MembersIds { get; set; }
 	}
 }

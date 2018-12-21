@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MyMessenger.Server.Entities
 {
@@ -12,17 +15,29 @@ namespace MyMessenger.Server.Entities
 	public class Account : IAccount
 	{
 		[JsonProperty]
-		public int Id { get; set; }
+		public int AccountId { get; set; }
+
 		[JsonProperty]
 		public string Nickname { get; set; }
+
+		[JsonProperty]
+		public IEnumerable<int> DialogsIds => Dialogs.Select(p => p.Dialog.DialogId);
+
+		//[JsonProperty]
+		//public IEnumerable<IDialog> DialogsA => Dialogs.Select(p => p.Dialog);
+
+		[JsonProperty]
+		public DateTime RegistrationDateTime { get; set; }
+
+		[JsonProperty]
+		public DateTime LoginDateTime { get; set; }
 
 		[MaxLength(32)]
 		public byte[] PasswordHash { get; set; }
 		public int PasswordSalt { get; set; }
+		
+		public virtual IList<AccountDialog> Dialogs { get; set; }
 
-		//[JsonProperty]
-		public virtual IList<Dialog> Dialogs { get; set; }
-		//[JsonProperty]
 		public virtual IList<Message> Messages { get; set; }
 	}
-}
+}  

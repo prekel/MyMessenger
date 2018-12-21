@@ -10,6 +10,7 @@ namespace MyMessenger.Server
 		public DbSet<Dialog> Dialogs { get; set; }
 		public DbSet<Message> Messages { get; set; }
 		public DbSet<Account> Accounts { get; set; }
+		public DbSet<AccountDialog> AccountsDialogs { get; set; }
 
 		public static Config Config;
 
@@ -29,38 +30,65 @@ namespace MyMessenger.Server
 		{
 			base.OnModelCreating(modelBuilder);
 
+			modelBuilder.Entity<AccountDialog>(entity =>
+			{
+				entity.HasKey(t => new { t.AccountId, t.DialogId });
+				//entity.HasKey(t => t.AccountDialogId);
+
+				entity.HasOne(ad => ad.Account)
+					.WithMany(a => a.Dialogs)
+					.HasForeignKey(ad => ad.AccountId);
+
+				entity.HasOne(ad => ad.Dialog)
+					.WithMany(a => a.Members)
+					.HasForeignKey(ad => ad.DialogId);
+			});
+
 			modelBuilder.Entity<Account>(entity =>
 			{
-				entity.HasKey(e => e.Id);
+				entity.HasKey(e => e.AccountId);
+
 				entity.Property(e => e.Nickname).IsRequired();
 				entity.Property(e => e.PasswordHash).IsRequired();
 				entity.Property(e => e.PasswordSalt).IsRequired();
+				entity.Property(e => e.RegistrationDateTime).IsRequired();
+				entity.Property(e => e.LoginDateTime).IsRequired();
 
-				entity.HasMany(e => e.Dialogs);
-				entity.HasMany(e => e.Messages);
+				entity.HasMany(e => e.Messages)
+					.WithOne(e => e.Author)
+					.HasForeignKey(p => p.AuthorId);
+
+				entity.HasMany(e => e.Dialogs)
+					.WithOne(e => e.Account)
+					.HasForeignKey(p => p.AccountId);
 			});
 
 			modelBuilder.Entity<Dialog>(entity =>
 			{
-				entity.HasKey(e => e.Id);
+				entity.HasKey(e => e.DialogId);
 
-				entity.HasOne(e => e.FirstMember1)
-					.WithMany(p => p.Dialogs);
-				//entity.HasOne(e => e.SecondMember1)
-				//	.WithMany(p => p.Dialogs);
-				entity.HasMany(e => e.Messages);
-				//	.WithOne(p => p.Dialog1);
+				entity.HasMany(e => e.Messages)
+					.WithOne(e => e.Dialog)
+					.HasForeignKey(p => p.DialogId);
+
+				entity.HasMany(e => e.Members)
+					.WithOne(e => e.Dialog)
+					.HasForeignKey(p => p.DialogId);
 			});
 
 			modelBuilder.Entity<Message>(entity =>
 			{
-				entity.HasKey(e => e.Id);
-				entity.Property(e => e.Text).IsRequired();
+				entity.HasKey(e => e.MessageId);
 
-				entity.HasOne(e => e.Author1)
-					.WithMany(p => p.Messages);
-				entity.HasOne(d => d.Dialog1)
-					.WithMany(p => p.Messages);
+				entity.Property(e => e.Text).IsRequired();
+				entity.Property(e => e.SendDateTime).IsRequired();
+
+				entity.HasOne(e => e.Author)
+					.WithMany(p => p.Messages)
+					.HasForeignKey(p => p.AuthorId);
+				entity.HasOne(d => d.Dialog)
+					.WithMany(p => p.Messages)
+					.HasForeignKey(p => p.DialogId);
 			});
 		}
 	}

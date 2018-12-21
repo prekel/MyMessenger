@@ -39,6 +39,8 @@ namespace MyMessenger.Client.Console
 				InputEncoding = Encoding.GetEncoding(1251);
 			}
 
+			System.Console.CancelKeyPress += ConsoleOnCancelKeyPress;
+			
 			try
 			{
 				//var q = new Query
@@ -86,7 +88,7 @@ namespace MyMessenger.Client.Console
 							foreach (var i in res.Content)
 							{
 								WriteLine("--------");
-								WriteLine($"Автор: {i.Author.Nickname}");
+								WriteLine($"Автор: {i.AuthorId}");
 								WriteLine($"Текст: {i.Text}");
 							}
 						}
@@ -123,10 +125,25 @@ namespace MyMessenger.Client.Console
 
 						if (CreateDialog.CommandNames.Contains(cmd))
 						{
-							command = Int32.TryParse(p[2], out var sid)
-								? new CreateDialog(stream, p[1], sid)
-								: new CreateDialog(stream, p[1], p[2]);
-
+							var token = p[1];
+							if (Int32.TryParse(p[2], out var sid))
+							{
+								var mids = new List<int>();
+								for (var i = 2; i < p.Length; i++)
+								{
+									mids.Add(Int32.Parse(p[i]));
+								}
+								command = new CreateDialog(stream, p[1], mids);
+							}
+							else
+							{
+								var mn = new List<string>();
+								for (var i = 2; i < p.Length; i++)
+								{
+									mn.Add(p[i]);
+								}
+								command = new CreateDialog(stream, p[1], mn);
+							}
 							command.Execute();
 						}
 
@@ -142,9 +159,17 @@ namespace MyMessenger.Client.Console
 								ds.Receive();
 								var m = ds.Response.Message;
 								WriteLine("--------");
-								WriteLine($"Автор: {m.Author.Nickname}");
+								WriteLine($"Автор: {m.AuthorId}");
 								WriteLine($"Текст: {m.Text}");
 							}
+						}
+
+						if (GetMessageLongPool.CommandNames.Contains(cmd))
+						{
+							command = new GetMessageLongPool(stream, p[1], Int32.Parse(p[2]),
+								TimeSpan.FromSeconds(Int32.Parse(p[3])));
+
+							command.Execute();
 						}
 
 						if (cmd == "test")
@@ -182,6 +207,11 @@ namespace MyMessenger.Client.Console
 			{
 				WriteLine("Exception: {0}", e.Message);
 			}
+		}
+
+		private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs e)
+		{
+			//throw new NotImplementedException();
 		}
 	}
 }

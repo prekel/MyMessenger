@@ -22,6 +22,7 @@ namespace MyMessenger.Server.Commands
 			var resp = new RegisterResponse();
 			Response = resp;
 			
+			// Проверка на существование
 			if (Context.Accounts.Any(p => p.Nickname == Config1.Nickname))
 			{
 				Code = ResponseCode.NicknameAlreadyExists;
@@ -33,7 +34,9 @@ namespace MyMessenger.Server.Commands
 			{
 				Nickname = Config1.Nickname,
 				PasswordHash = Crypto.ComputePasswordHash(Config1.Password, salt),
-				PasswordSalt = salt
+				PasswordSalt = salt,
+				RegistrationDateTime = DateTime.Now,
+				LoginDateTime = DateTime.MinValue
 			};
 			Context.Accounts.Add(a);
 			Context.SaveChanges();

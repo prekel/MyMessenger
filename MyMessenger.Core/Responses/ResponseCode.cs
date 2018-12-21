@@ -45,6 +45,14 @@ namespace MyMessenger.Core.Responses
 		/// <summary>
 		/// Диалог с таким идентификатором не существует
 		/// </summary>
-		DialogNotFound
+		DialogNotFound,
+		/// <summary>
+		/// Время для LongPoll кончилось
+		/// </summary>
+		LongPoolTimeSpanExpired,
+		/// <summary>
+		/// Сущность с таким идентификатором не найдена
+		/// </summary>
+		IdNotFound
 	}
 }

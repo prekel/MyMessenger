@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +28,7 @@ namespace MyMessenger.Server.Commands
 			var resp = new LoginResponse();
 			Response = resp;
 			
+			// Проверка на существование
 			var account1 = Context.Accounts.Where(p => p.Nickname == Config1.Nickname);
 			if (!account1.Any())
 			{
@@ -45,6 +46,9 @@ namespace MyMessenger.Server.Commands
 				Tokens[token] = account;
 				Token = token;
 				resp.Token = token;
+
+				account.LoginDateTime = DateTime.Now;
+				Context.SaveChanges();
 			}
 			else
 			{

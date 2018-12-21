@@ -1,8 +1,20 @@
-﻿namespace MyMessenger.Core
+﻿using System;
+using System.Collections.Generic;
+
+namespace MyMessenger.Core
 {
 	public interface IAccount
 	{
-		int Id { get; set; }
+		int AccountId { get; set; }
+
+		DateTime RegistrationDateTime { get; }
+
+		DateTime LoginDateTime { get; }
+
 		string Nickname { get; }
+
+		IEnumerable<int> DialogsIds { get; }
+
+		//IEnumerable<IDialog> DialogsA { get; }
 	}
 }

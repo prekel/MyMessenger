@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
+using System;
 
 namespace MyMessenger.Server.Entities
 {
@@ -9,21 +10,28 @@ namespace MyMessenger.Server.Entities
 	public class Message : IMessage
 	{
 		[JsonProperty]
-		public int Id { get; set; }
+		public int MessageId { get; set; }
 
 		[JsonProperty]
 		public string Text { get; set; }
 
-		[JsonProperty]
-		public IDialog Dialog => Dialog1;
-
-		[JsonProperty]
-		public IAccount Author => Author1;
+		//[JsonProperty]
+		//public IDialog DialogA => Dialog;
 
 		//[JsonProperty]
-		public virtual Dialog Dialog1 { get; set; }
+		//public IAccount AuthorA => Author;
+
+		[JsonProperty]
+		public DateTime SendDateTime { get; set; }
+
+		[JsonProperty]
+		public int DialogId { get; set; }
+
+		[JsonProperty]
+		public int AuthorId { get; set; }
+
+		public virtual Dialog Dialog { get; set; }
 		
-		//[JsonProperty]
-		public virtual Account Author1 { get; set; }
+		public virtual Account Author { get; set; }
 	}
 }

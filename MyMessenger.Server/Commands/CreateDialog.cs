@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,29 +25,49 @@ namespace MyMessenger.Server.Commands
 			var resp = new CreateDialogResponse();
 			Response = resp;
 
-			var secmemid = Config1.SecondMemberId.HasValue
-				? Config1.SecondMemberId.Value
-				: Context.Accounts.FirstOr(p => p.Nickname == Config1.SecondMemberNickname, new Account { Id = -1 }).Id;
-			if (secmemid == -1)
+			var d = new Dialog();
+
+			// Ошибка если не задан ни список идентификаторов, ни список никнеймов
+			if (Config1.MembersIds == null && Config1.MembersNicknames == null)
 			{
-				Code = ResponseCode.NicknameNotFound;
+				Code = ResponseCode.InvalidRequest;
 				return;
 			}
 
-			var first = Context.Accounts.First(p => p.Id == Tokens[Config1.Token].Id);
-			var second = Context.Accounts.First(p => p.Id == secmemid);
-
-			var d = new Dialog
+			// Если задан список никнеймов
+			if (Config1.MembersNicknames != null)
 			{
-				FirstMember1 = first,
-				SecondMember1 = second
-			};
+				foreach (var i in Config1.MembersNicknames)
+				{
+					var a = Context.Accounts.FirstOr(p => p.Nickname == i, new Account { AccountId = -1 });
+					if (a.AccountId == -1)
+					{
+						Code = ResponseCode.NicknameNotFound;
+						return;
+					}
+					Context.AccountsDialogs.Add(new AccountDialog(a, d));
+				}
+			}
+			// Иначе если задан список идентификаторов
+			else if (Config1.MembersIds != null)
+			{
+				foreach (var i in Config1.MembersIds)
+				{
+					var a = Context.Accounts.FirstOr(p => p.AccountId == i, new Account { AccountId = -1 });
+					if (a.AccountId == -1)
+					{
+						Code = ResponseCode.IdNotFound;
+						return;
+					}
+					Context.AccountsDialogs.Add(new AccountDialog(a, d));
+				}
+			}
 
 			Context.Dialogs.Add(d);
 			Context.SaveChanges();
 
 			Code = ResponseCode.Ok;
-			resp.DialogId = d.Id;
+			resp.DialogId = d.DialogId;
 		}
 	}
 }

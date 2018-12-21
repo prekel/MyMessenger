@@ -36,27 +36,70 @@ namespace MyMessenger.Server
 				{
 					Nickname = "User1",
 					PasswordHash = Crypto.ComputePasswordHash("123456", s),
-					PasswordSalt = s
+					PasswordSalt = s,
+					RegistrationDateTime = DateTime.Now,
+					//Dialogs = new List<AccountDialog>()
 				};
-				context.Accounts.Add(a1);
 				s = Crypto.GenerateSaltForPassword();
 				var a2 = new Account()
 				{
 					Nickname = "User2",
 					PasswordHash = Crypto.ComputePasswordHash("123456", s),
-					PasswordSalt = s
+					PasswordSalt = s,
+					RegistrationDateTime = DateTime.Now,
+					//Dialogs = new List<AccountDialog>()
 				};
-				context.Accounts.Add(a2);
 
-				var d1 = new Dialog { FirstMember1 = a1, SecondMember1 = a2 };
-				var d2 = new Dialog { FirstMember1 = a1, SecondMember1 = a2 };
+
+				var d1 = new Dialog();
+				var d2 = new Dialog();
+
+				var ac11 = new AccountDialog(a1, d1);
+				//a1.Dialogs.Add(ac11); d1.Members.Add(ac11);
+				var ac12 = new AccountDialog(a1, d2);
+				//a1.Dialogs.Add(ac12); d2.Members.Add(ac12);
+				var ac21 = new AccountDialog(a2, d1);
+				//a2.Dialogs.Add(ac21); d1.Members.Add(ac21);
+				var ac22 = new AccountDialog(a2, d2);
+				//a2.Dialogs.Add(ac22); d2.Members.Add(ac22);
+				context.AccountsDialogs.Add(ac11);
+				context.AccountsDialogs.Add(ac12);
+				context.AccountsDialogs.Add(ac21);
+				context.AccountsDialogs.Add(ac22);
+
+				context.Accounts.Add(a1);
+				context.Accounts.Add(a2);
 				context.Dialogs.Add(d1);
 				context.Dialogs.Add(d2);
 
-				context.Messages.Add(new Message { Text = "123text", Author1 = a1, Dialog1 = d1 });
-				context.Messages.Add(new Message { Text = "234text", Author1 = a2, Dialog1 = d1 });
-				context.Messages.Add(new Message { Text = "111text", Author1 = a1, Dialog1 = d2 });
-				context.Messages.Add(new Message { Text = "222text", Author1 = a1, Dialog1 = d2 });
+				context.Messages.Add(new Message
+				{
+					Text = "123text",
+					Author = a1,
+					Dialog = d1,
+					SendDateTime = DateTime.Now
+				});
+				context.Messages.Add(new Message
+				{
+					Text = "234text",
+					Author = a2,
+					Dialog = d1,
+					SendDateTime = DateTime.Now
+				});
+				context.Messages.Add(new Message
+				{
+					Text = "111text",
+					Author = a1,
+					Dialog = d2,
+					SendDateTime = DateTime.Now
+				});
+				context.Messages.Add(new Message
+				{
+					Text = "222text",
+					Author = a1,
+					Dialog = d2,
+					SendDateTime = DateTime.Now
+				});
 
 				context.SaveChanges();
 			}
@@ -70,11 +113,16 @@ namespace MyMessenger.Server
 				var m = context.Messages;
 				var a = context.Accounts;
 
-				var me = from i in context.Messages where i.Author1.Nickname == "User1" select i;
+				var me = from i in context.Messages where i.Author.Nickname == "User1" select i;
 				Console.WriteLine();
 				foreach (var i in me)
 				{
-					Console.WriteLine($"          {i.Text}");
+					Console.WriteLine($"          {i.Text} {i.SendDateTime}");
+				}
+				Console.WriteLine();
+				foreach (var i in context.Dialogs)
+				{
+					Console.WriteLine($"          {i.DialogId} {String.Join("; ", from j in i.Members select j.Account.Nickname)}");
 				}
 			}
 		}

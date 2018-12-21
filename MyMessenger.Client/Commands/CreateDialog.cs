@@ -25,20 +25,20 @@ namespace MyMessenger.Client.Commands
 		{
 		}
 
-		public CreateDialog(NetworkStream stream, string token, int secondmemberid) : base(stream)
+		public CreateDialog(NetworkStream stream, string token, IList<int> membersids) : base(stream)
 		{
 			Config1 = new CreateDialogParameters
 			{
-				SecondMemberId = secondmemberid,
+				MembersIds = membersids,
 				Token = token
 			};
 		}
 
-		public CreateDialog(NetworkStream stream, string token, string secondmembername) : base(stream)
+		public CreateDialog(NetworkStream stream, string token, IList<string> membersnicknames) : base(stream)
 		{
 			Config1 = new CreateDialogParameters
 			{
-				SecondMemberNickname = secondmembername,
+				MembersNicknames = membersnicknames,
 				Token = token
 			};
 		}
