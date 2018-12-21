@@ -35,6 +35,8 @@ namespace MyMessenger.Server.Commands
 			var resp = new GetMessageLongPoolResponse();
 			Response = resp;
 
+			var notifier = Notifiers[Config1.DialogId, Config1.Token];
+
 			// Проверка на наличие запрашивателя в диалоге
 			var requesterid = Tokens[Config1.Token].AccountId;
 			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
@@ -47,7 +49,7 @@ namespace MyMessenger.Server.Commands
 			// Запуск ожидания на заданный TimeSpan
 			var t = Task.Run(() => { Task.Delay((int)Config1.TimeSpan.TotalMilliseconds).Wait(); });
 
-			Notifiers[Config1.DialogId, Config1.Token].NewMessage += MnOnNewMessage;
+			notifier.NewMessage += MnOnNewMessage;
 
 			try
 			{

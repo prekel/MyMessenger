@@ -13,16 +13,16 @@ namespace MyMessenger.Server.Commands
 	{
 		private SendMessageParameters Config1 { get => (SendMessageParameters)Config; set => Config = value; }
 
-		private MessageNotifier Notifier { get; set; }
+		private IEnumerable<MessageNotifier> Notifiers { get; set; }
 
-		public SendMessage(MessengerContext context, MessageNotifier notifier, AbstractParameters config) : base(context, config)
-		{
-			Notifier = notifier;
-		}
+		//public SendMessage(MessengerContext context, MessageNotifier notifier, AbstractParameters config) : base(context, config)
+		//{
+		//	Notifier = notifier;
+		//}
 
 		public SendMessage(MessengerContext context, IDictionary<string, IAccount> tokens, Notifiers notifiers, AbstractParameters config) : base(context, tokens, config)
 		{
-			Notifier = notifiers[Config1.DialogId, Config1.Token];
+			Notifiers = notifiers[Config1.DialogId];
 		}
 
 		public override void Execute()
@@ -50,7 +50,10 @@ namespace MyMessenger.Server.Commands
 			Context.SaveChanges();
 			Code = ResponseCode.Ok;
 
-			Notifier.MessageSent(m);
+			foreach (var i in Notifiers)
+			{
+				i.MessageSent(m);
+			}
 		}
 	}
 }

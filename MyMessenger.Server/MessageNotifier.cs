@@ -13,6 +13,7 @@ namespace MyMessenger.Server
 		{
 			OnNewMessage(message);
 			CancellationTokenSource.Cancel();
+			CancellationTokenSource = new CancellationTokenSource();
 		}
 
 		protected virtual void OnNewMessage(IMessage message)
@@ -20,7 +21,7 @@ namespace MyMessenger.Server
 			NewMessage?.Invoke(this, new MessageNotifierEventArgs(message));
 		}
 
-		private CancellationTokenSource CancellationTokenSource { get; } = new CancellationTokenSource();
+		private CancellationTokenSource CancellationTokenSource { get; set; } = new CancellationTokenSource();
 
 		public CancellationToken CancellationToken => CancellationTokenSource.Token;
 

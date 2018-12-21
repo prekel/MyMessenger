@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyMessenger.Server
 {
@@ -30,5 +31,7 @@ namespace MyMessenger.Server
 				}
 			}
 		}
+
+		public IEnumerable<MessageNotifier> this[int dialog] => _notifiers[dialog].Values.ToList();
 	}
 }
