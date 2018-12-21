@@ -1,8 +1,7 @@
 ﻿using System;
-
 using Newtonsoft.Json;
 
-namespace MyMessenger.Client
+namespace MyMessenger.Core
 {
 	public class InterfaceConverter<T> : JsonConverter<T>
 	{

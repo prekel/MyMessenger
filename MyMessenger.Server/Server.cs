@@ -165,16 +165,25 @@ namespace MyMessenger.Server
                             }
                         }
 
+                        if (q.Config.CommandName == CommandType.GetMessageLongPool)
+                        {
+                            var gm = new GetMessageLongPool(context, Tokens, Notifiers, q.Config);
+                            gm.Execute();
 
-	                    if (q.Config.CommandName == CommandType.GetMessageLongPool)
-	                    {
-		                    var gm = new GetMessageLongPool(context, Tokens, Notifiers, q.Config);
-		                    gm.Execute();
+                            var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+                            var data = Encoding.UTF8.GetBytes(response);
+                            s.Write(data, 0, data.Length);
+                        }
 
-		                    var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-		                    var data = Encoding.UTF8.GetBytes(response);
-		                    s.Write(data, 0, data.Length);
-	                    }
+                        if (q.Config.CommandName == CommandType.GetAccountById)
+                        {
+                            var gm = new GetAccountById(context, Tokens, q.Config);
+                            gm.Execute();
+
+                            var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+                            var data = Encoding.UTF8.GetBytes(response);
+                            s.Write(data, 0, data.Length);
+                        }
 					}
                     catch (Exception e)
                     {

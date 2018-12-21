@@ -61,7 +61,7 @@ namespace MyMessenger.Server.Commands
 			{
 				// Если пришло сообщение
 				Code = ResponseCode.Ok;
-				resp.Content = new List<IMessage> { Message };
+				resp.Content = Message;
 			}
 			finally
 			{
