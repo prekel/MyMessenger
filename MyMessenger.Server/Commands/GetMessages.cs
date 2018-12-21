@@ -28,14 +28,8 @@ namespace MyMessenger.Server.Commands
 
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
 			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
-			//if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
-			//{
-			//	Code = ResponseCode.AccessDenied;
-			//	return;
-			//}
-
 			var requesterid = Tokens[Config1.Token].AccountId;
-			if (!d.Members.Select(p => p.Account).Any(p => p.AccountId == requesterid))
+			if (d.Members.Select(p => p.Account).All(p => p.AccountId != requesterid))
 			{
 				Code = ResponseCode.AccessDenied;
 				return;

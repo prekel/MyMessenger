@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MyMessenger.Core
 {
@@ -8,6 +9,10 @@ namespace MyMessenger.Core
 
 		DateTime RegistrationDateTime { get; }
 
+		DateTime LoginDateTime { get; }
+
 		string Nickname { get; }
+
+		IEnumerable<IDialog> DialogsA { get; }
 	}
 }

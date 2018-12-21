@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +27,15 @@ namespace MyMessenger.Server.Commands
 
 			var d = new Dialog();
 
+			// Ошибка если не задан ни список идентификаторов, ни список никнеймов
 			if (Config1.MembersIds == null && Config1.MembersNicknames == null)
 			{
 				Code = ResponseCode.InvalidRequest;
 				return;
 			}
 
-			if (Config1.MembersIds == null)
+			// Если задан список никнеймов
+			if (Config1.MembersNicknames != null)
 			{
 				foreach (var i in Config1.MembersNicknames)
 				{
@@ -46,7 +48,8 @@ namespace MyMessenger.Server.Commands
 					Context.AccountsDialogs.Add(new AccountDialog(a, d));
 				}
 			}
-			else
+			// Иначе если задан список идентификаторов
+			else if (Config1.MembersIds != null)
 			{
 				foreach (var i in Config1.MembersIds)
 				{

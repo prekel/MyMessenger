@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -35,25 +35,29 @@ namespace MyMessenger.Server.Commands
 			var resp = new GetMessageLongPoolResponse();
 			Response = resp;
 
-			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
+			// Проверка на наличие запрашивателя в диалоге
 			var requesterid = Tokens[Config1.Token].AccountId;
-			if (!d.Members.Select(p => p.Account).Any(p => p.AccountId == requesterid))
+			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
+			if (d.Members.Select(p => p.Account).All(p => p.AccountId != requesterid))
 			{
 				Code = ResponseCode.AccessDenied;
 				return;
 			}
 
+			// Запуск ожидания на заданный TimeSpan
 			var t = Task.Run(() => { Task.Delay(Config1.TimeSpan.Milliseconds).Wait(); });
 
 			Notifiers[Config1.DialogId, Config1.Token].NewMessage += MnOnNewMessage;
 
 			try
 			{
+				// Если TimeSpan истёк до того, как пришло сообщение
 				t.Wait(Notifiers[Config1.DialogId, Config1.Token].CancellationToken);
 				Code = ResponseCode.LongPoolTimeSpanExpired;
 			}
 			catch (OperationCanceledException)
 			{
+				// Если пришло сообщение
 				Code = ResponseCode.Ok;
 				resp.Content = new List<IMessage> { Message };
 			}

@@ -133,15 +133,17 @@ namespace MyMessenger.Client.Console
 								{
 									mids.Add(Int32.Parse(p[i]));
 								}
-								new CreateDialog(stream, p[1], mids);
+								command = new CreateDialog(stream, p[1], mids);
 							}
-
-							command = Int32.TryParse(p[2], out var sid)
-								? new CreateDialog(stream, p[1], sid)
-								: new CreateDialog(stream, p[1], p[2]);
-
-
-
+							else
+							{
+								var mn = new List<string>();
+								for (var i = 2; i < p.Length; i++)
+								{
+									mn.Add(p[i]);
+								}
+								command = new CreateDialog(stream, p[1], mn);
+							}
 							command.Execute();
 						}
 
@@ -160,6 +162,14 @@ namespace MyMessenger.Client.Console
 								WriteLine($"Автор: {m.AuthorA.Nickname}");
 								WriteLine($"Текст: {m.Text}");
 							}
+						}
+
+						if (GetMessageLongPool.CommandNames.Contains(cmd))
+						{
+							command = new GetMessageLongPool(stream, p[1], Int32.Parse(p[2]),
+								TimeSpan.FromSeconds(Int32.Parse(p[3])));
+
+							command.Execute();
 						}
 
 						if (cmd == "test")

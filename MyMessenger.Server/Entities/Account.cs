@@ -22,6 +22,9 @@ namespace MyMessenger.Server.Entities
 		[JsonProperty]
 		public DateTime RegistrationDateTime { get; set; }
 
+		[JsonProperty]
+		public DateTime LoginDateTime { get; set; }
+
 		[MaxLength(32)]
 		public byte[] PasswordHash { get; set; }
 		public int PasswordSalt { get; set; }
