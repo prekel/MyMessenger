@@ -125,9 +125,22 @@ namespace MyMessenger.Client.Console
 
 						if (CreateDialog.CommandNames.Contains(cmd))
 						{
+							var token = p[1];
+							if (Int32.TryParse(p[2], out var sid))
+							{
+								var mids = new List<int>();
+								for (var i = 2; i < p.Length; i++)
+								{
+									mids.Add(Int32.Parse(p[i]));
+								}
+								new CreateDialog(stream, p[1], mids);
+							}
+
 							command = Int32.TryParse(p[2], out var sid)
 								? new CreateDialog(stream, p[1], sid)
 								: new CreateDialog(stream, p[1], p[2]);
+
+
 
 							command.Execute();
 						}

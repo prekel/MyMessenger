@@ -35,6 +35,14 @@ namespace MyMessenger.Server.Commands
 			var resp = new GetMessageLongPoolResponse();
 			Response = resp;
 
+			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
+			var requesterid = Tokens[Config1.Token].AccountId;
+			if (!d.Members.Select(p => p.Account).Any(p => p.AccountId == requesterid))
+			{
+				Code = ResponseCode.AccessDenied;
+				return;
+			}
+
 			var t = Task.Run(() => { Task.Delay(Config1.TimeSpan.Milliseconds).Wait(); });
 
 			Notifiers[Config1.DialogId, Config1.Token].NewMessage += MnOnNewMessage;
@@ -48,6 +56,10 @@ namespace MyMessenger.Server.Commands
 			{
 				Code = ResponseCode.Ok;
 				resp.Content = new List<IMessage> { Message };
+			}
+			finally
+			{
+				Notifiers[Config1.DialogId, Config1.Token].NewMessage -= MnOnNewMessage;
 			}
 		}
 
