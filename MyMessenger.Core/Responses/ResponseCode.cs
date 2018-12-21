@@ -49,6 +49,10 @@ namespace MyMessenger.Core.Responses
 		/// <summary>
 		/// Время для LongPoll кончилось
 		/// </summary>
-		LongPoolTimeSpanExpired
+		LongPoolTimeSpanExpired,
+		/// <summary>
+		/// Сущность с таким идентификатором не найдена
+		/// </summary>
+		IdNotFound
 	}
 }

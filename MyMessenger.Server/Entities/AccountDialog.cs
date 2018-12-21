@@ -12,7 +12,13 @@ namespace MyMessenger.Server.Entities
 {
 	public class AccountDialog
 	{
-		public int AccountDialogId { get; set; }
+		public AccountDialog(Account account, Dialog dialog)
+		{
+			Account = account;
+			Dialog = dialog;
+		}
+
+		//public int AccountDialogId { get; set; }
 
 		[NotMapped]
 		public int AccountId { get; set; }

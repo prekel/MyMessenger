@@ -32,8 +32,8 @@ namespace MyMessenger.Server
 
 			modelBuilder.Entity<AccountDialog>(entity =>
 			{
-				//entity.HasKey(t => new { t.AccountId, t.DialogId });
-				entity.HasKey(t => t.AccountDialogId);
+				entity.HasKey(t => new { t.AccountId, t.DialogId });
+				//entity.HasKey(t => t.AccountDialogId);
 
 				entity.HasOne(ad => ad.Account)
 					.WithMany(a => a.Dialogs)

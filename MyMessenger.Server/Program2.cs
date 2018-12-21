@@ -54,13 +54,13 @@ namespace MyMessenger.Server
 				var d1 = new Dialog();
 				var d2 = new Dialog();
 
-				var ac11 = new AccountDialog { Account = a1, Dialog = d1 };
+				var ac11 = new AccountDialog(a1, d1);
 				//a1.Dialogs.Add(ac11); d1.Members.Add(ac11);
-				var ac12 = new AccountDialog { Account = a1, Dialog = d2 };
+				var ac12 = new AccountDialog(a1, d2);
 				//a1.Dialogs.Add(ac12); d2.Members.Add(ac12);
-				var ac21 = new AccountDialog { Account = a2, Dialog = d1 };
+				var ac21 = new AccountDialog(a2, d1);
 				//a2.Dialogs.Add(ac21); d1.Members.Add(ac21);
-				var ac22 = new AccountDialog { Account = a2, Dialog = d2 };
+				var ac22 = new AccountDialog(a2, d2);
 				//a2.Dialogs.Add(ac22); d2.Members.Add(ac22);
 				context.AccountsDialogs.Add(ac11);
 				context.AccountsDialogs.Add(ac12);
