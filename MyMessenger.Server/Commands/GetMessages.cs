@@ -14,9 +14,9 @@ namespace MyMessenger.Server.Commands
 	public class GetMessages : AbstractCommand
 	{
 		private GetMessagesParameters Config1 { get => (GetMessagesParameters)Config; set => Config = value; }
-		
+
 		public IQueryable<Message> Result { get; private set; }
-		
+
 		public GetMessages(MessengerContext context, IDictionary<string, IAccount> tokens, AbstractParameters config) : base(context, tokens, config)
 		{
 		}
@@ -25,16 +25,22 @@ namespace MyMessenger.Server.Commands
 		{
 			var resp = new GetMessagesResponse();
 			Response = resp;
-			
+
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
 			var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
-			 //if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
-			 //{
-			 //	Code = ResponseCode.AccessDenied;
-			 //	return;
-			 //}
-			
-			
+			//if (d.FirstMember.AccountId != Tokens[Config1.Token].AccountId && d.SecondMember.AccountId != Tokens[Config1.Token].AccountId)
+			//{
+			//	Code = ResponseCode.AccessDenied;
+			//	return;
+			//}
+
+			var requesterid = Tokens[Config1.Token].AccountId;
+			if (!d.Members.Select(p => p.Account).Any(p => p.AccountId == requesterid))
+			{
+				Code = ResponseCode.AccessDenied;
+				return;
+			}
+
 			// Запрос сообщений из базы
 			var r = from i in Context.Messages where i.Dialog.DialogId == Config1.DialogId select i;
 			Result = r;
