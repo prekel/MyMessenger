@@ -10,8 +10,10 @@ namespace MyMessenger.Core
 
 		DateTime SendDateTime { get; }
 
-		IDialog DialogA { get; }
+		int DialogId { get; }
+		//IDialog DialogA { get; }
 
-		IAccount AuthorA { get; }
+		int AuthorId { get; }
+		//IAccount AuthorA { get; }
 	}
 }

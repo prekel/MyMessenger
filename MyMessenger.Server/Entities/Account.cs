@@ -21,7 +21,10 @@ namespace MyMessenger.Server.Entities
 		public string Nickname { get; set; }
 
 		[JsonProperty]
-		public IEnumerable<IDialog> DialogsA => Dialogs.Select(p => p.Dialog);
+		public IEnumerable<int> DialogsIds => Dialogs.Select(p => p.Dialog.DialogId);
+
+		//[JsonProperty]
+		//public IEnumerable<IDialog> DialogsA => Dialogs.Select(p => p.Dialog);
 
 		[JsonProperty]
 		public DateTime RegistrationDateTime { get; set; }

@@ -19,7 +19,10 @@ namespace MyMessenger.Client
 		public string Nickname { get; set; }
 
 		[JsonProperty]
-		public IEnumerable<IDialog> DialogsA { get; }
+		public IEnumerable<int> DialogsIds { get; }
+
+		//[JsonProperty]
+		//public IEnumerable<IDialog> DialogsA { get; }
 
 		[JsonProperty]
 		public DateTime RegistrationDateTime { get; }

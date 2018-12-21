@@ -55,7 +55,12 @@ namespace MyMessenger.Server
 				entity.Property(e => e.LoginDateTime).IsRequired();
 
 				entity.HasMany(e => e.Messages)
-					.WithOne(e => e.Author);
+					.WithOne(e => e.Author)
+					.HasForeignKey(p => p.AuthorId);
+
+				entity.HasMany(e => e.Dialogs)
+					.WithOne(e => e.Account)
+					.HasForeignKey(p => p.AccountId);
 			});
 
 			modelBuilder.Entity<Dialog>(entity =>
@@ -63,7 +68,12 @@ namespace MyMessenger.Server
 				entity.HasKey(e => e.DialogId);
 
 				entity.HasMany(e => e.Messages)
-					.WithOne(e => e.Dialog);
+					.WithOne(e => e.Dialog)
+					.HasForeignKey(p => p.DialogId);
+
+				entity.HasMany(e => e.Members)
+					.WithOne(e => e.Dialog)
+					.HasForeignKey(p => p.DialogId);
 			});
 
 			modelBuilder.Entity<Message>(entity =>
@@ -74,9 +84,11 @@ namespace MyMessenger.Server
 				entity.Property(e => e.SendDateTime).IsRequired();
 
 				entity.HasOne(e => e.Author)
-					.WithMany(p => p.Messages);
+					.WithMany(p => p.Messages)
+					.HasForeignKey(p => p.AuthorId);
 				entity.HasOne(d => d.Dialog)
-					.WithMany(p => p.Messages);
+					.WithMany(p => p.Messages)
+					.HasForeignKey(p => p.DialogId);
 			});
 		}
 	}

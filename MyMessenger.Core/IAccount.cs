@@ -13,6 +13,8 @@ namespace MyMessenger.Core
 
 		string Nickname { get; }
 
-		IEnumerable<IDialog> DialogsA { get; }
+		IEnumerable<int> DialogsIds { get; }
+
+		//IEnumerable<IDialog> DialogsA { get; }
 	}
 }

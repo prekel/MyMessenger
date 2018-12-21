@@ -45,7 +45,7 @@ namespace MyMessenger.Server.Commands
 			}
 
 			// Запуск ожидания на заданный TimeSpan
-			var t = Task.Run(() => { Task.Delay(Config1.TimeSpan.Milliseconds).Wait(); });
+			var t = Task.Run(() => { Task.Delay((int)Config1.TimeSpan.TotalMilliseconds).Wait(); });
 
 			Notifiers[Config1.DialogId, Config1.Token].NewMessage += MnOnNewMessage;
 

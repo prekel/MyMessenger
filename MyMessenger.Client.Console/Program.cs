@@ -88,7 +88,7 @@ namespace MyMessenger.Client.Console
 							foreach (var i in res.Content)
 							{
 								WriteLine("--------");
-								WriteLine($"Автор: {i.AuthorA.Nickname}");
+								WriteLine($"Автор: {i.AuthorId}");
 								WriteLine($"Текст: {i.Text}");
 							}
 						}
@@ -159,7 +159,7 @@ namespace MyMessenger.Client.Console
 								ds.Receive();
 								var m = ds.Response.Message;
 								WriteLine("--------");
-								WriteLine($"Автор: {m.AuthorA.Nickname}");
+								WriteLine($"Автор: {m.AuthorId}");
 								WriteLine($"Текст: {m.Text}");
 							}
 						}

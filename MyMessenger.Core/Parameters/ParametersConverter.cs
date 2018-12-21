@@ -67,7 +67,7 @@ namespace MyMessenger.Core.Parameters
 			{
 				ret = obj.ToObject<CreateDialogParameters>();
 			}
-			if (command == CommandType.DialogSession)
+			else if (command == CommandType.DialogSession)
 			{
 				ret = obj.ToObject<DialogSessionParameters>();
 			}

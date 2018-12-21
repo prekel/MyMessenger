@@ -14,10 +14,13 @@ namespace MyMessenger.Server.Entities
 	{
 		[JsonProperty]
 		public int DialogId { get; set; }
-		
+
 		[JsonProperty]
-		public IEnumerable<IAccount> MembersA => Members.Select(p => p.Account);
-		
+		public IEnumerable<int> MembersIds => Members.Select(p => p.Account.AccountId);
+
+		//[JsonProperty]
+		//public IEnumerable<IAccount> MembersA => Members.Select(p => p.Account);
+
 		public virtual IList<Message> Messages { get; set; }
 
 		public virtual List<AccountDialog> Members { get; set; }

@@ -12,7 +12,10 @@ namespace MyMessenger.Client
 		public int DialogId { get; set; }
 
 		[JsonProperty]
-		[JsonConverter(typeof(InterfaceConverter<Account>))]
-		public IEnumerable<IAccount> MembersA { get; set; }
+		public IEnumerable<int> MembersIds { get; }
+
+		//[JsonProperty]
+		//[JsonConverter(typeof(InterfaceConverter<Account>))]
+		//public IEnumerable<IAccount> MembersA { get; set; }
 	}
 }
