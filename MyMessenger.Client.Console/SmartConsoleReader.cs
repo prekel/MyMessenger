@@ -37,9 +37,14 @@ namespace MyMessenger.Client.Console
 			while (true)
 			{
 				CurrentKey = ReadKey(true);
-				if (CurrentKey.Key == ConsoleKey.Enter)
+				
+				if (CurrentKey.Key != ConsoleKey.UpArrow && CurrentKey.Key != ConsoleKey.DownArrow)
 				{
 					HistoryIndex = 0;
+				}
+
+				if (CurrentKey.Key == ConsoleKey.Enter)
+				{
 					Write('\n');
 					var ret = CurrentString.ToString();
 					CurrentString.Clear();
@@ -48,7 +53,6 @@ namespace MyMessenger.Client.Console
 				}
 				else if (CurrentKey.Key == Tab)
 				{
-					HistoryIndex = 0;
 					if (AutoCompleter == null)
 					{
 						AutoCompleter = new SmartAutoComplete(CurrentString, LastWord, CompleteList);
@@ -57,7 +61,6 @@ namespace MyMessenger.Client.Console
 				}
 				else if (CurrentKey.Key == ConsoleKey.Backspace)
 				{
-					HistoryIndex = 0;
 					AutoCompleter = null;
 					if (CurrentString.Length <= 0 || CursorLeft <= 0) continue;
 					CursorLeft--;
@@ -91,7 +94,6 @@ namespace MyMessenger.Client.Console
 				}
 				else
 				{
-					HistoryIndex = 0;
 					AutoCompleter = null;
 					if (CurrentKey.KeyChar == '\0') continue;
 					Write(CurrentKey.KeyChar);
