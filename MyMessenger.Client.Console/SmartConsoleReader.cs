@@ -28,6 +28,10 @@ namespace MyMessenger.Client.Console
 
 		public IList<string> History { get; } = new List<string>();
 
+		private int HistoryIndex { get; set; }
+
+		private string HistoryString { get; set; }
+
 		public string NextString()
 		{
 			while (true)
@@ -35,14 +39,16 @@ namespace MyMessenger.Client.Console
 				CurrentKey = ReadKey(true);
 				if (CurrentKey.Key == ConsoleKey.Enter)
 				{
+					HistoryIndex = 0;
 					Write('\n');
 					var ret = CurrentString.ToString();
 					CurrentString.Clear();
-					History.Append(ret);
+					History.Add(ret);
 					return ret;
 				}
 				else if (CurrentKey.Key == Tab)
 				{
+					HistoryIndex = 0;
 					if (AutoCompleter == null)
 					{
 						AutoCompleter = new SmartAutoComplete(CurrentString, LastWord, CompleteList);
@@ -51,6 +57,7 @@ namespace MyMessenger.Client.Console
 				}
 				else if (CurrentKey.Key == ConsoleKey.Backspace)
 				{
+					HistoryIndex = 0;
 					AutoCompleter = null;
 					if (CurrentString.Length <= 0 || CursorLeft <= 0) continue;
 					CursorLeft--;
@@ -58,8 +65,33 @@ namespace MyMessenger.Client.Console
 					CursorLeft--;
 					CurrentString.Remove(CurrentString.Length - 1, 1);
 				}
+				else if (CurrentKey.Key == ConsoleKey.UpArrow)
+				{
+					ConsoleWipe.Wipe(CurrentString, CurrentString.Length);
+					if (HistoryIndex >= History.Count)
+					{
+						ConsoleWipe.Append(CurrentString, HistoryString);
+						HistoryIndex = 0;
+						continue;
+					}
+					HistoryIndex++;
+					ConsoleWipe.Append(CurrentString, History[History.Count - HistoryIndex]);
+				}
+				else if (CurrentKey.Key == ConsoleKey.DownArrow)
+				{
+					ConsoleWipe.Wipe(CurrentString, CurrentString.Length);
+					if (HistoryIndex <= 1)
+					{
+						ConsoleWipe.Append(CurrentString, HistoryString);
+						HistoryIndex = 0;
+						continue;
+					}
+					HistoryIndex--;
+					ConsoleWipe.Append(CurrentString, History[History.Count - HistoryIndex]);
+				}
 				else
 				{
+					HistoryIndex = 0;
 					AutoCompleter = null;
 					if (CurrentKey.KeyChar == '\0') continue;
 					Write(CurrentKey.KeyChar);
