@@ -45,6 +45,7 @@ namespace MyMessenger.Client.Console
 				}
 				else if (CurrentKey.Key == ConsoleKey.Backspace)
 				{
+					AutoCompleter = null;
 					if (CurrentString.Length <= 0 || CursorLeft <= 0) continue;
 					CursorLeft--;
 					Write(" ");
@@ -53,10 +54,7 @@ namespace MyMessenger.Client.Console
 				}
 				else
 				{
-					if (CurrentKey.Key == ConsoleKey.Spacebar)
-					{
-						AutoCompleter = null;
-					}
+					AutoCompleter = null;
 					Write(CurrentKey.KeyChar);
 					CurrentString.Append(CurrentKey.KeyChar);
 				}

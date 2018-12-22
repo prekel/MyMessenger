@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static System.Console;
 
@@ -15,7 +16,7 @@ namespace MyMessenger.Client.Console
 		private string LastCompletedSubstring { get; set; }
 		//private int LastIndex { get; set; }
 
-		private IList<string> CompleteList { get; }
+		private IEnumerable<string> CompleteList { get; }
 		private string LastWord { get; }
 
 		private IEnumerator<string> CompleteListEnumerator { get; }
@@ -24,15 +25,18 @@ namespace MyMessenger.Client.Console
 		{
 			CurrentString = currentString;
 			LastWord = last;
-			CompleteList = completeList;
-			CompleteListEnumerator = completeList.GetEnumerator();
+			CompleteList = completeList
+				.Where(p => p.StartsWith(LastWord, StringComparison.InvariantCulture))
+				.Select(p => p)
+				.Append(LastWord)
+				.ToList();
+			CompleteListEnumerator = CompleteList.GetEnumerator();
 		}
 
 		~SmartAutoComplete()
 		{
 			CompleteListEnumerator.Dispose();
 		}
-
 
 		private void Append(string str)
 		{
@@ -58,21 +62,20 @@ namespace MyMessenger.Client.Console
 			{
 				Wipe(LastCompletedSubstring.Length);
 			}
-				IsCompletedStarts = true;
-			while (true)
+			IsCompletedStarts = true;
+
+			if (!CompleteList.Any())
 			{
-				if (CompleteListEnumerator.MoveNext() == false)
-				{
-					CompleteListEnumerator.Reset();
-					CompleteListEnumerator.MoveNext();
-				}
-				var i = CompleteListEnumerator.Current;
-				if (i.IndexOf(LastWord, StringComparison.InvariantCulture) == 0)
-				{
-					LastCompletedWord = i;
-					break;
-				}
+				return;
 			}
+
+			if (CompleteListEnumerator.MoveNext() == false)
+			{
+				CompleteListEnumerator.Reset();
+				CompleteListEnumerator.MoveNext();
+			}
+
+			LastCompletedWord = CompleteListEnumerator.Current;
 
 			LastCompletedSubstring = LastCompletedWord.Substring(LastWord.Length);
 
