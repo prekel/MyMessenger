@@ -33,7 +33,10 @@ namespace MyMessenger.Client.Console
 				CurrentKey = ReadKey(true);
 				if (CurrentKey.Key == ConsoleKey.Enter)
 				{
-					return CurrentString.ToString();
+					Write('\n');
+					var ret = CurrentString.ToString();
+					CurrentString.Clear();
+					return ret;
 				}
 				else if (CurrentKey.Key == Tab)
 				{
@@ -55,6 +58,7 @@ namespace MyMessenger.Client.Console
 				else
 				{
 					AutoCompleter = null;
+					if (CurrentKey.KeyChar == '\0') continue;
 					Write(CurrentKey.KeyChar);
 					CurrentString.Append(CurrentKey.KeyChar);
 				}
