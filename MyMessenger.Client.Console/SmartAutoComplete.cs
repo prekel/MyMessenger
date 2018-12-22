@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using static System.Console;
 
@@ -8,50 +7,32 @@ namespace MyMessenger.Client.Console
 {
 	public class SmartAutoComplete
 	{
-		private StringBuilder CurrentString { get; set; } = new StringBuilder();
+		private StringBuilder CurrentString { get; }
 
-		private ConsoleKeyInfo CurrentKey { get; set; }
+		private bool IsCompletedStarts { get; set; }
 
-		private ConsoleKey Tab { get; }
+		private string LastCompletedWord { get; set; }
+		private string LastCompletedSubstring { get; set; }
+		//private int LastIndex { get; set; }
 
-		private string LastWord => CurrentString.ToString().Split().Last();
+		private IList<string> CompleteList { get; }
+		private string LastWord { get; }
 
-		public IList<string> CompleteList { get; set; }
+		private IEnumerator<string> CompleteListEnumerator { get; }
 
-		public SmartAutoComplete(IList<string> completelist, ConsoleKey tab = ConsoleKey.Tab)
+		public SmartAutoComplete(StringBuilder currentString, string last, IList<string> completeList)
 		{
-			Tab = tab;
-			CompleteList = completelist;
+			CurrentString = currentString;
+			LastWord = last;
+			CompleteList = completeList;
+			CompleteListEnumerator = completeList.GetEnumerator();
 		}
 
-		public string NextString()
+		~SmartAutoComplete()
 		{
-			while (true)
-			{
-				CurrentKey = ReadKey(true);
-				if (CurrentKey.Key == ConsoleKey.Enter)
-				{
-					return CurrentString.ToString();
-				}
-				else if (CurrentKey.Key == Tab)
-				{
-					CompleteOnTab();
-				}
-				else if (CurrentKey.Key == ConsoleKey.Backspace)
-				{
-					if (CurrentString.Length <= 0 || CursorLeft <= 0) continue;
-					CursorLeft--;
-					Write(" ");
-					CursorLeft--;
-					CurrentString.Remove(CurrentString.Length - 1, 1);
-				}
-				else
-				{
-					Write(CurrentKey.KeyChar);
-					CurrentString.Append(CurrentKey.KeyChar);
-				}
-			}
+			CompleteListEnumerator.Dispose();
 		}
+
 
 		private void Append(string str)
 		{
@@ -71,25 +52,31 @@ namespace MyMessenger.Client.Console
 			}
 		}
 
-		private bool IsCompletedStarts { get; set; }
-		private string LastCompletedWord { get; set; }
-		private string LastCompletedSubstring { get; set; }
-		private int LastIndex { get; set; }
-
-		private void CompleteOnTab()
+		public void CompleteOnTab()
 		{
-			var lw = LastWord;
-			for (var index = LastIndex; index < CompleteList.Count; index++)
+			if (IsCompletedStarts)
 			{
-				var i = CompleteList[index];
-				//if (i.IndexOf(lw, StringComparison.InvariantCultureIgnoreCase) == 0)
-				if (i.IndexOf(lw, StringComparison.InvariantCulture) != 0) continue;
-				LastCompletedSubstring = i.Substring(lw.Length);
-				Write(LastCompletedSubstring);
-				CurrentString.Append(LastCompletedSubstring);
-				LastIndex = index;
-				break;
+				Wipe(LastCompletedSubstring.Length);
 			}
+				IsCompletedStarts = true;
+			while (true)
+			{
+				if (CompleteListEnumerator.MoveNext() == false)
+				{
+					CompleteListEnumerator.Reset();
+					CompleteListEnumerator.MoveNext();
+				}
+				var i = CompleteListEnumerator.Current;
+				if (i.IndexOf(LastWord, StringComparison.InvariantCulture) == 0)
+				{
+					LastCompletedWord = i;
+					break;
+				}
+			}
+
+			LastCompletedSubstring = LastCompletedWord.Substring(LastWord.Length);
+
+			Append(LastCompletedSubstring);
 		}
 	}
 }
