@@ -18,12 +18,12 @@ namespace MyMessenger.Client.Console
 		public static void Main(string[] args)
 		{
 			var arglist = new List<string>(args);
-			
+
 			if (!IPAddress.TryParse(arglist.FirstOrDefault() ?? "", out var ip))
 			{
 				ip = IPAddress.Loopback;
 			}
-			
+
 			OutputEncoding = Encoding.UTF8;
 			//InputEncoding = Encoding.Unicode;
 			if (args.Contains("utf16"))
@@ -39,52 +39,30 @@ namespace MyMessenger.Client.Console
 				InputEncoding = Encoding.GetEncoding(1251);
 			}
 
-			System.Console.CancelKeyPress += ConsoleOnCancelKeyPress;
-			var comp = new SmartConsoleReader(new []
-			{
-				"qwerty",
-				"qwertyu",
-				"qwertyui",
-				"qwertyasdaf",
-				"qwwdfg",
-				"asdfg",
-				"asdfg1",
-				"dada",
-				"dada1223",
-				"qq"
-			});
-			while (true)
-			{
-				var x = comp.NextString();
-			}
-			
+			CancelKeyPress += ConsoleOnCancelKeyPress;
+
+			var reader = new SmartConsoleReader(
+				typeof(AbstractCommand)
+					.Assembly
+					.ExportedTypes
+					.Where(_ => _.BaseType == typeof(AbstractCommand))
+					.Select(_ => ((IEnumerable<string>)_
+						.GetProperty("CommandNames")
+						.GetValue(null))
+						.First()
+					)
+				);
+
 			try
 			{
-				//var q = new Query
-				//{
-				//	Config = new RegisterParameters
-				//	{
-				//		Nickname = "User3",
-				//		Password = "123"
-				//	}
-				//};
-				//var a = JsonConvert.SerializeObject(q);
-				//var w = JsonConvert.DeserializeObject<Query>(a);
-
-
-				//var data = new byte[256];
-				//var response = new StringBuilder();
-
 				while (true)
 				{
 					Write("> ");
-					var s = ReadLine();
+					var s = reader.NextString();
 					var p = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 					var cmd = p[0];
 
 					var client = new TcpClient();
-
-					
 					
 					client.Connect(ip, 20522);
 					var stream = client.GetStream();

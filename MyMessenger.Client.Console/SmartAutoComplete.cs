@@ -21,7 +21,7 @@ namespace MyMessenger.Client.Console
 
 		private IEnumerator<string> CompleteListEnumerator { get; }
 
-		public SmartAutoComplete(StringBuilder currentString, string last, IList<string> completeList)
+		public SmartAutoComplete(StringBuilder currentString, string last, IEnumerable<string> completeList)
 		{
 			CurrentString = currentString;
 			LastWord = last;

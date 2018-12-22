@@ -16,9 +16,9 @@ namespace MyMessenger.Client.Console
 
 		private string LastWord => CurrentString.ToString().Split().Last();
 
-		public IList<string> CompleteList { get; set; }
+		public IEnumerable<string> CompleteList { get; set; }
 
-		public SmartConsoleReader(IList<string> completelist, ConsoleKey tab = ConsoleKey.Tab)
+		public SmartConsoleReader(IEnumerable<string> completelist, ConsoleKey tab = ConsoleKey.Tab)
 		{
 			Tab = tab;
 			CompleteList = completelist;
