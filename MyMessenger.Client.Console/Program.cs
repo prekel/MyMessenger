@@ -40,6 +40,11 @@ namespace MyMessenger.Client.Console
 			}
 
 			System.Console.CancelKeyPress += ConsoleOnCancelKeyPress;
+			var comp = new SmartAutoComplete(new []{ "qwerty", "asdfg"});
+			while (true)
+			{
+				var x = comp.NextString();
+			}
 			
 			try
 			{
