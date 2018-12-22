@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using static System.Console;
 
 namespace MyMessenger.Client.Console
 {
@@ -38,29 +37,11 @@ namespace MyMessenger.Client.Console
 			CompleteListEnumerator.Dispose();
 		}
 
-		private void Append(string str)
-		{
-			CurrentString.Append(str);
-			Write(str);
-		}
-
-		private void Wipe(int len)
-		{
-			while (len-- > 0)
-			{
-				if (CurrentString.Length <= 0 || CursorLeft <= 0) continue;
-				CursorLeft--;
-				Write(" ");
-				CursorLeft--;
-				CurrentString.Remove(CurrentString.Length - 1, 1);
-			}
-		}
-
 		public void CompleteOnTab()
 		{
 			if (IsCompletedStarts)
 			{
-				Wipe(LastCompletedSubstring.Length);
+				ConsoleWipe.Wipe(CurrentString, LastCompletedSubstring.Length);
 			}
 			IsCompletedStarts = true;
 
@@ -79,7 +60,7 @@ namespace MyMessenger.Client.Console
 
 			LastCompletedSubstring = LastCompletedWord.Substring(LastWord.Length);
 
-			Append(LastCompletedSubstring);
+			ConsoleWipe.Append(CurrentString, LastCompletedSubstring);
 		}
 	}
 }

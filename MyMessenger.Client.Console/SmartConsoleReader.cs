@@ -26,6 +26,8 @@ namespace MyMessenger.Client.Console
 
 		private SmartAutoComplete AutoCompleter { get; set; }
 
+		public IList<string> History { get; } = new List<string>();
+
 		public string NextString()
 		{
 			while (true)
@@ -36,6 +38,7 @@ namespace MyMessenger.Client.Console
 					Write('\n');
 					var ret = CurrentString.ToString();
 					CurrentString.Clear();
+					History.Append(ret);
 					return ret;
 				}
 				else if (CurrentKey.Key == Tab)
