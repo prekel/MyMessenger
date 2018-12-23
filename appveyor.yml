@@ -40,7 +40,7 @@ deploy:
   password:
     secure: Ms8unA4ChOoYMeatsRrA/g==
   folder: MyMessenger\MyMessenger-$(APPVEYOR_BUILD_VERSION)
-  application: MyMessenger-$(APPVEYOR_BUILD_VERSION)
+  application: MyMessenger_Server_$(APPVEYOR_BUILD_VERSION)
   on:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 
     SHOULD_DEPLOY: true
@@ -50,7 +50,7 @@ deploy:
   description: $(appveyor_repo_tag_name) $(APPVEYOR_BUILD_VERSION)
   auth_token:
     secure: Npd8Pdh2luH0INNPoAQXoPC2g71ZM39Ys1Cu842ZZaRFt6B45Or6vy1bV10x0oSn
-  artifact: MyMessenger_All_Files; MyMessenger_Client_$(APPVEYOR_BUILD_VERSION); MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_linux-x64; MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x64; MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x86; MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_linux-x64; MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x64; MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x86
+  artifact: MyMessenger_All_Files; MyMessenger_Client_$(APPVEYOR_BUILD_VERSION); MyMessenger_Server_$(APPVEYOR_BUILD_VERSION); MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_linux-x64; MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x64; MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x86; MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_linux-x64; MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x64; MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x86
   draft: false
   prerelease: true
   on:
