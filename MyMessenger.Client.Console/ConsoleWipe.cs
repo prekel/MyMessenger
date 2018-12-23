@@ -21,5 +21,16 @@ namespace MyMessenger.Client.Console
 				current.Remove(current.Length - 1, 1);
 			}
 		}
+
+		public static void Wipe(int len)
+		{
+			while (len-- > 0)
+			{
+				if (System.Console.CursorLeft <= 0) continue;
+				System.Console.CursorLeft--;
+				System.Console.Write(" ");
+				System.Console.CursorLeft--;
+			}
+		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using static System.Console;
 
@@ -8,7 +9,7 @@ namespace MyMessenger.Client.Console
 {
 	public class SmartConsoleReader
 	{
-		private StringBuilder CurrentString { get; } = new StringBuilder();
+		public StringBuilder CurrentString { get; } = new StringBuilder();
 
 		private ConsoleKeyInfo CurrentKey { get; set; }
 
@@ -18,10 +19,13 @@ namespace MyMessenger.Client.Console
 
 		public IEnumerable<string> CompleteList { get; set; }
 
-		public SmartConsoleReader(IEnumerable<string> completelist, ConsoleKey tab = ConsoleKey.Tab)
+		private string Prefix { get; }
+
+		public SmartConsoleReader(IEnumerable<string> completelist, string prefix, ConsoleKey tab = ConsoleKey.Tab)
 		{
 			Tab = tab;
 			CompleteList = completelist;
+			Prefix = prefix;
 		}
 
 		private SmartAutoComplete AutoCompleter { get; set; }
@@ -31,6 +35,11 @@ namespace MyMessenger.Client.Console
 		private int HistoryIndex { get; set; }
 
 		private string HistoryString { get; set; }
+
+		public void WritePrefix()
+		{
+			Write(Prefix);
+		}
 
 		public string NextString()
 		{
@@ -46,6 +55,7 @@ namespace MyMessenger.Client.Console
 				if (CurrentKey.Key == ConsoleKey.Enter)
 				{
 					Write('\n');
+					WritePrefix();
 					var ret = CurrentString.ToString();
 					CurrentString.Clear();
 					History.Add(ret);
@@ -92,6 +102,10 @@ namespace MyMessenger.Client.Console
 					HistoryIndex--;
 					ConsoleWipe.Append(CurrentString, History[History.Count - HistoryIndex]);
 				}
+				//else if (CurrentKey.Key == ConsoleKey.Delete)
+				//{
+				//	new SmartConsoleWriter(this).WriteLine("asdf");
+				//}
 				else
 				{
 					AutoCompleter = null;
@@ -100,6 +114,17 @@ namespace MyMessenger.Client.Console
 					CurrentString.Append(CurrentKey.KeyChar);
 				}
 			}
+		}
+
+		public void WriteCurrent()
+		{
+			Write(Prefix);
+			Write(CurrentString);
+		}
+
+		public void WipeCurrent()
+		{
+			ConsoleWipe.Wipe(CurrentString.Length + Prefix.Length);
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Timers;
 using static System.Console;
 using Newtonsoft.Json;
 using MyMessenger.Core;
@@ -41,17 +42,35 @@ namespace MyMessenger.Client.Console
 
 			CancelKeyPress += ConsoleOnCancelKeyPress;
 
-			var reader = new SmartConsoleReader(
-				typeof(AbstractCommand)
-					.Assembly
-					.ExportedTypes
-					.Where(_ => _.BaseType == typeof(AbstractCommand))
-					.Select(_ => ((IEnumerable<string>)_
+			var cmds = typeof(AbstractCommand)
+				.Assembly
+				.ExportedTypes
+				.Where(_ => _.BaseType == typeof(AbstractCommand))
+				.Select(_ => ((IEnumerable<string>)_
 						.GetProperty("CommandNames")
 						.GetValue(null))
-						.First()
-					)
-				);
+					.First());
+			var reader = new SmartConsoleReader(cmds, "> ");
+			var writer = new SmartConsoleWriter(reader);
+
+			var timer = new Timer(7000);
+			timer.Elapsed += (sender, eventArgs) =>
+			{
+				writer.WriteLine(eventArgs.SignalTime.ToLongTimeString());
+			};
+			timer.AutoReset = true;
+			timer.Enabled = true;
+
+			reader.WritePrefix();
+			while (true)
+			{
+				var s = reader.NextString();
+				//var p = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+				//if (p[0] == "123")
+				//{
+				//	writer.WriteLine("qwerty");
+				//}
+			}
 
 			try
 			{
@@ -63,7 +82,7 @@ namespace MyMessenger.Client.Console
 					var cmd = p[0];
 
 					var client = new TcpClient();
-					
+
 					client.Connect(ip, 20522);
 					var stream = client.GetStream();
 
@@ -72,6 +91,11 @@ namespace MyMessenger.Client.Console
 
 					try
 					{
+						if (p[0] == "123")
+						{
+							writer.WriteLine("qwerty");
+						}
+
 						if (GetMessages.CommandNames.Contains(cmd))
 						{
 							command = new GetMessages(stream, p[1], Int32.Parse(p[2]));
