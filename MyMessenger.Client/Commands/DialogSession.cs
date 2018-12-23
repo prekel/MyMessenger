@@ -11,7 +11,7 @@ namespace MyMessenger.Client.Commands
 {
 	public class DialogSession : AbstractCommand
 	{
-		public static ICollection<string> CommandNames { get; } = new List<string>(new[] {"sialogsession", "ds"});
+		public static ICollection<string> CommandNames { get; } = new List<string>(new[] {"dialogsession", "ds"});
 
 		public DialogSessionResponse Response { get; private set; }
 
