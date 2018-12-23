@@ -36,6 +36,8 @@ namespace MyMessenger.Client.Console
 
 		private string HistoryString { get; set; }
 
+		public bool IsNeedNewLine { get; set; } = true;
+		
 		public void WritePrefix()
 		{
 			Write(Prefix);
@@ -54,7 +56,14 @@ namespace MyMessenger.Client.Console
 
 				if (CurrentKey.Key == ConsoleKey.Enter)
 				{
-					Write('\n');
+					if (!IsNeedNewLine)
+					{
+						WipeCurrent();
+					}
+					else
+					{
+						Write('\n');
+					}
 					WritePrefix();
 					var ret = CurrentString.ToString();
 					CurrentString.Clear();

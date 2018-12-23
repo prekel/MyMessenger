@@ -88,6 +88,7 @@ namespace MyMessenger.Client.Console
 				{
 					//Write("> ");
 					var s = reader.NextString();
+					if (s.Length == 0) continue;
 					var p = s.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 					var cmd = p[0];
 
@@ -100,11 +101,15 @@ namespace MyMessenger.Client.Console
 						dialogsessionid = Int32.Parse(p[2]);
 						start = new StartDialogSession(new IPEndPoint(ip, 20522), writer, token, dialogsessionid,
 							TimeSpan.FromSeconds(Int32.Parse(p[3])));
-						start.Execute();
+						
+						reader.IsNeedNewLine = false;
 						reader.WipeCurrent();
 						reader.Prefix = "<- ";
 						reader.WritePrefix();
 						isDialogSessionStarted = true;
+						
+						start.Execute();
+						continue;
 					}
 
 					if (StopDialogSession.CommandNames.Contains(cmd) && start != null)
@@ -115,6 +120,8 @@ namespace MyMessenger.Client.Console
 						reader.Prefix = "> ";
 						reader.WritePrefix();
 						isDialogSessionStarted = false;
+						reader.IsNeedNewLine = true;
+						continue;
 					}
 
 					var client = new TcpClient();
@@ -276,7 +283,10 @@ namespace MyMessenger.Client.Console
 					}
 
 					if (command is null) continue;
-					if (needoutraw) WriteLine(command.RawResponse);
+					if (needoutraw)
+					{
+						writer.WriteLine(command.RawResponse);
+					}
 				}
 			}
 			catch (SocketException e)
