@@ -11,6 +11,7 @@ using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Client;
 using MyMessenger.Client.Commands;
+using MyMessenger.Client.Console.Commands;
 
 namespace MyMessenger.Client.Console
 {
@@ -31,10 +32,12 @@ namespace MyMessenger.Client.Console
 			{
 				InputEncoding = Encoding.Unicode;
 			}
+
 			if (args.Contains("utf8"))
 			{
 				InputEncoding = Encoding.UTF8;
 			}
+
 			if (args.Contains("windows-1251") || args.Contains("1251"))
 			{
 				InputEncoding = Encoding.GetEncoding(1251);
@@ -46,48 +49,77 @@ namespace MyMessenger.Client.Console
 				.Assembly
 				.ExportedTypes
 				.Where(_ => _.BaseType == typeof(AbstractCommand))
-				.Select(_ => ((IEnumerable<string>)_
+				.Select(_ => ((IEnumerable<string>) _
 						.GetProperty("CommandNames")
 						.GetValue(null))
-					.First());
+					.First())
+				.Append(StartDialogSession.CommandNames.First())
+				.Append(StopDialogSession.CommandNames.First());
+
 			var reader = new SmartConsoleReader(cmds, "> ");
 			var writer = new SmartConsoleWriter(reader);
 
-			var timer = new Timer(7000);
-			timer.Elapsed += (sender, eventArgs) =>
-			{
-				writer.WriteLine(eventArgs.SignalTime.ToLongTimeString());
-			};
-			timer.AutoReset = true;
-			timer.Enabled = true;
+			//var timer = new Timer(7000);
+			//timer.Elapsed += (sender, eventArgs) =>
+			//{
+			//	writer.WriteLine(eventArgs.SignalTime.ToLongTimeString());
+			//};
+			//timer.AutoReset = true;
+			//timer.Enabled = true;
 
 			reader.WritePrefix();
-			while (true)
-			{
-				var s = reader.NextString();
-				//var p = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-				//if (p[0] == "123")
-				//{
-				//	writer.WriteLine("qwerty");
-				//}
-			}
+			//while (true)
+			//{
+			//	var s = reader.NextString();
+			//var p = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			//if (p[0] == "123")
+			//{
+			//	writer.WriteLine("qwerty");
+			//}
+			//}
 
 			try
 			{
+				var isDialogSessionStarted = false;
+				StartDialogSession start = null;
+				var token = "";
+				var dialogsessionid = 0;
 				while (true)
 				{
-					Write("> ");
+					//Write("> ");
 					var s = reader.NextString();
-					var p = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+					var p = s.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 					var cmd = p[0];
-
-					var client = new TcpClient();
-
-					client.Connect(ip, 20522);
-					var stream = client.GetStream();
 
 					AbstractCommand command = null;
 					var needoutraw = true;
+
+					if (StartDialogSession.CommandNames.Contains(cmd))
+					{
+						token = p[1];
+						dialogsessionid = Int32.Parse(p[2]);
+						start = new StartDialogSession(new IPEndPoint(ip, 20522), writer, token, dialogsessionid,
+							TimeSpan.FromSeconds(Int32.Parse(p[3])));
+						start.Execute();
+						reader.WipeCurrent();
+						reader.Prefix = "<- ";
+						reader.WritePrefix();
+						isDialogSessionStarted = true;
+					}
+
+					if (StopDialogSession.CommandNames.Contains(cmd) && start != null)
+					{
+						var stop = new StopDialogSession(start.CancellationTokenSource);
+						stop.Execute();
+						reader.WipeCurrent();
+						reader.Prefix = "> ";
+						reader.WritePrefix();
+						isDialogSessionStarted = false;
+					}
+
+					var client = new TcpClient();
+					client.Connect(ip, 20522);
+					var stream = client.GetStream();
 
 					try
 					{
@@ -96,13 +128,22 @@ namespace MyMessenger.Client.Console
 							writer.WriteLine("qwerty");
 						}
 
+						if (isDialogSessionStarted)
+						{
+							reader.WipeCurrent(true);
+							var c = new SendMessage(stream, token, dialogsessionid, s);
+							c.Execute();
+							//writer.WriteLine($"<-- {DateTime.Now.ToLongTimeString()} {1,3}  {s}");
+							continue;
+						}
+
 						if (GetMessages.CommandNames.Contains(cmd))
 						{
 							command = new GetMessages(stream, p[1], Int32.Parse(p[2]));
 							command.Execute();
 							needoutraw = false;
 
-							var res = ((GetMessages)command).Response;
+							var res = ((GetMessages) command).Response;
 							WriteLine($"{res.Content.Count} сообщения:");
 							foreach (var i in res.Content)
 							{
@@ -138,13 +179,14 @@ namespace MyMessenger.Client.Console
 							{
 								message = p[3];
 							}
+
 							command = new SendMessage(stream, p[1], Int32.Parse(p[2]), message);
 							command.Execute();
 						}
 
 						if (CreateDialog.CommandNames.Contains(cmd))
 						{
-							var token = p[1];
+							//var token = p[1];
 							if (Int32.TryParse(p[2], out var sid))
 							{
 								var mids = new List<int>();
@@ -152,6 +194,7 @@ namespace MyMessenger.Client.Console
 								{
 									mids.Add(Int32.Parse(p[i]));
 								}
+
 								command = new CreateDialog(stream, p[1], mids);
 							}
 							else
@@ -161,8 +204,10 @@ namespace MyMessenger.Client.Console
 								{
 									mn.Add(p[i]);
 								}
+
 								command = new CreateDialog(stream, p[1], mn);
 							}
+
 							command.Execute();
 						}
 
@@ -174,7 +219,7 @@ namespace MyMessenger.Client.Console
 
 							while (true)
 							{
-								var ds = (DialogSession)command;
+								var ds = (DialogSession) command;
 								ds.Receive();
 								var m = ds.Response.Message;
 								WriteLine("--------");
@@ -209,10 +254,12 @@ namespace MyMessenger.Client.Console
 						{
 							WriteLine(p[1]);
 						}
+
 						if (cmd == "utf8")
 						{
 							InputEncoding = Encoding.UTF8;
 						}
+
 						if (cmd == "utf16")
 						{
 							InputEncoding = Encoding.Unicode;

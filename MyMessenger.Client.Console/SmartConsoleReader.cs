@@ -19,7 +19,7 @@ namespace MyMessenger.Client.Console
 
 		public IEnumerable<string> CompleteList { get; set; }
 
-		private string Prefix { get; }
+		public string Prefix { get; set; }
 
 		public SmartConsoleReader(IEnumerable<string> completelist, string prefix, ConsoleKey tab = ConsoleKey.Tab)
 		{
@@ -122,9 +122,10 @@ namespace MyMessenger.Client.Console
 			Write(CurrentString);
 		}
 
-		public void WipeCurrent()
+		public void WipeCurrent(bool stringneed = false)
 		{
 			ConsoleWipe.Wipe(CurrentString.Length + Prefix.Length);
+			if (stringneed) CurrentString.Clear();
 		}
 	}
 }
