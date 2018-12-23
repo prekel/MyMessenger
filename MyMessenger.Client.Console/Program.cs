@@ -51,7 +51,7 @@ namespace MyMessenger.Client.Console
 				.Assembly
 				.ExportedTypes
 				.Where(_ => _.BaseType == typeof(AbstractCommand))
-				.Select(_ => ((IEnumerable<string>) _
+				.Select(_ => ((IEnumerable<string>)_
 						.GetProperty("CommandNames")
 						.GetValue(null))
 					.First())
@@ -92,53 +92,52 @@ namespace MyMessenger.Client.Console
 					//Write("> ");
 					var s = reader.NextString();
 					if (s.Length == 0) continue;
-					var p = s.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+					var p = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 					var cmd = p[0];
 
 					AbstractCommand command = null;
 					var needoutraw = true;
 
-					if (p[0] == "connect")
-					{
-						ipEndPoint = new IPEndPoint(IPAddress.Parse(p[1]), 20522);
-						continue;
-					}
-
-					if (StartDialogSession.CommandNames.Contains(cmd))
-					{
-						token = p[1];
-						dialogsessionid = Int32.Parse(p[2]);
-						start = new StartDialogSession(new IPEndPoint(ip, 20522), writer, token, dialogsessionid,
-							TimeSpan.FromSeconds(Int32.Parse(p[3])));
-						
-						reader.IsNeedNewLine = false;
-						reader.WipeCurrent();
-						reader.Prefix = "<- ";
-						reader.WritePrefix();
-						isDialogSessionStarted = true;
-						
-						start.Execute();
-						continue;
-					}
-
-					if (StopDialogSession.CommandNames.Contains(cmd) && start != null)
-					{
-						var stop = new StopDialogSession(start.CancellationTokenSource);
-						stop.Execute();
-						reader.WipeCurrent();
-						reader.Prefix = "> ";
-						reader.WritePrefix();
-						isDialogSessionStarted = false;
-						reader.IsNeedNewLine = true;
-						continue;
-					}
-
-					var client = new TcpClient();
-					client.Connect(ipEndPoint);
-					var stream = client.GetStream();
-
 					try
 					{
+						if (p[0] == "connect")
+						{
+							ipEndPoint = new IPEndPoint(IPAddress.Parse(p[1]), 20522);
+							continue;
+						}
+
+						if (StartDialogSession.CommandNames.Contains(cmd))
+						{
+							token = p[1];
+							dialogsessionid = Int32.Parse(p[2]);
+							start = new StartDialogSession(ipEndPoint, writer, token, dialogsessionid,
+								TimeSpan.FromSeconds(Int32.Parse(p[3])));
+
+							reader.IsNeedNewLine = false;
+							reader.WipeCurrent();
+							reader.Prefix = "<- ";
+							reader.WritePrefix();
+							isDialogSessionStarted = true;
+
+							start.Execute();
+							continue;
+						}
+
+						if (StopDialogSession.CommandNames.Contains(cmd) && start != null)
+						{
+							var stop = new StopDialogSession(start.CancellationTokenSource);
+							stop.Execute();
+							reader.WipeCurrent();
+							reader.Prefix = "> ";
+							reader.WritePrefix();
+							isDialogSessionStarted = false;
+							reader.IsNeedNewLine = true;
+							continue;
+						}
+
+						var client = new TcpClient();
+						client.Connect(ipEndPoint);
+						var stream = client.GetStream();
 						if (p[0] == "123")
 						{
 							writer.WriteLine("qwerty");
@@ -159,7 +158,7 @@ namespace MyMessenger.Client.Console
 							command.Execute();
 							needoutraw = false;
 
-							var res = ((GetMessages) command).Response;
+							var res = ((GetMessages)command).Response;
 							WriteLine($"{res.Content.Count} сообщения:");
 							foreach (var i in res.Content)
 							{
@@ -235,7 +234,7 @@ namespace MyMessenger.Client.Console
 
 							while (true)
 							{
-								var ds = (DialogSession) command;
+								var ds = (DialogSession)command;
 								ds.Receive();
 								var m = ds.Response.Message;
 								WriteLine("--------");
@@ -280,6 +279,9 @@ namespace MyMessenger.Client.Console
 						{
 							InputEncoding = Encoding.Unicode;
 						}
+
+						stream.Close();
+						client.Close();
 					}
 					catch (Exception e)
 					{
@@ -287,8 +289,6 @@ namespace MyMessenger.Client.Console
 					}
 					finally
 					{
-						stream.Close();
-						client.Close();
 					}
 
 					if (command is null) continue;
@@ -300,11 +300,11 @@ namespace MyMessenger.Client.Console
 			}
 			catch (SocketException e)
 			{
-				WriteLine("SocketException: {0}", e);
+				writer.WriteLine($"SocketException: {e}");
 			}
 			catch (Exception e)
 			{
-				WriteLine("Exception: {0}", e.Message);
+				writer.WriteLine(String.Format("Exception: {0}", e.Message));
 			}
 		}
 
