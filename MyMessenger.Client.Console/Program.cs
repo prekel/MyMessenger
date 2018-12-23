@@ -26,6 +26,8 @@ namespace MyMessenger.Client.Console
 				ip = IPAddress.Loopback;
 			}
 
+			var ipEndPoint = new IPEndPoint(ip, 20522);
+
 			OutputEncoding = Encoding.UTF8;
 			//InputEncoding = Encoding.Unicode;
 			if (args.Contains("utf16"))
@@ -54,7 +56,8 @@ namespace MyMessenger.Client.Console
 						.GetValue(null))
 					.First())
 				.Append(StartDialogSession.CommandNames.First())
-				.Append(StopDialogSession.CommandNames.First());
+				.Append(StopDialogSession.CommandNames.First())
+				.Append("connect");
 
 			var reader = new SmartConsoleReader(cmds, "> ");
 			var writer = new SmartConsoleWriter(reader);
@@ -95,6 +98,12 @@ namespace MyMessenger.Client.Console
 					AbstractCommand command = null;
 					var needoutraw = true;
 
+					if (p[0] == "connect")
+					{
+						ipEndPoint = new IPEndPoint(IPAddress.Parse(p[1]), 20522);
+						continue;
+					}
+
 					if (StartDialogSession.CommandNames.Contains(cmd))
 					{
 						token = p[1];
@@ -125,7 +134,7 @@ namespace MyMessenger.Client.Console
 					}
 
 					var client = new TcpClient();
-					client.Connect(ip, 20522);
+					client.Connect(ipEndPoint);
 					var stream = client.GetStream();
 
 					try
