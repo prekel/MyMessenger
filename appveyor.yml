@@ -16,9 +16,21 @@ artifacts:
 - path: '\'
   name: MyMessenger_All_Files
 - path: 'MyMessenger.Server.Console\bin\Release\netcoreapp2.2\publish\'
-  name: MyMessenger-$(APPVEYOR_BUILD_VERSION)
+  name: MyMessenger_Server_$(APPVEYOR_BUILD_VERSION)
 - path: 'MyMessenger.Client.Console\bin\Release\netcoreapp2.2\publish\'
-  name: MyMessengerClient-$(APPVEYOR_BUILD_VERSION)
+  name: MyMessenger_Client_$(APPVEYOR_BUILD_VERSION)
+- path: '\MyMessenger.Client.Console\publish\MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_linux-x64'
+  name: MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_linux-x64
+- path: '\MyMessenger.Client.Console\publish\MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x64'
+  name: MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x64
+- path: '\MyMessenger.Client.Console\publish\MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x86'
+  name: MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x86
+- path: '\MyMessenger.Server.Console\publish\MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_linux-x64'
+  name: MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_linux-x64
+- path: '\MyMessenger.Server.Console\publish\MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x64'
+  name: MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x64
+- path: '\MyMessenger.Server.Console\publish\MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x86'
+  name: MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x86
 deploy:
 - provider: FTP
   host: 
@@ -38,7 +50,7 @@ deploy:
   description: $(appveyor_repo_tag_name) $(APPVEYOR_BUILD_VERSION)
   auth_token:
     secure: Npd8Pdh2luH0INNPoAQXoPC2g71ZM39Ys1Cu842ZZaRFt6B45Or6vy1bV10x0oSn
-  artifact: MyMessenger_All_Files; MyMessenger-$(APPVEYOR_BUILD_VERSION); MyMessengerClient-$(APPVEYOR_BUILD_VERSION)
+  artifact: MyMessenger_All_Files; MyMessenger_Client_$(APPVEYOR_BUILD_VERSION); MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_linux-x64; MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x64; MyMessenger_Client_$(APPVEYOR_REPO_TAG_NAME)_win-x86; MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_linux-x64; MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x64; MyMessenger_Server_$(APPVEYOR_REPO_TAG_NAME)_win-x86
   draft: false
   prerelease: true
   on:
