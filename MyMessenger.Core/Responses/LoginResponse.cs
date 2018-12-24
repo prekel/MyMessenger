@@ -8,5 +8,8 @@ namespace MyMessenger.Core.Responses
 	{
 		[JsonProperty]
 		public string Token { get; set; }
+
+		[JsonProperty]
+		public IAccount Account { get; set; }
 	}
 }

@@ -46,8 +46,8 @@ namespace MyMessenger.Server.Commands
 				Tokens[token] = account;
 				Token = token;
 				resp.Token = token;
-
 				account.LoginDateTime = DateTime.Now;
+				resp.Account = account;
 				Context.SaveChanges();
 			}
 			else
