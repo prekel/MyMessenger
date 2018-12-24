@@ -68,6 +68,7 @@ namespace MyMessenger.Client.Console.Commands
 					{
 						var gmlp = new GetMessageLongPool(stream, Token, DialogId, TimeSpan);
 						gmlp.Execute();
+						if (CancellationTokenSource.Token.IsCancellationRequested) break;
 						var resp = gmlp.Response;
 						if (resp.Code == ResponseCode.LongPoolTimeSpanExpired) continue;
 						Writer.WriteLine(
@@ -86,7 +87,7 @@ namespace MyMessenger.Client.Console.Commands
 			});
 			task.Start();
 
-			Task.Run(() => task.Wait(CancellationTokenSource.Token));
+			//Task.Run(() => task.Wait(CancellationTokenSource.Token));
 		}
 	}
 }
