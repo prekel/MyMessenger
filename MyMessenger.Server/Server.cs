@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Collections.Generic;
+using System.Reflection;
 using static System.Console;
 using Newtonsoft.Json;
 using MyMessenger.Core;
@@ -42,7 +43,8 @@ namespace MyMessenger.Server
 		            MachineName = Environment.MachineName,
 		            LaunchDateTime = DateTimeOffset.Now,
 		            Pid = System.Diagnostics.Process.GetCurrentProcess().Id,
-		            User = Config.DbConfig.User
+		            User = Config.DbConfig.User,
+					AssemblyVersion = typeof(Server).Assembly.GetName().Version.ToString()
 	            });
 	            context.SaveChanges();
             }
