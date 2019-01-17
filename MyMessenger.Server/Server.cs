@@ -47,7 +47,6 @@ namespace MyMessenger.Server
 	            context.SaveChanges();
             }
 
-
             while (true)
             {
                 var client = _listener.AcceptTcpClient();

@@ -72,13 +72,17 @@ namespace MyMessenger.Server.Console
 			Config.DbConfig.Password = dbpass.ToString();
 			dbpass = null;
 
-			if (args.Length > 0)
+			if (args.Length == 0)
+			{
+				ProgramEnsureCreated.Main(Config);
+			}
+			else if (args[0] == "1")
 			{
 				var server = new Server(Config);
 			}
-			else
+			else if (args[0] == "2")
 			{
-				Program2.Main2(Config);
+				ProgramMigrate.Main(Config);
 			}
 		}
 	}

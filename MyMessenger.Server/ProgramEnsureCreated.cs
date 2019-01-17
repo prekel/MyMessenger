@@ -14,11 +14,11 @@ using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server
 {
-	public class Program2
+	public class ProgramEnsureCreated
 	{
 		public static Config Config;
 
-		public static void Main2(Config config)
+		public static void Main(Config config)
 		{
 			Config = config;
 			InsertData();
@@ -128,3 +128,4 @@ namespace MyMessenger.Server
 		}
 	}
 }
+
