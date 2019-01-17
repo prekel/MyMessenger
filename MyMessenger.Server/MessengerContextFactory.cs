@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
+﻿using System;
+using System.IO;
+using System.Text;
+using Microsoft.EntityFrameworkCore.Design;
 using MyMessenger.Server.Configs;
+using Newtonsoft.Json;
 
 namespace MyMessenger.Server
 {
@@ -7,19 +11,32 @@ namespace MyMessenger.Server
 	{
 		public MessengerContext CreateDbContext(string[] args)
 		{
-			var c = new Config
+			//OutputEncoding = Encoding.UTF8;
+			Config Config;
+
+			Config = JsonConvert.DeserializeObject<Config>(new StreamReader("config.json").ReadToEnd());
+
+			var dbpass = new StringBuilder();
+			Console.Write("Enter database password: ");
+			while (true)
 			{
-				DbConfig = new DbConfig
+				var key = Console.ReadKey(true);
+				if (key.Key == ConsoleKey.Enter) break;
+				if (key.Key == ConsoleKey.Backspace)
 				{
-					Server = "localhost",
-					Port = 3306,
-					Name = "MyMessenger5",
-					User = "root",
-					SslMode = "none",
-					Password = "123456"
+					Console.Write("\nEnter database password: ");
+					dbpass.Clear();
+					continue;
 				}
-			};
-			return new MessengerContext(c);
+				dbpass.Append(key.KeyChar);
+				Console.Write("*");
+			}
+
+			Config.DbConfig.Password = dbpass.ToString();
+
+			Console.WriteLine();
+
+			return new MessengerContext(Config);
 		}
 	}
 }
