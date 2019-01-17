@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
+using MyMessenger.Core;
 
 namespace MyMessenger.Client.Commands
 {
@@ -38,7 +39,7 @@ namespace MyMessenger.Client.Commands
 		{
 			CreateSendQuery();
 
-			Response = JsonConvert.DeserializeObject<LoginResponse>(ReceiveResponse());
+			Response = JsonConvert.DeserializeObject<LoginResponse>(ReceiveResponse(), new InterfaceConverter<IAccount, Account>());
 		}
 	}
 }

@@ -208,8 +208,7 @@ namespace MyMessenger.Server
                         client.Close();
                         return;
                     }
-
-
+					
                     s.Close();
                     client.Close();
                 }
