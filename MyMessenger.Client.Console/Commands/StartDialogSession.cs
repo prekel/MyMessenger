@@ -11,7 +11,7 @@ namespace MyMessenger.Client.Console.Commands
 {
 	public class StartDialogSession //: AbstractCommand
 	{
-		public static ICollection<string> CommandNames { get; } = new List<string>(new[] {"startdialogsession", "sds"});
+		public static ICollection<string> CommandNames { get; } = new List<string>(new[] { "startdialogsession", "sds" });
 
 		//public StartDialogSessionResponse Response { get; private set; }
 
@@ -35,7 +35,7 @@ namespace MyMessenger.Client.Console.Commands
 		//private CancellationToken CancellationToken => CancellationTokenSource.Token;
 
 		private IPEndPoint IpEndPoint { get; }
-		
+
 		//private int MyAccountId { get; set; }
 
 		public StartDialogSession(IPEndPoint ipEndPoint, SmartConsoleWriter writer,
@@ -85,9 +85,8 @@ namespace MyMessenger.Client.Console.Commands
 					}
 				}
 			});
-			task.Start();
 
-			//Task.Run(() => task.Wait(CancellationTokenSource.Token));
+			task.Start();
 		}
 	}
 }
