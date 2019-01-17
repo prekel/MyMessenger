@@ -100,6 +100,7 @@ namespace MyMessenger.Server
 				entity.Property(e => e.MachineName).IsRequired();
 				entity.Property(e => e.Pid).IsRequired();
 				entity.Property(e => e.User).IsRequired();
+				entity.Property(e => e.AssemblyVersion);
 			});
 		}
 	}

@@ -13,5 +13,7 @@ namespace MyMessenger.Server.Entities
 		public string MachineName { get; set; }
 
 		public int Pid { get; set; }
+
+		public string AssemblyVersion { get; set; }
 	}
 }
