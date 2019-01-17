@@ -35,6 +35,19 @@ namespace MyMessenger.Server
             _listener.Start();
             WriteLine("Started.");
 
+			using (var context = new MessengerContext(Config))
+            {
+	            context.Launches.Add(new Launch
+	            {
+		            MachineName = Environment.MachineName,
+		            LaunchDateTime = DateTimeOffset.Now,
+		            Pid = System.Diagnostics.Process.GetCurrentProcess().Id,
+		            User = Config.DbConfig.User
+	            });
+	            context.SaveChanges();
+            }
+
+
             while (true)
             {
                 var client = _listener.AcceptTcpClient();

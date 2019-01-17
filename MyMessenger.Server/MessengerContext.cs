@@ -11,6 +11,7 @@ namespace MyMessenger.Server
 		public DbSet<Message> Messages { get; set; }
 		public DbSet<Account> Accounts { get; set; }
 		public DbSet<AccountDialog> AccountsDialogs { get; set; }
+		public DbSet<Launch> Launches { get; set; }
 
 		public static Config Config;
 
@@ -90,6 +91,15 @@ namespace MyMessenger.Server
 				entity.HasOne(d => d.Dialog)
 					.WithMany(p => p.Messages)
 					.HasForeignKey(p => p.DialogId);
+			});
+
+			modelBuilder.Entity<Launch>(entity =>
+			{
+				entity.HasKey(e => e.LaunchId);
+				entity.Property(e => e.LaunchDateTime).IsRequired();
+				entity.Property(e => e.MachineName).IsRequired();
+				entity.Property(e => e.Pid).IsRequired();
+				entity.Property(e => e.User).IsRequired();
 			});
 		}
 	}
