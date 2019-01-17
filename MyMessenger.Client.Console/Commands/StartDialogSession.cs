@@ -72,7 +72,7 @@ namespace MyMessenger.Client.Console.Commands
 						var resp = gmlp.Response;
 						if (resp.Code == ResponseCode.LongPoolTimeSpanExpired) continue;
 						Writer.WriteLine(
-							$"--> {resp.Content.SendDateTime.ToLongTimeString()} {resp.Content.AuthorId,3}  {resp.Content.Text}");
+							$"--> {TimeZoneInfo.ConvertTimeFromUtc(resp.Content.SendDateTime.UtcDateTime, TimeZoneInfo.Local).ToLongTimeString()} {resp.Content.AuthorId,3}  {resp.Content.Text}");
 					}
 					catch
 					{

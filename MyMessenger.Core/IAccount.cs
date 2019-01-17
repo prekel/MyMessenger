@@ -7,14 +7,16 @@ namespace MyMessenger.Core
 	{
 		int AccountId { get; set; }
 
-		DateTime RegistrationDateTime { get; }
+		DateTimeOffset RegistrationDateTime { get; }
 
-		DateTime LoginDateTime { get; }
+		DateTimeOffset LoginDateTime { get; }
 
 		string Nickname { get; }
 
 		IEnumerable<int> DialogsIds { get; }
 
 		//IEnumerable<IDialog> DialogsA { get; }
+
+		//TimeZoneInfo TimeZone { get; }
 	}
 }

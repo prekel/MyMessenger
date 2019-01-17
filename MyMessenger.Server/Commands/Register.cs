@@ -36,12 +36,12 @@ namespace MyMessenger.Server.Commands
 				PasswordHash = Crypto.ComputePasswordHash(Config1.Password, salt),
 				PasswordSalt = salt,
 				RegistrationDateTime = DateTime.Now,
-				LoginDateTime = DateTime.MinValue
+				LoginDateTime = DateTime.MinValue,
+				//TimeZone = Config1.TimeZone
 			};
 			Context.Accounts.Add(a);
 			Context.SaveChanges();
 			Code = ResponseCode.Ok;
 		}
-
 	}
 }

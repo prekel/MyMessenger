@@ -12,7 +12,11 @@ namespace MyMessenger.Core.Parameters
 
 		[JsonProperty]
 		public string Nickname { get; set; }
+
 		[JsonProperty]
 		public string Password { get; set; }
+
+		//[JsonProperty]
+		//public TimeZoneInfo TimeZone { get; set; }
 	}
 }

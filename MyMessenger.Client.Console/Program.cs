@@ -177,6 +177,7 @@ namespace MyMessenger.Client.Console
 
 						if (Register.CommandNames.Contains(cmd))
 						{
+							//command = new Register(stream, p[1], p[2], TimeZoneInfo.Local);
 							command = new Register(stream, p[1], p[2]);
 							command.Execute();
 						}

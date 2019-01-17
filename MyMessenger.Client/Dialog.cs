@@ -13,9 +13,5 @@ namespace MyMessenger.Client
 
 		[JsonProperty]
 		public IEnumerable<int> MembersIds { get; }
-
-		//[JsonProperty]
-		//[JsonConverter(typeof(InterfaceConverter<Account>))]
-		//public IEnumerable<IAccount> MembersA { get; set; }
 	}
 }

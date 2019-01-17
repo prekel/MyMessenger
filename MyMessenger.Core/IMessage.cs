@@ -8,12 +8,10 @@ namespace MyMessenger.Core
 		
 		string Text { get; }
 
-		DateTime SendDateTime { get; }
+		DateTimeOffset SendDateTime { get; }
 
 		int DialogId { get; }
-		//IDialog DialogA { get; }
 
 		int AuthorId { get; }
-		//IAccount AuthorA { get; }
 	}
 }

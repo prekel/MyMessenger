@@ -14,16 +14,8 @@ namespace MyMessenger.Client
 		[JsonProperty]
 		public string Text { get; set; }
 
-		//[JsonProperty]
-		//[JsonConverter(typeof(InterfaceConverter<Dialog>))]
-		//public IDialog DialogA { get; set; }
-
-		//[JsonProperty]
-		//[JsonConverter(typeof(InterfaceConverter<Account>))]
-		//public IAccount AuthorA { get; set; }
-
 		[JsonProperty]
-		public DateTime SendDateTime { get; set; }
+		public DateTimeOffset SendDateTime { get; set; }
 
 		[JsonProperty]
 		public int DialogId { get; set; }

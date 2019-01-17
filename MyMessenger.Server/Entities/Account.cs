@@ -1,13 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace MyMessenger.Server.Entities
 {
@@ -23,14 +21,14 @@ namespace MyMessenger.Server.Entities
 		[JsonProperty]
 		public IEnumerable<int> DialogsIds => Dialogs.Select(p => p.Dialog.DialogId);
 
+		[JsonProperty]
+		public DateTimeOffset RegistrationDateTime { get; set; }
+
+		[JsonProperty]
+		public DateTimeOffset LoginDateTime { get; set; }
+
 		//[JsonProperty]
-		//public IEnumerable<IDialog> DialogsA => Dialogs.Select(p => p.Dialog);
-
-		[JsonProperty]
-		public DateTime RegistrationDateTime { get; set; }
-
-		[JsonProperty]
-		public DateTime LoginDateTime { get; set; }
+		//public TimeZoneInfo TimeZone { get; set; }
 
 		[MaxLength(32)]
 		public byte[] PasswordHash { get; set; }

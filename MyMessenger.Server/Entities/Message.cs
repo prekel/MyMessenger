@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
-using System;
 
 namespace MyMessenger.Server.Entities
 {
@@ -15,14 +15,8 @@ namespace MyMessenger.Server.Entities
 		[JsonProperty]
 		public string Text { get; set; }
 
-		//[JsonProperty]
-		//public IDialog DialogA => Dialog;
-
-		//[JsonProperty]
-		//public IAccount AuthorA => Author;
-
 		[JsonProperty]
-		public DateTime SendDateTime { get; set; }
+		public DateTimeOffset SendDateTime { get; set; }
 
 		[JsonProperty]
 		public int DialogId { get; set; }

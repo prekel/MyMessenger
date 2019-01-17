@@ -1,8 +1,9 @@
+using System;
+using System.Collections.Generic;
+
 using Newtonsoft.Json;
 
 using MyMessenger.Core;
-using System;
-using System.Collections.Generic;
 
 namespace MyMessenger.Client
 {
@@ -13,7 +14,7 @@ namespace MyMessenger.Client
 		public int AccountId { get; set; }
 
 		[JsonProperty]
-		public DateTime LoginDateTime { get; }
+		public DateTimeOffset LoginDateTime { get; }
 
 		[JsonProperty]
 		public string Nickname { get; set; }
@@ -21,10 +22,10 @@ namespace MyMessenger.Client
 		[JsonProperty]
 		public IEnumerable<int> DialogsIds { get; }
 
-		//[JsonProperty]
-		//public IEnumerable<IDialog> DialogsA { get; }
+		[JsonProperty]
+		public DateTimeOffset RegistrationDateTime { get; }
 
 		[JsonProperty]
-		public DateTime RegistrationDateTime { get; }
+		public TimeZoneInfo TimeZone { get; }
 	}
 }

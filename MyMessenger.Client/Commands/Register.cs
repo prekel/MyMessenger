@@ -27,6 +27,16 @@ namespace MyMessenger.Client.Commands
 
 		}
 
+		//public Register(NetworkStream stream, string nickname, string pass, TimeZoneInfo timeZone) : base(stream)
+		//{
+		//	Config1 = new RegisterParameters
+		//	{
+		//		Nickname = nickname,
+		//		Password = pass,
+		//		TimeZone = timeZone
+		//	};
+		//}
+
 		public Register(NetworkStream stream, string nickname, string pass) : base(stream)
 		{
 			Config1 = new RegisterParameters
