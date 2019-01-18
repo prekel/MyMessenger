@@ -53,6 +53,11 @@ namespace MyMessenger.Client.Commands
 			return RawResponse;
 		}
 
-		public abstract void Execute();
+		public void Execute()
+		{
+			ExecuteImpl();
+		}
+
+		protected abstract void ExecuteImpl();
 	}
 }

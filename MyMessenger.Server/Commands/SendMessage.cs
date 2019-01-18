@@ -25,7 +25,9 @@ namespace MyMessenger.Server.Commands
 			Notifiers = notifiers[Config1.DialogId];
 		}
 
-		public override void Execute()
+		public override CommandType CommandName { get; } = CommandType.SendMessage;
+
+		protected override void ExecuteImpl()
 		{
 			var resp = new SendMessageResponse();
 			Response = resp;

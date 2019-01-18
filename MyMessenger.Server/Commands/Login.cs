@@ -22,8 +22,10 @@ namespace MyMessenger.Server.Commands
 		public Login(MessengerContext context, IDictionary<string, IAccount> tokens, AbstractParameters config) : base(context, tokens, config)
 		{
 		}
-		
-		public override void Execute()
+
+		public override CommandType CommandName { get; } = CommandType.Login;
+
+		protected override void ExecuteImpl()
 		{
 			var resp = new LoginResponse();
 			Response = resp;

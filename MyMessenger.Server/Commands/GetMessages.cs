@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
-using MyMessenger.Server.Entities;
+using MyMessenger.Server.Entities; 
 
 namespace MyMessenger.Server.Commands
 {
@@ -21,7 +21,9 @@ namespace MyMessenger.Server.Commands
 		{
 		}
 
-		public override void Execute()
+		public override CommandType CommandName { get; } = CommandType.GetMessages;
+
+		protected override void ExecuteImpl()
 		{
 			var resp = new GetMessagesResponse();
 			Response = resp;

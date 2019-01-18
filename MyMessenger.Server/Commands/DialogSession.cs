@@ -20,6 +20,7 @@ namespace MyMessenger.Server.Commands
 		}
 	}
 
+	[Obsolete]
 	public class DialogSession : AbstractCommand
 	{
 		private DialogSessionParameters Config1
@@ -60,8 +61,10 @@ namespace MyMessenger.Server.Commands
 			NewMessage?.Invoke(this, new DialogSessionEventArgs(resp));
 		}
 
+		public override CommandType CommandName { get; } = CommandType.DialogSession;
+
 		[Obsolete]
-		public override void Execute()
+		protected override void ExecuteImpl()
 		{
 			var resp = new DialogSessionResponse();
 			Response = resp;

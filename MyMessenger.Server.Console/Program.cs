@@ -6,6 +6,7 @@ using System.Text;
 using static System.Console;
 
 using Newtonsoft.Json;
+using NLog;
 
 using MyMessenger.Core;
 using MyMessenger.Server.Configs;
@@ -14,23 +15,25 @@ namespace MyMessenger.Server.Console
 {
 	public class Program
 	{
+		private static Logger Log { get; } = LogManager.GetCurrentClassLogger();
+
 		public static Config Config;
 
 		public static void Main(string[] args)
 		{
-			//LogManager.Configuration.Variables["starttime"] = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-ffff");
+			LogManager.Configuration.Variables["starttime"] = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss-ffff");
 			OutputEncoding = Encoding.UTF8;
-			//CancelKeyPress += Program_CancelKeyPress;
+			CancelKeyPress += Program_CancelKeyPress;
 
 			if (File.Exists("config.json"))
 			{
-				//Log.Info("Загружается конфирурация");
+				Log.Info("Загружается конфирурация");
 				Config = JsonConvert.DeserializeObject<Config>(new StreamReader("config.json").ReadToEnd());
-				//Log.Info("Загружена конфигурация");
+				Log.Info("Загружена конфигурация");
 			}
 			else
 			{
-				//Log.Info("Создаётся конфигурция");
+				Log.Info("Создаётся конфигурция");
 
 				Config = new Config
 				{
@@ -44,7 +47,7 @@ namespace MyMessenger.Server.Console
 					}
 				};
 
-				//Log.Info("Сохраняется конфигурация");
+				Log.Info("Сохраняется конфигурация");
 				var json = JsonConvert.SerializeObject(Config, Formatting.Indented);
 				using (var w = new StreamWriter("config.json"))
 				{
@@ -52,38 +55,51 @@ namespace MyMessenger.Server.Console
 				}
 			}
 
-
+			Log.Info("Вводится пароль");
 			var dbpass = new StringBuilder();
-			Write("Enter database password: ");
+			//Write("Enter database password: ");
 			while (true)
 			{
 				var key = ReadKey(true);
 				if (key.Key == ConsoleKey.Enter) break;
 				if (key.Key == ConsoleKey.Backspace)
 				{
-					Write("\nEnter database password: ");
+					//Write("\nEnter database password: ");
+					WriteLine();
 					dbpass.Clear();
 					continue;
 				}
 				dbpass.Append(key.KeyChar);
 				Write("*");
 			}
+			WriteLine();
+			Log.Info("Введён пароль");
 
 			Config.DbConfig.Password = dbpass.ToString();
 			dbpass = null;
 
 			if (args.Length == 0)
 			{
+				Log.Info("Запускается инициализация базы данных");
 				ProgramEnsureCreated.Main(Config);
 			}
 			else if (args[0] == "1")
 			{
+				Log.Info("Запускается сервер");
 				var server = new Server(Config);
 			}
 			else if (args[0] == "2")
 			{
+				Log.Info("Запускается миграция базы данных");
 				ProgramMigrate.Main(Config);
 			}
+		}
+
+		private static void Program_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+		{
+			Log.Info("Завершение програмы");
+			LogManager.Shutdown();
+			Environment.Exit(0);
 		}
 	}
 }

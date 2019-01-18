@@ -17,7 +17,9 @@ namespace MyMessenger.Server.Commands
 		{
 		}
 
-		public override void Execute()
+		public override CommandType CommandName { get; } = CommandType.Register;
+
+		protected override void ExecuteImpl()
 		{
 			var resp = new RegisterResponse();
 			Response = resp;

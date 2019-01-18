@@ -20,7 +20,9 @@ namespace MyMessenger.Server.Commands
 		{
 		}
 
-		public override void Execute()
+		public override CommandType CommandName { get; } = CommandType.CreateDialog;
+
+		protected override void ExecuteImpl()
 		{
 			var resp = new CreateDialogResponse();
 			Response = resp;
