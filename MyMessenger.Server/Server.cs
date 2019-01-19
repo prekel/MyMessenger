@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using static System.Console;
 
@@ -65,6 +66,18 @@ namespace MyMessenger.Server
 			}
 		}
 
+		private void SendResponse(Stream s, AbstractResponse resp)
+		{
+			var str = JsonConvert.SerializeObject(resp, Formatting.Indented);
+			SendString(s, str);
+		}
+
+		private void SendString(Stream s, string response)
+		{
+			var data = Encoding.UTF8.GetBytes(response);
+			s.Write(data, 0, data.Length);
+		}
+
 		private void ServeData(object clientSocket)
 		{
 			try
@@ -97,9 +110,11 @@ namespace MyMessenger.Server
 						Log.Trace($"Возвращено {ResponseCode.UnknownError}");
 						var res = new CommonResponse { Code = ResponseCode.UnknownError };
 
-						var response = JsonConvert.SerializeObject(res, Formatting.Indented);
-						var data = Encoding.UTF8.GetBytes(response);
-						s.Write(data, 0, data.Length);
+						SendResponse(s, res);
+
+						//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
+						//var data = Encoding.UTF8.GetBytes(response);
+						//s.Write(data, 0, data.Length);
 
 						s.Close();
 						client.Close();
@@ -119,9 +134,12 @@ namespace MyMessenger.Server
 
 							//var res = gm.Result;
 							//var list = res.ToList();
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
+
+							SendResponse(s, gm.Response);
+							
+							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							//var data = Encoding.UTF8.GetBytes(response);
+							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.Register)
@@ -133,9 +151,10 @@ namespace MyMessenger.Server
 							//var response = JsonConvert.SerializeObject(list, Formatting.Indented);
 							//var data = Encoding.UTF8.GetBytes(response);
 							//s.Write(data, 0, data.Length);
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
+							SendResponse(s, gm.Response);
+							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							//var data = Encoding.UTF8.GetBytes(response);
+							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.Login)
@@ -146,9 +165,10 @@ namespace MyMessenger.Server
 							//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
 							//var data = Encoding.UTF8.GetBytes(response);
 							//s.Write(data, 0, data.Length);
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
+							SendResponse(s, gm.Response);
+							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							//var data = Encoding.UTF8.GetBytes(response);
+							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.SendMessage)
@@ -156,9 +176,10 @@ namespace MyMessenger.Server
 							var gm = new SendMessage(context, Tokens, Notifiers, q.Config);
 							gm.Execute();
 
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
+							SendResponse(s, gm.Response);
+							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							//var data = Encoding.UTF8.GetBytes(response);
+							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.CreateDialog)
@@ -166,9 +187,10 @@ namespace MyMessenger.Server
 							var gm = new CreateDialog(context, Tokens, q.Config);
 							gm.Execute();
 
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
+							SendResponse(s, gm.Response);
+							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							//var data = Encoding.UTF8.GetBytes(response);
+							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.DialogSession)
@@ -203,9 +225,10 @@ namespace MyMessenger.Server
 							var gm = new GetMessageLongPool(context, Tokens, Notifiers, q.Config);
 							gm.Execute();
 
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
+							SendResponse(s, gm.Response);
+							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							//var data = Encoding.UTF8.GetBytes(response);
+							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.GetAccountById)
@@ -213,9 +236,10 @@ namespace MyMessenger.Server
 							var gm = new GetAccountById(context, Tokens, q.Config);
 							gm.Execute();
 
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
+							SendResponse(s, gm.Response);
+							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							//var data = Encoding.UTF8.GetBytes(response);
+							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.GetDialogById)
@@ -223,9 +247,10 @@ namespace MyMessenger.Server
 							var gm = new GetDialogById(context, Tokens, q.Config);
 							gm.Execute();
 
-							var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							var data = Encoding.UTF8.GetBytes(response);
-							s.Write(data, 0, data.Length);
+							SendResponse(s, gm.Response);
+							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
+							//var data = Encoding.UTF8.GetBytes(response);
+							//s.Write(data, 0, data.Length);
 						}
 					}
 					catch (Exception e)
@@ -236,9 +261,10 @@ namespace MyMessenger.Server
 						Log.Trace($"Возвращено {ResponseCode.UnknownError}");
 						var res = new CommonResponse { Code = ResponseCode.UnknownError };
 
-						var response = JsonConvert.SerializeObject(res, Formatting.Indented);
-						var data = Encoding.UTF8.GetBytes(response);
-						s.Write(data, 0, data.Length);
+						SendResponse(s, res);
+						//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
+						//var data = Encoding.UTF8.GetBytes(response);
+						//s.Write(data, 0, data.Length);
 
 						s.Close();
 						client.Close();
