@@ -34,7 +34,7 @@ namespace MyMessenger.Client.Commands
 			};
 		}
 
-		public override void Execute()
+		protected override void ExecuteImpl()
 		{
 			CreateSendQuery();
 			

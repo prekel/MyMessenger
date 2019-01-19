@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NLog;
 
 using MyMessenger.Server.Configs;
 using MyMessenger.Server.Entities;
@@ -7,6 +8,8 @@ namespace MyMessenger.Server
 {
 	public class MessengerContext : DbContext
 	{
+		private static Logger Log { get; } = LogManager.GetCurrentClassLogger();
+
 		public DbSet<Dialog> Dialogs { get; set; }
 		public DbSet<Message> Messages { get; set; }
 		public DbSet<Account> Accounts { get; set; }
@@ -102,6 +105,18 @@ namespace MyMessenger.Server
 				entity.Property(e => e.User).IsRequired();
 				entity.Property(e => e.AssemblyVersion);
 			});
+		}
+
+		//public override int SaveChanges()
+		//{
+		//	Log.Trace("Изменения сохранены в базу данных");
+		//	return base.SaveChanges();
+		//}
+
+		public override int SaveChanges(bool a)
+		{
+			Log.Trace("Изменения сохранены в базу данных");
+			return base.SaveChanges(a);
 		}
 	}
 }

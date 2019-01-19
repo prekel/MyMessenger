@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using NLog;
 
 using MyMessenger.Server.Configs;
 using MyMessenger.Server.Entities;
@@ -16,6 +17,8 @@ namespace MyMessenger.Server
 {
 	public class ProgramEnsureCreated
 	{
+		private static Logger Log { get; } = LogManager.GetCurrentClassLogger();
+
 		public static Config Config;
 
 		public static void Main(Config config)
@@ -29,8 +32,11 @@ namespace MyMessenger.Server
 		{
 			using (var context = new MessengerContext(Config))
 			{
+				Log.Debug("Начата генерация таблиц и т.д.");
 				context.Database.EnsureCreated();
-
+				Log.Debug("Закончена генерация таблиц и т.д.");
+				
+				Log.Debug("Начато заполнение");
 				var s = Crypto.GenerateSaltForPassword();
 				var a1 = new Account()
 				{
@@ -100,8 +106,10 @@ namespace MyMessenger.Server
 					Dialog = d2,
 					SendDateTime = DateTime.Now
 				});
-
+				Log.Debug("Закончено заполнение");
+				Log.Debug("Сохранение изменений");
 				context.SaveChanges();
+				Log.Debug("Изменения сохранены");
 			}
 		}
 
@@ -109,6 +117,7 @@ namespace MyMessenger.Server
 		{
 			using (var context = new MessengerContext(Config))
 			{
+				Log.Debug("Начата печать запрашиваемых данных");
 				var d = context.Dialogs;
 				var m = context.Messages;
 				var a = context.Accounts;
@@ -124,6 +133,7 @@ namespace MyMessenger.Server
 				{
 					Console.WriteLine($"          {i.DialogId} {String.Join("; ", from j in i.Members select j.Account.Nickname)}");
 				}
+				Log.Debug("Закончена печать запрашиваемых данных");
 			}
 		}
 	}
