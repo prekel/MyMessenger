@@ -61,7 +61,10 @@ namespace MyMessenger.Server.Commands
 			NewMessage?.Invoke(this, new DialogSessionEventArgs(resp));
 		}
 
-		public override CommandType CommandName { get; } = CommandType.DialogSession;
+		static DialogSession()
+		{
+			CommandName = CommandType.DialogSession;
+		}
 
 		[Obsolete]
 		protected override void ExecuteImpl()

@@ -20,7 +20,10 @@ namespace MyMessenger.Server.Commands
 		{
 		}
 
-		public override CommandType CommandName { get; } = CommandType.CreateDialog;
+		static CreateDialog()
+		{
+			CommandName = CommandType.CreateDialog;
+		}
 
 		protected override void ExecuteImpl()
 		{

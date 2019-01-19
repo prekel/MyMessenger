@@ -20,7 +20,7 @@ namespace MyMessenger.Server.Commands
 		
 		public AbstractResponse Response { get; set; }
 
-		public abstract CommandType CommandName { get; }
+		public static CommandType CommandName { get; protected set; }
 
 		public ResponseCode Code
 		{
