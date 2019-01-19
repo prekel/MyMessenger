@@ -66,6 +66,26 @@ namespace MyMessenger.Server
 			}
 		}
 
+		private string ReadString(NetworkStream stream)
+		{
+			var data1 = new byte[256];
+			var response1 = new StringBuilder();
+			//var stream = client.GetStream();
+
+			do
+			{
+				var bytes = stream.Read(data1, 0, data1.Length);
+				response1.Append(Encoding.UTF8.GetString(data1, 0, bytes));
+			} while (stream.DataAvailable);
+
+			return response1.ToString();
+		}
+
+		private Query ReadQuery(NetworkStream stream)
+		{
+			return JsonConvert.DeserializeObject<Query>(ReadString(stream));
+		}
+
 		private void SendResponse(Stream s, AbstractResponse resp)
 		{
 			var str = JsonConvert.SerializeObject(resp, Formatting.Indented);
@@ -86,29 +106,30 @@ namespace MyMessenger.Server
 				{
 					var client = (TcpClient)clientSocket;
 
-					var data1 = new byte[256];
-					var response1 = new StringBuilder();
-					var stream = client.GetStream();
+					//var data1 = new byte[256];
+					//var response1 = new StringBuilder();
+					//var stream = client.GetStream();
 
-					do
-					{
-						var bytes = stream.Read(data1, 0, data1.Length);
-						response1.Append(Encoding.UTF8.GetString(data1, 0, bytes));
-					} while (stream.DataAvailable);
-					
+					//do
+					//{
+					//	var bytes = stream.Read(data1, 0, data1.Length);
+					//	response1.Append(Encoding.UTF8.GetString(data1, 0, bytes));
+					//} while (stream.DataAvailable);
+
 					var s = client.GetStream();
 
 					Query q;
 					try
 					{
-						q = JsonConvert.DeserializeObject<Query>(response1.ToString());
+						//q = JsonConvert.DeserializeObject<Query>(response1.ToString());
+						q = ReadQuery(s);
 					}
 					catch (Exception e)
 					{
 						Log.Warn(e.Message);
 
 						Log.Trace($"Возвращено {ResponseCode.UnknownError}");
-						var res = new CommonResponse { Code = ResponseCode.UnknownError };
+						var res = new CommonResponse(ResponseCode.UnknownError);
 
 						SendResponse(s, res);
 
@@ -136,7 +157,7 @@ namespace MyMessenger.Server
 							//var list = res.ToList();
 
 							SendResponse(s, gm.Response);
-							
+
 							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
 							//var data = Encoding.UTF8.GetBytes(response);
 							//s.Write(data, 0, data.Length);
@@ -259,7 +280,7 @@ namespace MyMessenger.Server
 						Log.Warn(e.Message);
 
 						Log.Trace($"Возвращено {ResponseCode.UnknownError}");
-						var res = new CommonResponse { Code = ResponseCode.UnknownError };
+						var res = new CommonResponse(ResponseCode.UnknownError);
 
 						SendResponse(s, res);
 						//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
