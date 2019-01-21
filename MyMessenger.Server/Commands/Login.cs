@@ -12,7 +12,7 @@ namespace MyMessenger.Server.Commands
 	public class Login : AbstractCommand
 	{
 		private LoginParameters Config1 { get => (LoginParameters)Config; set => Config = value; }
-		
+
 		public string Token { get; private set; }
 
 		private Login(MessengerContext context, AbstractParameters config) : base(context, config)
@@ -23,13 +23,16 @@ namespace MyMessenger.Server.Commands
 		{
 		}
 
-		public override CommandType CommandName { get; } = CommandType.Login;
+		static Login()
+		{
+			CommandName = CommandType.Login;
+		}
 
 		protected override void ExecuteImpl()
 		{
 			var resp = new LoginResponse();
 			Response = resp;
-			
+
 			// Проверка на существование
 			var account1 = Context.Accounts.Where(p => p.Nickname == Config1.Nickname);
 			if (!account1.Any())
@@ -39,7 +42,7 @@ namespace MyMessenger.Server.Commands
 			}
 
 			var account = account1.First();
-			
+
 			if (Crypto.IsPasswordValid(Config1.Password, account.PasswordSalt, account.PasswordHash))
 			{
 				Code = ResponseCode.Ok;

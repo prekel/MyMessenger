@@ -30,7 +30,10 @@ namespace MyMessenger.Server.Commands
 
 		private IMessage Message { get; set; }
 
-		public override CommandType CommandName { get; } = CommandType.GetMessageLongPool;
+		static GetMessageLongPool()
+		{
+			CommandName = CommandType.GetMessageLongPool;
+		}
 
 		protected override void ExecuteImpl()
 		{

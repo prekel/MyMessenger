@@ -11,19 +11,26 @@ namespace MyMessenger.Server.Commands
 {
 	public class Register : AbstractCommand
 	{
-		private RegisterParameters Config1 { get => (RegisterParameters)Config; set => Config = value; }
+		private RegisterParameters Config1
+		{
+			get => (RegisterParameters)Config;
+			set => Config = value;
+		}
 
 		public Register(MessengerContext context, AbstractParameters config) : base(context, config)
 		{
 		}
 
-		public override CommandType CommandName { get; } = CommandType.Register;
+		static Register()
+		{
+			CommandName = CommandType.Register;
+		}
 
 		protected override void ExecuteImpl()
 		{
 			var resp = new RegisterResponse();
 			Response = resp;
-			
+
 			// Проверка на существование
 			if (Context.Accounts.Any(p => p.Nickname == Config1.Nickname))
 			{
