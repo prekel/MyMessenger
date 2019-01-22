@@ -13,6 +13,7 @@ namespace MyMessenger.Client.Xamarin.Forms.ViewModels
 	public class BaseViewModel : INotifyPropertyChanged
 	{
 		public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
+		public Services.Client Client => DependencyService.Get<Services.Client>() ?? new Services.Client();
 
 		private bool _isBusy;
 		public bool IsBusy
