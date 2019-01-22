@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using Newtonsoft.Json;
@@ -39,6 +40,18 @@ namespace MyMessenger.Client.Commands
 			Stream.Write(data, 0, data.Length);
 		}
 
+		protected async Task CreateSendQueryAsync()
+		{
+			var q = new Query
+			{
+				Config = Config
+			};
+			var a = JsonConvert.SerializeObject(q, Formatting.Indented);
+
+			var data = Encoding.UTF8.GetBytes(a);
+			await Stream.WriteAsync(data, 0, data.Length);
+		}
+
 		protected string ReceiveResponse()
 		{
 			var data = new byte[256];
@@ -53,11 +66,32 @@ namespace MyMessenger.Client.Commands
 			return RawResponse;
 		}
 
+		protected async Task<string> ReceiveResponseAsync()
+		{
+			var data = new byte[256];
+			var response = new StringBuilder();
+			do
+			{
+				var bytes = await Stream.ReadAsync(data, 0, data.Length);
+				response.Append(Encoding.UTF8.GetString(data, 0, bytes));
+			} while (Stream.DataAvailable);
+
+			RawResponse = response.ToString();
+			return RawResponse;
+		}
+
 		public void Execute()
 		{
 			ExecuteImpl();
 		}
 
 		protected abstract void ExecuteImpl();
+
+		public async Task ExecuteAsync()
+		{
+			await ExecuteImplAsync();
+		}
+
+		protected abstract Task ExecuteImplAsync();
 	}
 }

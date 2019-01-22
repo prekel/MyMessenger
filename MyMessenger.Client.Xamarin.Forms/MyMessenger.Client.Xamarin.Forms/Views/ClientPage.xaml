@@ -12,6 +12,9 @@
             <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <Entry x:Name="Login"/>
+            <Entry x:Name="Password" IsPassword="True"/>
+            <Button x:Name="Connect" Clicked="Connect_OnClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

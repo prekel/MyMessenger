@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
@@ -39,6 +40,11 @@ namespace MyMessenger.Client.Commands
 			CreateSendQuery();
 
 			Response = JsonConvert.DeserializeObject<GetMessageLongPoolResponse>(ReceiveResponse(), new InterfaceConverter<IMessage, Message>());
+		}
+
+		protected override Task ExecuteImplAsync()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
