@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MyMessenger.Client.Xamarin.Forms.Views.ClientPage"
+             x:Class="MyMessenger.Client.Xamarin.Forms.Views.LoginPage"
              xmlns:vm="clr-namespace:MyMessenger.Client.Xamarin.Forms.ViewModels"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
-        <vm:ClientViewModel />
+        <vm:LoginViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <Entry x:Name="Login"/>
-            <Entry x:Name="Password" IsPassword="True"/>
+            <Entry x:Name="IpAddress" Text="51.158.73.185" Keyboard="Numeric"/>
+            <Entry x:Name="Port" Text="20522" Keyboard="Numeric"/>
+            <Entry x:Name="Login" Text="User1" Keyboard="Email"/>
+            <Entry x:Name="Password" Text="123456" IsPassword="True"/>
+            <Entry x:Name="DialogId" Text="1" Keyboard="Numeric"/>
             <Button x:Name="Connect" Clicked="Connect_OnClicked"/>
         </StackLayout>
     </ContentPage.Content>

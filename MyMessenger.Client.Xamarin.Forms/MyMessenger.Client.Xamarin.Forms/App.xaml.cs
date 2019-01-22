@@ -8,6 +8,7 @@ namespace MyMessenger.Client.Xamarin.Forms
 {
 	public partial class App : Application
 	{
+		public static Services.Client Client { get; } = new Services.Client();
 
 		public App()
 		{

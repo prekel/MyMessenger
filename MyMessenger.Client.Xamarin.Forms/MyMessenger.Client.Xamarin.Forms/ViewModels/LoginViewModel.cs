@@ -4,11 +4,11 @@ using System.Text;
 
 namespace MyMessenger.Client.Xamarin.Forms.ViewModels
 {
-	public class ClientViewModel : BaseViewModel
+	public class LoginViewModel : BaseViewModel
 	{
-		public ClientViewModel()
+		public LoginViewModel()
 		{
-			Title = "Client";
+			Title = "Login";
 		}
 	}
 }
