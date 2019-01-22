@@ -23,13 +23,13 @@ namespace MyMessenger.Client.Xamarin.Forms.ViewModels
 
 			MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
 			{
-				var newItem = item as Item;
+				var newItem = item;
 				Items.Add(newItem);
 				await DataStore.AddItemAsync(newItem);
 			});
 		}
 
-		async Task ExecuteLoadItemsCommand()
+		private async Task ExecuteLoadItemsCommand()
 		{
 			if (IsBusy)
 				return;

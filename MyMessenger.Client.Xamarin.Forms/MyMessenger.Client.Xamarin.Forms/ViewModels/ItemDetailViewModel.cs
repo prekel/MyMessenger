@@ -1,6 +1,4 @@
-﻿using System;
-
-using MyMessenger.Client.Xamarin.Forms.Models;
+﻿using MyMessenger.Client.Xamarin.Forms.Models;
 
 namespace MyMessenger.Client.Xamarin.Forms.ViewModels
 {
