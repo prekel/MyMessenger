@@ -42,9 +42,11 @@ namespace MyMessenger.Client.Commands
 			Response = JsonConvert.DeserializeObject<GetDialogByIdResponse> (ReceiveResponse(), new InterfaceConverter<IDialog, Dialog>());
 		}
 
-		protected override Task ExecuteImplAsync()
+		protected override async Task ExecuteImplAsync()
 		{
-			throw new NotImplementedException();
+			await CreateSendQueryAsync();
+
+			Response = JsonConvert.DeserializeObject<GetDialogByIdResponse>(await ReceiveResponseAsync(), new InterfaceConverter<IDialog, Dialog>());
 		}
 	}
 }

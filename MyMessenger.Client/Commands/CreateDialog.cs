@@ -12,13 +12,13 @@ namespace MyMessenger.Client.Commands
 {
 	public class CreateDialog : AbstractCommand
 	{
-		public static ICollection<string> CommandNames { get; } = new List<string>(new[] {"createdialog", "cd"});
+		public static ICollection<string> CommandNames { get; } = new List<string>(new[] { "createdialog", "cd" });
 
 		public CreateDialogResponse Response { get; private set; }
 
 		private CreateDialogParameters Config1
 		{
-			get => (CreateDialogParameters) Config;
+			get => (CreateDialogParameters)Config;
 			set => Config = value;
 		}
 
@@ -47,8 +47,15 @@ namespace MyMessenger.Client.Commands
 		protected override void ExecuteImpl()
 		{
 			CreateSendQuery();
-			
-			Response = JsonConvert.DeserializeObject<CreateDialogResponse> (ReceiveResponse());
+
+			Response = JsonConvert.DeserializeObject<CreateDialogResponse>(ReceiveResponse());
+		}
+
+		protected override async Task ExecuteImplAsync()
+		{
+			await CreateSendQueryAsync();
+
+			Response = JsonConvert.DeserializeObject<CreateDialogResponse>(await ReceiveResponseAsync());
 		}
 
 		protected override Task ExecuteImplAsync()
