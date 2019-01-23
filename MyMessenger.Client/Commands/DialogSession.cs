@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using MyMessenger.Core;
 using Newtonsoft.Json;
 using MyMessenger.Core.Parameters;
@@ -39,6 +40,11 @@ namespace MyMessenger.Client.Commands
 			CreateSendQuery();
 			
 			//Response = JsonConvert.DeserializeObject<DialogSessionResponse>(ReceiveResponse(), new InterfaceConverter<IMessage, Message>());
+		}
+
+		protected override Task ExecuteImplAsync()
+		{
+			throw new NotImplementedException();
 		}
 
 		public void Receive()
