@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyMessenger.Client.Xamarin.Forms\MyMessenger.Client.Xamarin.Forms\MyMessenger.Client.Xamarin.Forms.csproj" />
     <ProjectReference Include="..\MyMessenger.Client\MyMessenger.Client.csproj" />
   </ItemGroup>
 

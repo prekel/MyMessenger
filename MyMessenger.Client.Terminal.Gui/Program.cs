@@ -1,4 +1,6 @@
-﻿using Gtk;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
 using Terminal.Gui;
 using Application = Terminal.Gui.Application;
 using Button = Terminal.Gui.Button;
@@ -6,18 +8,47 @@ using Label = Terminal.Gui.Label;
 using MenuBar = Terminal.Gui.MenuBar;
 using MenuItem = Terminal.Gui.MenuItem;
 using Window = Terminal.Gui.Window;
+using MyMessenger.Client.Xamarin.Forms.Services;
 
 namespace MyMessenger.Client.Terminal.Gui
 {
 	public class Program
 	{
+		private static Label loginLabel = new Label(3, 2, "Login: ") ;
+		private static TextField loginTextField = new TextField(14, 2, 40, "User1") ;
+
+		private static Label passwordLabel = new Label(3, 4, "Password: ");
+		private static TextField passwordField = new TextField(14, 4, 40, "123456") { Secret = true, };
+
+		private static Label ipLabel = new Label(3, 6, "Ip: ");
+		private static TextField ipField = new TextField(14, 6, 40, "51.158.73.185");
+
+		private static Label portLabel = new Label(3, 8, "Port: ");
+		private static TextField portTextField = new TextField(14, 8, 40, "20522");
+
+		private static Label dialogidLabel = new Label(3, 10, "DialogId: ");
+		private static TextField dialogidTextField = new TextField(14, 10, 40, "1");
+
+		private static Button connectButton = new Button(3, 14, "Connect") {Clicked = OnConnectClicked };
+
+		private static Label sendLabel = new Label(3, 17, "Send: ");
+		private static TextField sendTextField = new TextField(14, 17, 40, "");
+
+		private static Button sendButton = new Button(3, 19, "Send") { Clicked = OnSendClicked };
+
+		private static Button getButton = new Button(3, 21, "Get") { Clicked = OnGetClicked };
+		
+		private static Label messageLabel = new Label(3, 23, "Message: ");
+
+		private static Xamarin.Forms.Services.Client Client = new Xamarin.Forms.Services.Client();
+
 		public static void Main()
 		{
 			Application.Init();
 			var top = Application.Top;
 
 			// Creates the top-level window to show
-			var win = new Window(new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1), "MyApp");
+			var win = new Window(new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1), "MyMessenger.Client.Terminal.Gui");
 			top.Add(win);
 
 			// Creates a menubar, the item "New" has a help menu.
@@ -37,17 +68,42 @@ namespace MyMessenger.Client.Terminal.Gui
 
 			// Add some controls
 			win.Add(
-				new Label(3, 2, "Login: "),
-				new TextField(14, 2, 40, ""),
-				new Label(3, 4, "Password: "),
-				new TextField(14, 4, 40, "") { Secret = true },
-				new CheckBox(3, 6, "Remember me"),
-				new RadioGroup(3, 8, new[] { "_Personal", "_Company" }),
-				new Button(3, 14, "Ok"),
-				new Button(10, 14, "Cancel"),
-				new Label(3, 18, "Press ESC and 9 to activate the menubar"));
+				loginLabel, 
+				loginTextField, 
+				passwordLabel, 
+				passwordField, 
+				ipLabel,
+				ipField, 
+				portLabel, 
+				portTextField, 
+				dialogidLabel, 
+				dialogidTextField,
+				connectButton,
+				sendLabel,
+				sendTextField,
+				sendButton,
+				getButton,
+				messageLabel
+			);
 
 			Application.Run();
+		}
+
+		private static async void OnConnectClicked()
+		{
+			await Client.Connect(new IPEndPoint(IPAddress.Parse(ipField.Text.ToString()), Int32.Parse(portTextField.Text.ToString())),
+				loginTextField.Text.ToString(), passwordField.Text.ToString());
+		}
+
+		private static async void OnSendClicked()
+		{
+			await Client.SendMessage(Int32.Parse(dialogidTextField.Text.ToString()), sendTextField.Text.ToString());
+		}
+
+		private static async void OnGetClicked()
+		{
+			var m = await Client.GetMessageLongPool(Int32.Parse(dialogidTextField.Text.ToString()), TimeSpan.FromSeconds(25));
+			messageLabel.Text = NStack.ustring.Make(m.Text);
 		}
 
 		private static void Quit()
