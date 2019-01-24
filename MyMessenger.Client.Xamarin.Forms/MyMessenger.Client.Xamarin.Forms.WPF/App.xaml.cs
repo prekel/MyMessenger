@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace MyMessenger.Client.Xamarin.Forms.WPF
+namespace MyMessenger.Client.XamarinForms.WPF
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

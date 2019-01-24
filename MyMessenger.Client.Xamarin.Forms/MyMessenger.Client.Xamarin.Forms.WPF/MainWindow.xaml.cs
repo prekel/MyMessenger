@@ -1,8 +1,8 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
-using MyMessenger.Client.Xamarin.Forms;
+using MyMessenger.Client.XamarinForms;
 
-namespace MyMessenger.Client.Xamarin.Forms.WPF
+namespace MyMessenger.Client.XamarinForms.WPF
 {
 	public partial class MainWindow : FormsApplicationPageWorkaround
 	{
@@ -11,7 +11,7 @@ namespace MyMessenger.Client.Xamarin.Forms.WPF
 			InitializeComponent();
 
 			global::Xamarin.Forms.Forms.Init();
-			LoadApplication(new Forms.App());
+			LoadApplication(new XamarinForms.App());
 		}
 	}
 }

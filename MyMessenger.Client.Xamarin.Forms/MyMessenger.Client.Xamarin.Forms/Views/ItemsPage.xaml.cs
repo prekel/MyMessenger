@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using MyMessenger.Client.XamarinForms.Views;
+using MyMessenger.Client.XamarinForms.Models;
+using MyMessenger.Client.XamarinForms.ViewModels;
 
-using MyMessenger.Client.Xamarin.Forms.Models;
-using MyMessenger.Client.Xamarin.Forms.Views;
-using MyMessenger.Client.Xamarin.Forms.ViewModels;
-
-namespace MyMessenger.Client.Xamarin.Forms.Views
+namespace MyMessenger.Client.XamarinForms.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ItemsPage : ContentPage

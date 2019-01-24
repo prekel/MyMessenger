@@ -4,11 +4,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 using Xamarin.Forms;
+using MyMessenger.Client.XamarinForms.Models;
+using MyMessenger.Client.XamarinForms.Services;
 
-using MyMessenger.Client.Xamarin.Forms.Models;
-using MyMessenger.Client.Xamarin.Forms.Services;
-
-namespace MyMessenger.Client.Xamarin.Forms.ViewModels
+namespace MyMessenger.Client.XamarinForms.ViewModels
 {
 	public class BaseViewModel : INotifyPropertyChanged
 	{

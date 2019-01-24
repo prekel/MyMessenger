@@ -3,7 +3,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MyMessenger.Client.Xamarin.Forms.Views
+namespace MyMessenger.Client.XamarinForms.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class AboutPage : ContentPage

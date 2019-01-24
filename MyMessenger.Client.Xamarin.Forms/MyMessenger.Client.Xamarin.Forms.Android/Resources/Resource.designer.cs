@@ -11,7 +11,7 @@
 
 [assembly: global::Android.Runtime.ResourceDesignerAttribute("MyMessenger.Client.Xamarin.Forms.Droid.Resource", IsApplication=true)]
 
-namespace MyMessenger.Client.Xamarin.Forms.Droid
+namespace MyMessenger.Client.XamarinForms.Android
 {
 	
 	
@@ -26,7 +26,7 @@ namespace MyMessenger.Client.Xamarin.Forms.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::MyMessenger.Client.Xamarin.Forms.Droid.Resource.Attribute.actionBarSize;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::MyMessenger.Client.XamarinForms.Android.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation

@@ -4,11 +4,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using MyMessenger.Client.XamarinForms.Models;
+using MyMessenger.Client.XamarinForms.Views;
 
-using MyMessenger.Client.Xamarin.Forms.Models;
-using MyMessenger.Client.Xamarin.Forms.Views;
-
-namespace MyMessenger.Client.Xamarin.Forms.ViewModels
+namespace MyMessenger.Client.XamarinForms.ViewModels
 {
 	public class ItemsViewModel : BaseViewModel
 	{

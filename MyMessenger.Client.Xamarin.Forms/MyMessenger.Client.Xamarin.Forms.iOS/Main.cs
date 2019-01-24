@@ -5,7 +5,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
-namespace MyMessenger.Client.Xamarin.Forms.iOS
+namespace MyMessenger.Client.XamarinForms.iOS
 {
     public class Application
     {

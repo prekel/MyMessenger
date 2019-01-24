@@ -6,7 +6,7 @@ using System.Xml;
 using MyMessenger.Client.Commands;
 using MyMessenger.Core;
 
-namespace MyMessenger.Client.Xamarin.Forms.Services
+namespace MyMessenger.Client.XamarinForms.Services
 {
 	public class Client
 	{

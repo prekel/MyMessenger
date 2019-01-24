@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace MyMessenger.Client.Xamarin.Forms.UWP
+namespace MyMessenger.Client.XamarinForms.UWP
 {
     public sealed partial class MainPage
     {
@@ -21,7 +21,7 @@ namespace MyMessenger.Client.Xamarin.Forms.UWP
         {
             this.InitializeComponent();
 
-            LoadApplication(new MyMessenger.Client.Xamarin.Forms.App());
+            LoadApplication(new XamarinForms.App());
         }
     }
 }

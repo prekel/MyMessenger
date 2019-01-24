@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using MyMessenger.Client.XamarinForms.Models;
 
-using MyMessenger.Client.Xamarin.Forms.Models;
-
-namespace MyMessenger.Client.Xamarin.Forms.Views
+namespace MyMessenger.Client.XamarinForms.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class NewItemPage : ContentPage

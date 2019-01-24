@@ -8,9 +8,9 @@ using Label = Terminal.Gui.Label;
 using MenuBar = Terminal.Gui.MenuBar;
 using MenuItem = Terminal.Gui.MenuItem;
 using Window = Terminal.Gui.Window;
-using MyMessenger.Client.Xamarin.Forms.Services;
+using MyMessenger.Client.XamarinForms.Services;
 
-namespace MyMessenger.Client.Terminal.Gui
+namespace MyMessenger.Client.TerminalGui
 {
 	public class Program
 	{
@@ -40,7 +40,7 @@ namespace MyMessenger.Client.Terminal.Gui
 		
 		private static Label messageLabel = new Label(3, 23, "Message: ");
 
-		private static Xamarin.Forms.Services.Client Client = new Xamarin.Forms.Services.Client();
+		private static XamarinForms.Services.Client Client = new XamarinForms.Services.Client();
 
 		private static Toplevel Top;
 

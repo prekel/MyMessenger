@@ -6,8 +6,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using MyMessenger.Client.XamarinForms;
 
-namespace MyMessenger.Client.Xamarin.Forms.Droid
+namespace MyMessenger.Client.XamarinForms.Android
 {
     [Activity(Label = "MyMessenger.Client.Xamarin.Forms", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MyMessenger.Core;
 
-namespace MyMessenger.Client.Xamarin.Forms.ViewModels
+namespace MyMessenger.Client.XamarinForms.ViewModels
 {
 	public class DialogViewModel : BaseViewModel
 	{

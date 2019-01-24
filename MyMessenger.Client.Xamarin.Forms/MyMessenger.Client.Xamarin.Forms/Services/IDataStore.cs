@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MyMessenger.Client.Xamarin.Forms.Services
+namespace MyMessenger.Client.XamarinForms.Services
 {
 	public interface IDataStore<T>
 	{

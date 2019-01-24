@@ -1,10 +1,10 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using MyMessenger.Client.Xamarin.Forms.Views;
+using MyMessenger.Client.XamarinForms.Views;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
-namespace MyMessenger.Client.Xamarin.Forms
+namespace MyMessenger.Client.XamarinForms
 {
 	public partial class App : Application
 	{

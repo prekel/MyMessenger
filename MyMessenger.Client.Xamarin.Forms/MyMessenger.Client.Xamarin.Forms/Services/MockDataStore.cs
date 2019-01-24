@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MyMessenger.Client.Xamarin.Forms.Models;
+using MyMessenger.Client.XamarinForms.Models;
 
-namespace MyMessenger.Client.Xamarin.Forms.Services
+namespace MyMessenger.Client.XamarinForms.Services
 {
 	public class MockDataStore : IDataStore<Item>
 	{

@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 using Xamarin.Forms;
 
-namespace MyMessenger.Client.Xamarin.Forms.ViewModels
+namespace MyMessenger.Client.XamarinForms.ViewModels
 {
 	public class AboutViewModel : BaseViewModel
 	{

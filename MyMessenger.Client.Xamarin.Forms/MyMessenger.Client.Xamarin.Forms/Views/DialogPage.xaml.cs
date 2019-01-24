@@ -5,10 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using MyMessenger.Client.XamarinForms.ViewModels;
 
-using MyMessenger.Client.Xamarin.Forms.ViewModels;
-
-namespace MyMessenger.Client.Xamarin.Forms.Views
+namespace MyMessenger.Client.XamarinForms.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DialogPage : ContentPage

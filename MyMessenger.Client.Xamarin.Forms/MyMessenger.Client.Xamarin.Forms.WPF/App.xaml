@@ -1,7 +1,7 @@
-﻿<Application x:Class="MyMessenger.Client.Xamarin.Forms.WPF.App"
+﻿<Application x:Class="MyMessenger.Client.XamarinForms.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:MyMessenger.Client.Xamarin.Forms.WPF"
+             xmlns:local="clr-namespace:MyMessenger.Client.XamarinForms.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

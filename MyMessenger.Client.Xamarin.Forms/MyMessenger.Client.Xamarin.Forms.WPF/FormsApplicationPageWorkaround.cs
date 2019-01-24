@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyMessenger.Client.Xamarin.Forms.WPF
+namespace MyMessenger.Client.XamarinForms.WPF
 {
 	public class FormsApplicationPageWorkaround : global::Xamarin.Forms.Platform.WPF.FormsApplicationPage
 	{

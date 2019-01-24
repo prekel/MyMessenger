@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyMessenger.Client.Xamarin.Forms.WPF.Properties
+namespace MyMessenger.Client.XamarinForms.WPF.Properties
 {
 
 

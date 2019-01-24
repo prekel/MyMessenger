@@ -1,9 +1,9 @@
 ﻿using System;
-using MyMessenger.Client.Xamarin.Forms;
+using MyMessenger.Client.XamarinForms;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.GTK;
 
-namespace MyMessenger.Client.Xamarin.Forms.GTK
+namespace MyMessenger.Client.XamarinForms.GTK
 {
 	class MainClass
 	{

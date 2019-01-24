@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyMessenger.Client.Xamarin.Forms.ViewModels
+namespace MyMessenger.Client.XamarinForms.ViewModels
 {
 	public class LoginViewModel : BaseViewModel
 	{

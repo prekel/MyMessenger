@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:views="clr-namespace:MyMessenger.Client.Xamarin.Forms.Views"
-            x:Class="MyMessenger.Client.Xamarin.Forms.Views.MainPage">
+            xmlns:views="clr-namespace:MyMessenger.Client.XamarinForms.Views"
+            x:Class="MyMessenger.Client.XamarinForms.Views.MainPage">
     <TabbedPage.Children>
         <NavigationPage Title="Browse">
             <NavigationPage.Icon>

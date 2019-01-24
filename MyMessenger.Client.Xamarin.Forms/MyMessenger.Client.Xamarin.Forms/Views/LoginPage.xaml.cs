@@ -4,11 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using MyMessenger.Client.Xamarin.Forms.ViewModels;
+using MyMessenger.Client.XamarinForms.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MyMessenger.Client.Xamarin.Forms.Views
+namespace MyMessenger.Client.XamarinForms.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LoginPage : ContentPage

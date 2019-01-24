@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyMessenger.Client.Xamarin.Forms.Models
+namespace MyMessenger.Client.XamarinForms.Models
 {
 	public class Item
 	{

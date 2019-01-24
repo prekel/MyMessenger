@@ -1,6 +1,6 @@
-﻿using MyMessenger.Client.Xamarin.Forms.Models;
+﻿using MyMessenger.Client.XamarinForms.Models;
 
-namespace MyMessenger.Client.Xamarin.Forms.ViewModels
+namespace MyMessenger.Client.XamarinForms.ViewModels
 {
 	public class ItemDetailViewModel : BaseViewModel
 	{
