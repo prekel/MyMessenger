@@ -42,14 +42,16 @@ namespace MyMessenger.Client.Terminal.Gui
 
 		private static Xamarin.Forms.Services.Client Client = new Xamarin.Forms.Services.Client();
 
+		private static Toplevel Top;
+
 		public static void Main()
 		{
 			Application.Init();
-			var top = Application.Top;
+			Top = Application.Top;
 
 			// Creates the top-level window to show
-			var win = new Window(new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1), "MyMessenger.Client.Terminal.Gui");
-			top.Add(win);
+			var win = new Window(new Rect(0, 1, Top.Frame.Width, Top.Frame.Height - 1), "MyMessenger.Client.Terminal.Gui");
+			Top.Add(win);
 
 			// Creates a menubar, the item "New" has a help menu.
 			var menu = new MenuBar(new MenuBarItem[] {
@@ -64,7 +66,7 @@ namespace MyMessenger.Client.Terminal.Gui
 					new MenuItem ("_Paste", "", null)
 				})
 			});
-			top.Add(menu);
+			Top.Add(menu);
 
 			// Add some controls
 			win.Add(
@@ -104,6 +106,13 @@ namespace MyMessenger.Client.Terminal.Gui
 		{
 			var m = await Client.GetMessageLongPool(Int32.Parse(dialogidTextField.Text.ToString()), TimeSpan.FromSeconds(25));
 			messageLabel.Text = NStack.ustring.Make(m.Text);
+
+			MessageBox.Query(30, 10, m.AuthorId.ToString(), m.Text, "Ok");
+
+			//var alert = new Window(new Rect(70,5, 30,10), NStack.ustring.Make(m.AuthorId.ToString()));
+			//Top.Add(alert);
+			//var label = new Label(3, 3, NStack.ustring.Make(m.Text));
+			//alert.Add(label);
 		}
 
 		private static void Quit()
