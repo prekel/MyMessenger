@@ -57,10 +57,5 @@ namespace MyMessenger.Client.Commands
 
 			Response = JsonConvert.DeserializeObject<CreateDialogResponse>(await ReceiveResponseAsync());
 		}
-
-		protected override Task ExecuteImplAsync()
-		{
-			throw new NotImplementedException();
-		}
 	}
 }
