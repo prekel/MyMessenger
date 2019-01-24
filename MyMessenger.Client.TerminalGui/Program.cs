@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Terminal.Gui;
 
 using MyMessenger.Client;
+using MyMessenger.Core;
 
 namespace MyMessenger.Client.TerminalGui
 {
@@ -35,9 +37,29 @@ namespace MyMessenger.Client.TerminalGui
 
 		private static Label messageLabel = new Label(3, 23, "Message: ");
 
+		private static System.Collections.IList Messages { get; } = new List<Message1>();
+		private static ListView messagesListView = new ListView(new Rect(60, 2, 40, 20), Messages);
+
 		private static Toplevel Top;
 
 		private static BaseClient Client = new BaseClient();
+
+		public class Message1
+		{
+			private IMessage Message { get; }
+			private string AuthorNickname { get; }
+
+			public Message1(string nickname, IMessage message)
+			{
+				AuthorNickname = nickname;
+				Message = message;
+			}
+
+			public override string ToString()
+			{
+				return $"{AuthorNickname}: {Message.Text}";
+			}
+		}
 
 		public static void Main()
 		{
@@ -63,6 +85,8 @@ namespace MyMessenger.Client.TerminalGui
 			});
 			Top.Add(menu);
 
+				//Messages.Add(new Message1("sdfваыа", new Message(){Text = "выф"}));
+
 			// Add some controls
 			win.Add(
 				loginLabel,
@@ -80,8 +104,10 @@ namespace MyMessenger.Client.TerminalGui
 				sendTextField,
 				sendButton,
 				getButton,
-				messageLabel
+				messageLabel,
+				messagesListView
 			);
+		
 
 			Application.Run();
 		}
@@ -99,10 +125,25 @@ namespace MyMessenger.Client.TerminalGui
 
 		private static async void OnGetClicked()
 		{
-			var m = await Client.GetMessageLongPool(Int32.Parse(dialogidTextField.Text.ToString()), TimeSpan.FromSeconds(25));
-			messageLabel.Text = NStack.ustring.Make(m.Text);
+			while (true)
+			{
+				var m = await Client.GetMessageLongPool(Int32.Parse(dialogidTextField.Text.ToString()),
+					TimeSpan.FromSeconds(25));
+				if (m == null)
+				{
+					continue;
+				}
 
-			MessageBox.Query(30, 10, m.AuthorId.ToString(), m.Text, "Ok");
+				messageLabel.Text = NStack.ustring.Make(m.Text);
+
+				MessageBox.Query(30, 10, m.AuthorId.ToString(), m.Text, "Ok");
+
+				//var author = await Client.GetAccountById(m.AuthorId);
+				//Messages.Add(new Message1(author.Nickname, m));
+
+				messagesListView.SetSource(Messages);
+
+			}
 
 			//var alert = new Window(new Rect(70,5, 30,10), NStack.ustring.Make(m.AuthorId.ToString()));
 			//Top.Add(alert);
