@@ -8,12 +8,13 @@ namespace MyMessenger.Client.XamarinForms
 {
 	public partial class App : Application
 	{
+		public static BaseClient Client { get; } = new BaseClient();
+		public static int DialogId { get; set; }
 
 		public App()
 		{
 			InitializeComponent();
-
-
+			
 			MainPage = new MainPage();
 		}
 

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyMessenger.Client.XamarinForms.Views.DialogPage"
+             xmlns:vm="clr-namespace:MyMessenger.Client.XamarinForms.ViewModels"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <vm:LoginViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <!--<ListView x:Name="MessagesListView" 
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="true"
+                      IsPullToRefreshEnabled="true"
+                      CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label x:Name="TopLabel"
+                                       LineBreakMode="NoWrap" 
+                                       Style="{DynamicResource ListItemTextStyle}" 
+                                       FontSize="16" />
+                                <Label x:Name="BottomLabel"
+                                       LineBreakMode="NoWrap"
+                                       Style="{DynamicResource ListItemDetailTextStyle}"
+                                       FontSize="13" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+            <Entry x:Name="SendMessageEntry" />
+            <Button x:Name="SendButton" Text="Send" Clicked="SendButton_OnClicked"/>
+            <Button x:Name="GetButton" Text="Get" Clicked="GetButton_OnClicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
