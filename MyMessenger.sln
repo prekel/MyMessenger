@@ -21,13 +21,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client.XamarinF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client.XamarinForms.UWP", "MyMessenger.Client.XamarinForms\MyMessenger.Client.XamarinForms.UWP\MyMessenger.Client.XamarinForms.UWP.csproj", "{C6B9A654-1560-44CA-BD71-547E983F0F84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client.XamarinForms", "MyMessenger.Client.XamarinForms\MyMessenger.Client.XamarinForms\MyMessenger.Client.XamarinForms.csproj", "{1A31EE18-0229-4E9B-BE46-43C304F9376E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessenger.Client.XamarinForms", "MyMessenger.Client.XamarinForms\MyMessenger.Client.XamarinForms\MyMessenger.Client.XamarinForms.csproj", "{1A31EE18-0229-4E9B-BE46-43C304F9376E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client.XamarinForms.GTK", "MyMessenger.Client.XamarinForms\MyMessenger.Client.XamarinForms.GTK\MyMessenger.Client.XamarinForms.GTK.csproj", "{0E11D3AF-E82F-490E-ACFD-F02690A59A44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessenger.Client.XamarinForms.GTK", "MyMessenger.Client.XamarinForms\MyMessenger.Client.XamarinForms.GTK\MyMessenger.Client.XamarinForms.GTK.csproj", "{0E11D3AF-E82F-490E-ACFD-F02690A59A44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client.XamarinForms.WPF", "MyMessenger.Client.XamarinForms\MyMessenger.Client.XamarinForms.WPF\MyMessenger.Client.XamarinForms.WPF.csproj", "{78299BFC-A530-40D7-BC8E-3B11D64089BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMessenger.Client.TerminalGui", "MyMessenger.Client.TerminalGui\MyMessenger.Client.TerminalGui.csproj", "{50C0BE01-D5A9-4CAB-9D10-083E6CAD52A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyMessenger.Client.TerminalGui", "MyMessenger.Client.TerminalGui\MyMessenger.Client.TerminalGui.csproj", "{50C0BE01-D5A9-4CAB-9D10-083E6CAD52A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
