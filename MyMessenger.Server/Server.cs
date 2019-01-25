@@ -296,8 +296,9 @@ namespace MyMessenger.Server
 					client.Close();
 				}
 			}
-			catch (SocketException e)
+			catch (Exception e)
 			{
+				Log.Error(e.Message);
 			}
 		}
 
