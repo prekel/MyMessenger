@@ -28,8 +28,15 @@ namespace MyMessenger.Client.XamarinForms.Views
 
 		private async void GetButton_OnClicked(object sender, EventArgs e)
 		{
-			var m = await App.Client.GetMessageLongPool(App.DialogId, TimeSpan.FromSeconds(25));
-			await DisplayAlert(m.AuthorId.ToString(), m.Text, "Ok");
+			GetButton.IsEnabled = false;
+			while (true)
+			{
+				var m = await App.Client.GetMessageLongPool(App.DialogId, TimeSpan.FromSeconds(25));
+				if (m == null) continue;
+				var author = await App.Client.GetAccountById(m.AuthorId);
+				DialogMessages.Text = DialogMessages.Text + $"[{m.SendDateTime.LocalDateTime}][{author.Nickname}]{m.Text}" + '\n';
+				//await DisplayAlert(m.AuthorId.ToString(), m.Text, "Ok");
+			}
 		}
 	}
 }

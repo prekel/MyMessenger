@@ -14,7 +14,7 @@
             <Entry x:Name="Login" Text="User1" Keyboard="Email"/>
             <Entry x:Name="Password" Text="123456" IsPassword="True"/>
             <Entry x:Name="DialogId" Text="1" Keyboard="Numeric"/>
-            <Button x:Name="Connect" Clicked="Connect_OnClicked"/>
+            <Button x:Name="Connect" Text="Connect"  Clicked="Connect_OnClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
