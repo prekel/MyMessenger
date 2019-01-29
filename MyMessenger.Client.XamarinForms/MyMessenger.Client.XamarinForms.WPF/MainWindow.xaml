@@ -6,7 +6,7 @@
                                       xmlns:local="clr-namespace:MyMessenger.Client.XamarinForms.WPF"
                                       xmlns:wpf="clr-namespace:Xamarin.Forms.Platform.WPF;assembly=Xamarin.Forms.Platform.WPF"
                                       mc:Ignorable="d"
-                                      Title="MyMessenger.Client.Xamarin.Forms.WPF" Height="450" Width="800">
+                                      Title="MyMessenger.Client.XamarinForms.WPF" Height="450" Width="800">
     <Grid>
 
     </Grid>
