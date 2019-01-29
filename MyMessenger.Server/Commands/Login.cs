@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Internal;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
@@ -54,6 +55,39 @@ namespace MyMessenger.Server.Commands
 				account.LoginDateTime = DateTime.Now;
 				resp.Account = account;
 				Context.SaveChanges();
+			}
+			else
+			{
+				Code = ResponseCode.WrongPassword;
+			}
+		}
+
+		protected override async Task ExecuteImplAsync()
+		{
+			var resp = new LoginResponse();
+			Response = resp;
+
+			// Проверка на существование
+			var account1 = await Task.FromResult(Context.Accounts.Where(p => p.Nickname == Config1.Nickname));
+			if (!account1.Any())
+			{
+				Code = ResponseCode.WrongNickname;
+				return;
+			}
+
+			var account = account1.First();
+
+			if (Crypto.IsPasswordValid(Config1.Password, account.PasswordSalt, account.PasswordHash))
+			{
+				Code = ResponseCode.Ok;
+				var r = new Random();
+				var token = r.Next(1000, 9999).ToString();
+				Tokens[token] = account;
+				Token = token;
+				resp.Token = token;
+				account.LoginDateTime = DateTime.Now;
+				resp.Account = account;
+				await Context.SaveChangesAsync();
 			}
 			else
 			{

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core;
 using MyMessenger.Core.Responses;
@@ -46,6 +47,15 @@ namespace MyMessenger.Server.Commands
 			Log.Trace($"Поток:  {Thread.CurrentThread.ManagedThreadId} Возвращено {Code}");
 		}
 
+		public async Task ExecuteAsync()
+		{
+			Log.Trace($"Поток:  {Thread.CurrentThread.ManagedThreadId} Выполняется запрос {CommandName}");
+			await ExecuteImplAsync();
+			Log.Trace($"Поток:  {Thread.CurrentThread.ManagedThreadId} Возвращено {Code}");
+		}
+
 		protected abstract void ExecuteImpl();
+
+		protected abstract Task ExecuteImplAsync();
 	}
 }

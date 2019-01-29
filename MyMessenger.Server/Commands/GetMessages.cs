@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
@@ -42,6 +42,28 @@ namespace MyMessenger.Server.Commands
 
 			// Запрос сообщений из базы
 			var r = from i in Context.Messages where i.Dialog.DialogId == Config1.DialogId select i;
+			Result = r;
+
+			Code = ResponseCode.Ok;
+			resp.Content = r.ToList<IMessage>();
+		}
+
+		protected override async Task ExecuteImplAsync()
+		{
+			var resp = new GetMessagesResponse();
+			Response = resp;
+
+			// Проверка на принадлежность того, кто сделал запрос, к диалогу
+			var d = await Task.FromResult(Context.Dialogs.First(p => p.DialogId == Config1.DialogId));
+			var requesterid = Tokens[Config1.Token].AccountId;
+			if (await Task.FromResult(d.Members.Select(p => p.Account).All(p => p.AccountId != requesterid)))
+			{
+				Code = ResponseCode.AccessDenied;
+				return;
+			}
+
+			// Запрос сообщений из базы
+			var r = await Task.FromResult(from i in Context.Messages where i.Dialog.DialogId == Config1.DialogId select i);
 			Result = r;
 
 			Code = ResponseCode.Ok;
