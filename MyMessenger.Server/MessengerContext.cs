@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 
 using MyMessenger.Server.Configs;
@@ -117,6 +119,12 @@ namespace MyMessenger.Server
 		{
 			Log.Trace("Изменения сохранены в базу данных");
 			return base.SaveChanges(a);
+		}
+
+		public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+		{
+			Log.Trace("Изменения сохранены в базу данных");
+			return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Security;
 using System.Text;
+using System.Threading.Tasks;
 using static System.Console;
 
 using Newtonsoft.Json;
@@ -85,13 +86,20 @@ namespace MyMessenger.Server.Console
 			}
 			else if (args[0] == "1")
 			{
-				Log.Info("Запускается сервер");
+				Log.Info("Запускается многопоточный сервер");
 				var server = new Server(Config);
 			}
 			else if (args[0] == "2")
 			{
 				Log.Info("Запускается миграция базы данных");
 				ProgramMigrate.Main(Config);
+			}
+			else if (args[0] == "3")
+			{
+				Log.Info("Запускается асинхронный сервер");
+				var server = new AsyncServer(Config);
+				var start = server.StartAsync();
+				start.Wait();
 			}
 		}
 
