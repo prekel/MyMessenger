@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
 using MyMessenger.Server.Entities;
@@ -51,6 +51,11 @@ namespace MyMessenger.Server.Commands
 			Context.Accounts.Add(a);
 			Context.SaveChanges();
 			Code = ResponseCode.Ok;
+		}
+
+		protected override async Task ExecuteImplAsync()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

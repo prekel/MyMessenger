@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using MyMessenger.Core;
@@ -41,6 +41,23 @@ namespace MyMessenger.Server.Commands
 			}
 
 			resp.Account = account1.First();
+			Code = ResponseCode.Ok;
+		}
+
+		protected override async Task ExecuteImplAsync()
+		{
+			var resp = new GetAccountByIdResponse();
+			Response = resp;
+
+			// Проверка на существование
+			var account1 = await Task.FromResult(Context.Accounts.Where(p => p.AccountId == Config1.AccountId));
+			if (await Task.FromResult(!account1.Any()))
+			{
+				Code = ResponseCode.WrongNickname;
+				return;
+			}
+
+			resp.Account = await Task.FromResult(account1.First());
 			Code = ResponseCode.Ok;
 		}
 	}

@@ -66,9 +66,10 @@ namespace MyMessenger.Server
 				//WriteLine("Connected!");
 				//var t = new Thread(ServeData);
 
+				Log.Debug($"Подключен клиент {client.Client.RemoteEndPoint}");
+
 				var sd = ServeDataAsync(client);
 				//sd.Start();
-				Log.Debug($"Подключен клиент {client.Client.RemoteEndPoint}");
 				//t.Start(client);
 			}
 
@@ -158,7 +159,7 @@ namespace MyMessenger.Server
 						if (q.Config.CommandName == CommandType.GetMessages)
 						{
 							var gm = new GetMessages(context, Tokens, q.Config);
-							gm.Execute();
+							await gm.ExecuteAsync();
 
 
 							//var res = gm.Result;
@@ -174,7 +175,7 @@ namespace MyMessenger.Server
 						if (q.Config.CommandName == CommandType.Register)
 						{
 							var gm = new Register(context, q.Config);
-							gm.Execute();
+							await gm.ExecuteAsync();
 							//var res = gm.Result;
 							//var list = res.ToList();
 							//var response = JsonConvert.SerializeObject(list, Formatting.Indented);
@@ -189,7 +190,7 @@ namespace MyMessenger.Server
 						if (q.Config.CommandName == CommandType.Login)
 						{
 							var gm = new Login(context, Tokens, q.Config);
-							gm.Execute();
+							await gm.ExecuteAsync();
 							//var res = gm.Token;
 							//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
 							//var data = Encoding.UTF8.GetBytes(response);
@@ -203,7 +204,7 @@ namespace MyMessenger.Server
 						if (q.Config.CommandName == CommandType.SendMessage)
 						{
 							var gm = new SendMessage(context, Tokens, Notifiers, q.Config);
-							gm.Execute();
+							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
 							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
@@ -214,7 +215,7 @@ namespace MyMessenger.Server
 						if (q.Config.CommandName == CommandType.CreateDialog)
 						{
 							var gm = new CreateDialog(context, Tokens, q.Config);
-							gm.Execute();
+							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
 							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
@@ -252,7 +253,7 @@ namespace MyMessenger.Server
 						if (q.Config.CommandName == CommandType.GetMessageLongPool)
 						{
 							var gm = new GetMessageLongPool(context, Tokens, Notifiers, q.Config);
-							gm.Execute();
+							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
 							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
@@ -263,7 +264,7 @@ namespace MyMessenger.Server
 						if (q.Config.CommandName == CommandType.GetAccountById)
 						{
 							var gm = new GetAccountById(context, Tokens, q.Config);
-							gm.Execute();
+							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
 							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
@@ -274,7 +275,7 @@ namespace MyMessenger.Server
 						if (q.Config.CommandName == CommandType.GetDialogById)
 						{
 							var gm = new GetDialogById(context, Tokens, q.Config);
-							gm.Execute();
+							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
 							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);

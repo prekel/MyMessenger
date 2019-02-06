@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
@@ -93,6 +94,11 @@ namespace MyMessenger.Server.Commands
 			//
 			//			Code = ResponseCode.Ok;
 			//			resp.Content = r.ToList<IMessage>();
+		}
+
+		protected override Task ExecuteImplAsync()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

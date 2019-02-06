@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using MyMessenger.Core;
@@ -73,6 +73,11 @@ namespace MyMessenger.Server.Commands
 
 			Code = ResponseCode.Ok;
 			resp.DialogId = d.DialogId;
+		}
+
+		protected override Task ExecuteImplAsync()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

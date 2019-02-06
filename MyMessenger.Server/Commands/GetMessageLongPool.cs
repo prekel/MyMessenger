@@ -78,5 +78,65 @@ namespace MyMessenger.Server.Commands
 		{
 			Message = e.Message;
 		}
+
+		protected override async Task ExecuteImplAsync()
+		{
+			var resp = new GetMessageLongPoolResponse();
+			Response = resp;
+
+			var notifier = Notifiers[Config1.DialogId, Config1.Token];
+
+			// Проверка на наличие запрашивателя в диалоге
+			var requesterid = Tokens[Config1.Token].AccountId;
+			var d = await Task.FromResult(Context.Dialogs.First(p => p.DialogId == Config1.DialogId));
+			if (await Task.FromResult(d.Members.Select(p => p.Account).All(p => p.AccountId != requesterid)))
+			{
+				Code = ResponseCode.AccessDenied;
+				return;
+			}
+
+			var cancelltoten = Notifiers[Config1.DialogId, Config1.Token].CancellationToken;
+
+			// Запуск ожидания на заданный TimeSpan
+			var t = Task.Delay(Config1.TimeSpan);
+			//var t1 = Task.Factory.StartNew(, cancelltoten);
+
+			var completionSource = new TaskCompletionSource<object>();
+			cancelltoten.Register(() => completionSource.TrySetCanceled());
+
+			notifier.NewMessage += MnOnNewMessage;
+
+			await Task.WhenAny(t, completionSource.Task);
+
+			if (t.IsCompleted)
+			{
+				// Если TimeSpan истёк до того, как пришло сообщение
+				//t.Wait(Notifiers[Config1.DialogId, Config1.Token].CancellationToken);
+				Code = ResponseCode.LongPoolTimeSpanExpired;
+			}
+			else
+			{
+				Code = ResponseCode.Ok;
+				resp.Content = Message;
+			}
+			Notifiers[Config1.DialogId, Config1.Token].NewMessage -= MnOnNewMessage;
+
+			//try
+			//{
+			//	// Если TimeSpan истёк до того, как пришло сообщение
+			//	t.Wait(Notifiers[Config1.DialogId, Config1.Token].CancellationToken);
+			//	Code = ResponseCode.LongPoolTimeSpanExpired;
+			//}
+			//catch (OperationCanceledException)
+			//{
+			//	// Если пришло сообщение
+			//	Code = ResponseCode.Ok;
+			//	resp.Content = Message;
+			//}
+			//finally
+			//{
+			//	Notifiers[Config1.DialogId, Config1.Token].NewMessage -= MnOnNewMessage;
+			//}
+		}
 	}
 }
