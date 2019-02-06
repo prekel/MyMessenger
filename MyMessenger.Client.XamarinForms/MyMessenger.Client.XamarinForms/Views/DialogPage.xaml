@@ -31,7 +31,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>-->
-            <Entry x:Name="SendMessageEntry" />
+            <Entry x:Name="SendMessageEntry" Completed="SendMessageEntry_Completed"/>
             <Button x:Name="SendButton" Text="Send" Clicked="SendButton_OnClicked"/>
             <Button x:Name="GetButton" Text="Get" Clicked="GetButton_OnClicked"/>
             <Label x:Name="DialogMessages"/>

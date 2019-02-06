@@ -21,9 +21,14 @@ namespace MyMessenger.Client.XamarinForms.Views
 			BindingContext = viewModel = new DialogViewModel();
 		}
 
-		private async void SendButton_OnClicked(object sender, EventArgs e)
+		private async Task Send()
 		{
 			await App.Client.SendMessage(App.DialogId, SendMessageEntry.Text);
+		}
+
+		private async void SendButton_OnClicked(object sender, EventArgs e)
+		{
+			await Send();
 		}
 
 		private async void GetButton_OnClicked(object sender, EventArgs e)
@@ -37,6 +42,11 @@ namespace MyMessenger.Client.XamarinForms.Views
 				DialogMessages.Text = DialogMessages.Text + $"[{m.SendDateTime.LocalDateTime}][{author.Nickname}]{m.Text}" + '\n';
 				//await DisplayAlert(m.AuthorId.ToString(), m.Text, "Ok");
 			}
+		}
+
+		private async void SendMessageEntry_Completed(object sender, EventArgs e)
+		{
+			await Send();
 		}
 	}
 }
