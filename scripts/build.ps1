@@ -1,5 +1,1 @@
-dotnet build /p:AssemblyVersion="$env:APPVEYOR_BUILD_VERSION" /verbosity:minimal /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-if ($LASTEXITCODE -ne 0)
-{
-	Exit-AppveyorBuild
-}
+dotnet build /p:AssemblyVersion="$env:APPVEYOR_BUILD_VERSION" /verbosity:minimal /m /l:"C:\Program Files\AppVeyor\BuildAgent\dotnetcore\Appveyor.MSBuildLogger.dll"
