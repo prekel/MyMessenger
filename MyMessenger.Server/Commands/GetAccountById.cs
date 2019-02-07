@@ -50,14 +50,14 @@ namespace MyMessenger.Server.Commands
 			Response = resp;
 
 			// Проверка на существование
-			var account1 = await Task.FromResult(Context.Accounts.Where(p => p.AccountId == Config1.AccountId));
-			if (await Task.FromResult(!account1.Any()))
+			var account1 = Context.Accounts.Where(p => p.AccountId == Config1.AccountId);
+			if (!await account1.AnyAsync())
 			{
 				Code = ResponseCode.WrongNickname;
 				return;
 			}
 
-			resp.Account = await Task.FromResult(account1.First());
+			resp.Account = await account1.FirstAsync();
 			Code = ResponseCode.Ok;
 		}
 	}

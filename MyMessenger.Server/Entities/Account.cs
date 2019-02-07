@@ -37,5 +37,15 @@ namespace MyMessenger.Server.Entities
 		public virtual IList<AccountDialog> Dialogs { get; set; }
 
 		public virtual IList<Message> Messages { get; set; }
+
+		public Account()
+		{
+
+		}
+
+		public Account(int id)
+		{
+			AccountId = id;
+		}
 	}
 }  

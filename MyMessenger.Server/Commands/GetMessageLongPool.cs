@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
@@ -87,22 +88,20 @@ namespace MyMessenger.Server.Commands
 			var notifier = Notifiers[Config1.DialogId, Config1.Token];
 
 			// Проверка на наличие запрашивателя в диалоге
-			var requesterid = Tokens[Config1.Token].AccountId;
-			var d = await Task.FromResult(Context.Dialogs.First(p => p.DialogId == Config1.DialogId));
-			if (await Task.FromResult(d.Members.Select(p => p.Account).All(p => p.AccountId != requesterid)))
+			var requesterId = Tokens[Config1.Token].AccountId;
+			var d = await Context.Dialogs.FirstAsync(p => p.DialogId == Config1.DialogId);
+			if (d.Members.Select(p => p.Account).All(p => p.AccountId != requesterId))
 			{
 				Code = ResponseCode.AccessDenied;
 				return;
 			}
 
-			var cancelltoten = Notifiers[Config1.DialogId, Config1.Token].CancellationToken;
-
 			// Запуск ожидания на заданный TimeSpan
 			var t = Task.Delay(Config1.TimeSpan);
-			//var t1 = Task.Factory.StartNew(, cancelltoten);
 
+			var cancelToken = Notifiers[Config1.DialogId, Config1.Token].CancellationToken;
 			var completionSource = new TaskCompletionSource<object>();
-			cancelltoten.Register(() => completionSource.TrySetCanceled());
+			cancelToken.Register(() => completionSource.TrySetCanceled());
 
 			notifier.NewMessage += MnOnNewMessage;
 
@@ -111,7 +110,6 @@ namespace MyMessenger.Server.Commands
 			if (t.IsCompleted)
 			{
 				// Если TimeSpan истёк до того, как пришло сообщение
-				//t.Wait(Notifiers[Config1.DialogId, Config1.Token].CancellationToken);
 				Code = ResponseCode.LongPoolTimeSpanExpired;
 			}
 			else
@@ -119,24 +117,8 @@ namespace MyMessenger.Server.Commands
 				Code = ResponseCode.Ok;
 				resp.Content = Message;
 			}
-			Notifiers[Config1.DialogId, Config1.Token].NewMessage -= MnOnNewMessage;
 
-			//try
-			//{
-			//	// Если TimeSpan истёк до того, как пришло сообщение
-			//	t.Wait(Notifiers[Config1.DialogId, Config1.Token].CancellationToken);
-			//	Code = ResponseCode.LongPoolTimeSpanExpired;
-			//}
-			//catch (OperationCanceledException)
-			//{
-			//	// Если пришло сообщение
-			//	Code = ResponseCode.Ok;
-			//	resp.Content = Message;
-			//}
-			//finally
-			//{
-			//	Notifiers[Config1.DialogId, Config1.Token].NewMessage -= MnOnNewMessage;
-			//}
+			Notifiers[Config1.DialogId, Config1.Token].NewMessage -= MnOnNewMessage;
 		}
 	}
 }

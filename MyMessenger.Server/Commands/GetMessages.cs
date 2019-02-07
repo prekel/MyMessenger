@@ -54,20 +54,26 @@ namespace MyMessenger.Server.Commands
 			Response = resp;
 
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
-			var d = await Task.FromResult(Context.Dialogs.First(p => p.DialogId == Config1.DialogId));
-			var requesterid = Tokens[Config1.Token].AccountId;
-			if (await Task.FromResult(d.Members.Select(p => p.Account).All(p => p.AccountId != requesterid)))
+			//var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
+			var requesterId = Tokens[Config1.Token].AccountId;
+
+			if (!await Context
+				.Dialogs
+				.Where(p => p.DialogId == Config1.DialogId)
+					.Where(p => p.MembersIds.Contains(requesterId))
+				.AnyAsync()
+			)
 			{
 				Code = ResponseCode.AccessDenied;
 				return;
 			}
 
 			// Запрос сообщений из базы
-			var r = await Task.FromResult(from i in Context.Messages where i.Dialog.DialogId == Config1.DialogId select i);
+			var r = from i in Context.Messages where i.Dialog.DialogId == Config1.DialogId select i;
 			Result = r;
 
 			Code = ResponseCode.Ok;
-			resp.Content = r.ToList<IMessage>();
+			resp.Content = await r.ToListAsync<IMessage>();
 		}
 	}
 }

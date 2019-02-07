@@ -75,9 +75,54 @@ namespace MyMessenger.Server.Commands
 			resp.DialogId = d.DialogId;
 		}
 
-		protected override Task ExecuteImplAsync()
+		protected override async Task ExecuteImplAsync()
 		{
-			throw new NotImplementedException();
+			var resp = new CreateDialogResponse();
+			Response = resp;
+
+			var d = new Dialog();
+
+			// Ошибка если не задан ни список идентификаторов, ни список никнеймов
+			if (Config1.MembersIds == null && Config1.MembersNicknames == null)
+			{
+				Code = ResponseCode.InvalidRequest;
+				return;
+			}
+
+			// Если задан список никнеймов
+			if (Config1.MembersNicknames != null)
+			{
+				foreach (var i in Config1.MembersNicknames)
+				{
+					var a = await Context.Accounts.FirstOrDefaultAsync(p => p.Nickname == i);
+					if (a.AccountId == 0)
+					{
+						Code = ResponseCode.NicknameNotFound;
+						return;
+					}
+					await Context.AccountsDialogs.AddAsync(new AccountDialog(a, d));
+				}
+			}
+			// Иначе если задан список идентификаторов
+			else if (Config1.MembersIds != null)
+			{
+				foreach (var i in Config1.MembersIds)
+				{
+					var a = await Context.Accounts.FirstOrDefaultAsync(p => p.AccountId == i);
+					if (a.AccountId == 0)
+					{
+						Code = ResponseCode.IdNotFound;
+						return;
+					}
+					await Context.AccountsDialogs.AddAsync(new AccountDialog(a, d));
+				}
+			}
+
+			await Context.Dialogs.AddAsync(d);
+			await Context.SaveChangesAsync();
+
+			Code = ResponseCode.Ok;
+			resp.DialogId = d.DialogId;
 		}
 	}
 }

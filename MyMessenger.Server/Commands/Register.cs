@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
 using MyMessenger.Server.Entities;
@@ -55,7 +56,29 @@ namespace MyMessenger.Server.Commands
 
 		protected override async Task ExecuteImplAsync()
 		{
-			throw new NotImplementedException();
+			var resp = new RegisterResponse();
+			Response = resp;
+
+			// Проверка на существование
+			if (await Context.Accounts.AnyAsync(p => p.Nickname == Config1.Nickname))
+			{
+				Code = ResponseCode.NicknameAlreadyExists;
+				return;
+			}
+
+			var salt = Crypto.GenerateSaltForPassword();
+			var a = new Account
+			{
+				Nickname = Config1.Nickname,
+				PasswordHash = Crypto.ComputePasswordHash(Config1.Password, salt),
+				PasswordSalt = salt,
+				RegistrationDateTime = DateTime.Now,
+				LoginDateTime = DateTime.MinValue,
+				//TimeZone = Config1.TimeZone
+			};
+			await Context.Accounts.AddAsync(a);
+			await Context.SaveChangesAsync();
+			Code = ResponseCode.Ok;
 		}
 	}
 }

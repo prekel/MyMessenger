@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
@@ -67,9 +68,14 @@ namespace MyMessenger.Server.Commands
 			Response = resp;
 
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
-			var d = await Task.FromResult(Context.Dialogs.First(p => p.DialogId == Config1.DialogId));
-			var requesterid = Tokens[Config1.Token].AccountId;
-			if (await Task.FromResult(d.Members.Select(p => p.Account).All(p => p.AccountId != requesterid)))
+			//var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
+
+			var requesterId = Tokens[Config1.Token].AccountId;
+			if (!await Context
+				.Dialogs
+				.Where(p => p.DialogId == Config1.DialogId)
+					.Where(p => p.MembersIds.Contains(requesterId))
+				.AnyAsync())
 			{
 				Code = ResponseCode.AccessDenied;
 				return;
@@ -77,8 +83,8 @@ namespace MyMessenger.Server.Commands
 
 			var m = new Message
 			{
-				Author = new Account { AccountId = Tokens[Config1.Token].AccountId },
-				Dialog = new Dialog { DialogId = Config1.DialogId },
+				Author = new Account(Tokens[Config1.Token].AccountId),
+				Dialog = new Dialog(Config1.DialogId),
 				Text = Config1.Text,
 				SendDateTime = DateTime.Now
 			};

@@ -25,15 +25,14 @@ namespace MyMessenger.Server.Entities
 
 		public virtual List<AccountDialog> Members { get; set; }
 
-		//[JsonProperty]
-		//[NotMapped]
-		//public virtual Account FirstMember1 { get; set; }
-		//[JsonProperty]
-		//[NotMapped]
-		//public virtual Account SecondMember1 { get; set; }
-		//[JsonProperty]
-		//public IAccount FirstMember => FirstMember1;
-		//[JsonProperty]
-		//public IAccount SecondMember => SecondMember1;
+		public Dialog()
+		{
+
+		}
+
+		public Dialog(int id)
+		{
+			DialogId = id;
+		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using MyMessenger.Core;
 using MyMessenger.Core.Parameters;
@@ -68,14 +69,14 @@ namespace MyMessenger.Server.Commands
 			Response = resp;
 
 			// Проверка на существование
-			var account1 = await Task.FromResult(Context.Accounts.Where(p => p.Nickname == Config1.Nickname));
-			if (!account1.Any())
+			var account1 = Context.Accounts.Where(p => p.Nickname == Config1.Nickname);
+			if (!await account1.AnyAsync())
 			{
 				Code = ResponseCode.WrongNickname;
 				return;
 			}
 
-			var account = account1.First();
+			var account = await account1.FirstAsync();
 
 			if (Crypto.IsPasswordValid(Config1.Password, account.PasswordSalt, account.PasswordHash))
 			{

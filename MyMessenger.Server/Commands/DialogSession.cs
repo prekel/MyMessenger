@@ -96,6 +96,7 @@ namespace MyMessenger.Server.Commands
 			//			resp.Content = r.ToList<IMessage>();
 		}
 
+		[Obsolete]
 		protected override Task ExecuteImplAsync()
 		{
 			throw new NotImplementedException();
