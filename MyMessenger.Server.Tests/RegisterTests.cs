@@ -41,7 +41,7 @@ namespace MyMessenger.Server.Tests
 				var b = await context.Accounts.CountAsync();
 
 				var sm = new Commands.Register(context,
-					new RegisterParameters { Nickname = "User3", Password = "123456" });
+					new RegisterParameters { Nickname = "User4", Password = "123456" });
 				await sm.ExecuteAsync();
 
 				Assert.AreEqual(b + 1, await context.Accounts.CountAsync());
