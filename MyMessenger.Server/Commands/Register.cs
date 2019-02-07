@@ -45,8 +45,8 @@ namespace MyMessenger.Server.Commands
 				Nickname = Config1.Nickname,
 				PasswordHash = Crypto.ComputePasswordHash(Config1.Password, salt),
 				PasswordSalt = salt,
-				RegistrationDateTime = DateTime.Now,
-				LoginDateTime = DateTime.MinValue,
+				RegistrationDateTime = DateTimeOffset.Now,
+				LoginDateTime = DateTimeOffset.MinValue,
 				//TimeZone = Config1.TimeZone
 			};
 			Context.Accounts.Add(a);
@@ -72,8 +72,8 @@ namespace MyMessenger.Server.Commands
 				Nickname = Config1.Nickname,
 				PasswordHash = Crypto.ComputePasswordHash(Config1.Password, salt),
 				PasswordSalt = salt,
-				RegistrationDateTime = DateTime.Now,
-				LoginDateTime = DateTime.MinValue,
+				RegistrationDateTime = DateTimeOffset.Now,
+				LoginDateTime = DateTimeOffset.MinValue,
 				//TimeZone = Config1.TimeZone
 			};
 			await Context.Accounts.AddAsync(a);

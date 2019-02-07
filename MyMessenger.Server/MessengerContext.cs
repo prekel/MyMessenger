@@ -25,11 +25,19 @@ namespace MyMessenger.Server
 			Config = config;
 		}
 
+		public MessengerContext(DbContextOptions options) : base(options)
+		{
+			
+		}
+
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder
-				.UseLazyLoadingProxies()
-				.UseMySql(new ConnectionStringCompiler(Config.DbConfig).Compile());
+			if (!optionsBuilder.IsConfigured)
+			{
+				optionsBuilder
+					.UseLazyLoadingProxies()
+					.UseMySql(new ConnectionStringCompiler(Config.DbConfig).Compile());
+			}
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
