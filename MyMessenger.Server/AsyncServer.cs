@@ -23,24 +23,56 @@ using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server
 {
-	public class AsyncServer
+	public class AsyncServer : AbstractServer
 	{
 		private static Logger Log { get; } = LogManager.GetCurrentClassLogger();
 		private readonly TcpListener _listener = new TcpListener(IPAddress.Any, 20522);
-		private MessengerContext Context { get; set; }
+		//private MessengerContext Context { get; set; }
 		private Config Config { get; set; }
 
-		private IDictionary<string, IAccount> Tokens { get; } = new Dictionary<string, IAccount>();
+		//private IDictionary<string, IAccount> Tokens { get; } = new Dictionary<string, IAccount>();
 		//private IDictionary<int, MessageNotifier> Notifiers { get; set; } = new Dictionary<int, MessageNotifier>();
 
-		private Notifiers Notifiers { get; } = new Notifiers();
+		//private Notifiers Notifiers { get; } = new Notifiers();
 
 		public AsyncServer(Config config)
 		{
 			Config = config;
 		}
+		
+		private CancellationTokenSource DisposeCancellationTokenSource { get; }
+
+		public override void Dispose()
+		{
+			if (IsStarted)
+			{
+				DisposeCancellationTokenSource.Cancel();
+			}
+		}
+
+		public bool IsStarted { get; private set; }
 
 		public async Task StartAsync()
+		{
+			IsStarted = true;
+
+			var cancelToken = DisposeCancellationTokenSource.Token;
+			var completionSource = new TaskCompletionSource<object>();
+			cancelToken.Register(() => completionSource.TrySetCanceled());
+
+			var task = StartImplAsync(cancelToken);
+
+			await Task.WhenAny(task, completionSource.Task);
+
+			if (task.IsCompleted)
+			{
+			}
+			else
+			{
+			}
+		}
+
+		private async Task StartImplAsync(CancellationToken cancellationToken)
 		{
 			_listener.Start();
 			Log.Debug("Запущен сервер");
@@ -63,16 +95,23 @@ namespace MyMessenger.Server
 			while (true)
 			{
 				var client = await _listener.AcceptTcpClientAsync();
-				//WriteLine("Connected!");
-				//var t = new Thread(ServeData);
+
+				if (cancellationToken.IsCancellationRequested)
+				{
+					Stop();
+					return;
+				}
 
 				Log.Debug($"Подключен клиент {client.Client.RemoteEndPoint}");
 
 				var sd = ServeDataAsync(client);
-				//sd.Start();
-				//t.Start(client);
 			}
+		}
 
+		public void Stop()
+		{
+			_listener.Stop();
+			IsStarted = false;
 		}
 
 		private async Task<string> ReadStringAsync(NetworkStream stream)

@@ -21,7 +21,7 @@ namespace MyMessenger.Server.Tests
 		[Test]
 		public void Test1Sync()
 		{
-			using (var context = new MessengerContext(TestDbOptions<RegisterTests>.Options))
+			using (var context = new TestMessengerContext())
 			{
 				var b = context.Accounts.Count();
 
@@ -36,7 +36,8 @@ namespace MyMessenger.Server.Tests
 		[Test]
 		public async Task Test2Async()
 		{
-			using (var context = new MessengerContext(TestDbOptions<RegisterTests>.Options))
+			//using (var context = new MessengerContext(TestDbOptions<RegisterTests>.Options))
+			using (var context = new TestMessengerContext())
 			{
 				var b = await context.Accounts.CountAsync();
 

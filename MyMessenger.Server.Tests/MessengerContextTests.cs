@@ -31,7 +31,7 @@ namespace MyMessenger.Server.Tests
 		[Test]
 		public async Task Test1()
 		{
-			using (var context = new MessengerContext(TestDbOptions<MessengerContextTests>.Options))
+			using (var context = new TestMessengerContext())
 			{
 				var s = Crypto.GenerateSaltForPassword();
 				var a1 = new Account()
@@ -55,7 +55,7 @@ namespace MyMessenger.Server.Tests
 
 				await context.SaveChangesAsync();
 
-				Assert.AreEqual("User1", context.Accounts.First(p => p.AccountId == 1).Nickname);
+				Assert.AreEqual("User1", context.Accounts.First().Nickname);
 
 				Assert.Pass();
 			}
@@ -64,7 +64,7 @@ namespace MyMessenger.Server.Tests
 		[Test]
 		public async Task Test2()
 		{
-			using (var context = new MessengerContext(TestDbOptions<MessengerContextTests>.Options))
+			using (var context = new TestMessengerContext())
 			{
 				var b = await context.Accounts.CountAsync();
 

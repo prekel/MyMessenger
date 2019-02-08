@@ -22,17 +22,17 @@ using MyMessenger.Server.Entities;
 
 namespace MyMessenger.Server
 {
-	public class Server
+	public class Server : AbstractServer
 	{
 		private static Logger Log { get; } = LogManager.GetCurrentClassLogger();
 		private readonly TcpListener _listener = new TcpListener(IPAddress.Any, 20522);
-		private MessengerContext Context { get; set; }
+		//private MessengerContext Context { get; set; }
 		private Config Config { get; set; }
 
-		private IDictionary<string, IAccount> Tokens { get; } = new Dictionary<string, IAccount>();
+		//private IDictionary<string, IAccount> Tokens { get; } = new Dictionary<string, IAccount>();
 		//private IDictionary<int, MessageNotifier> Notifiers { get; set; } = new Dictionary<int, MessageNotifier>();
 
-		private Notifiers Notifiers { get; } = new Notifiers();
+		//private Notifiers Notifiers { get; } = new Notifiers();
 
 		public Server(Config config)
 		{
@@ -304,6 +304,11 @@ namespace MyMessenger.Server
 		public void OnNewMessage(object sender, EventArgs args)
 		{
 
+		}
+
+		public override void Dispose()
+		{
+			//throw new NotImplementedException();
 		}
 	}
 }

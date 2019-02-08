@@ -12,4 +12,12 @@ namespace MyMessenger.Server.Tests
 			.UseInMemoryDatabase(typeof(T).Name)
 			.Options;
 	}
+
+	public class TestDbOptions
+	{
+		public static DbContextOptions<MessengerContext> NewGuidOptions => new DbContextOptionsBuilder<MessengerContext>()
+			.UseLazyLoadingProxies()
+			.UseInMemoryDatabase(Guid.NewGuid().ToString())
+			.Options;
+	}
 }
