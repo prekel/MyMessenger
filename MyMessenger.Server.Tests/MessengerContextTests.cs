@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 using MyMessenger.Server;
 using MyMessenger.Server.Entities;
+using MyMessenger.Server.Commands;
 
 namespace MyMessenger.Server.Tests
 {
@@ -68,7 +69,7 @@ namespace MyMessenger.Server.Tests
 			{
 				var b = await context.Accounts.CountAsync();
 
-				var sm = new Commands.Register(context,
+				var sm = new Register(context,
 					new RegisterParameters { Nickname = "User3", Password = "123456" });
 				await sm.ExecuteAsync();
 

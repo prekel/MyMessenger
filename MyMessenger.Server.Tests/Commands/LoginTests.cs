@@ -9,7 +9,7 @@ using MyMessenger.Server.Commands;
 using MyMessenger.Core.Parameters;
 using MyMessenger.Core.Responses;
 
-namespace MyMessenger.Server.Tests
+namespace MyMessenger.Server.Tests.Commands
 {
 	[TestFixture]
 	public class LoginTests
