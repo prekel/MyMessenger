@@ -74,7 +74,7 @@ namespace MyMessenger.Server.Commands
 			if (!await Context
 				.Dialogs
 				.Where(p => p.DialogId == Config1.DialogId)
-					.Where(p => p.MembersIds.Contains(requesterId))
+				.Where(p => p.Members.Select(_ => _.AccountId).Contains(requesterId))
 				.AnyAsync())
 			{
 				Code = ResponseCode.AccessDenied;

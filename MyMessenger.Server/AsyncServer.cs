@@ -40,7 +40,7 @@ namespace MyMessenger.Server
 			Config = config;
 		}
 		
-		private CancellationTokenSource DisposeCancellationTokenSource { get; }
+		private CancellationTokenSource DisposeCancellationTokenSource { get; } = new CancellationTokenSource();
 
 		public override void Dispose()
 		{
@@ -77,19 +77,27 @@ namespace MyMessenger.Server
 			_listener.Start();
 			Log.Debug("Запущен сервер");
 
-			using (var context = new MessengerContext(Config))
+			try
 			{
-				Log.Debug("Запись в базу данных информации о запуске");
-				await context.Launches.AddAsync(new Launch
+				using (var context = new MessengerContext(Config))
 				{
-					MachineName = Environment.MachineName,
-					LaunchDateTime = DateTimeOffset.Now,
-					Pid = System.Diagnostics.Process.GetCurrentProcess().Id,
-					User = Config.DbConfig.User,
-					AssemblyVersion = typeof(Server).Assembly.GetName().Version.ToString()
-				});
-				await context.SaveChangesAsync();
-				Log.Debug("Изменения сохранены");
+					Log.Debug("Запись в базу данных информации о запуске");
+					await context.Launches.AddAsync(new Launch
+					{
+						MachineName = Environment.MachineName,
+						LaunchDateTime = DateTimeOffset.Now,
+						Pid = System.Diagnostics.Process.GetCurrentProcess().Id,
+						User = Config.DbConfig.User,
+						AssemblyVersion = typeof(Server).Assembly.GetName().Version.ToString()
+					});
+					await context.SaveChangesAsync();
+					Log.Debug("Изменения сохранены");
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Fatal(e.Message);
+				throw;
 			}
 
 			while (true)
@@ -146,23 +154,13 @@ namespace MyMessenger.Server
 			await s.WriteAsync(data, 0, data.Length);
 		}
 
-		private async Task ServeDataAsync(TcpClient clientSocket)
+		private async Task ServeDataAsync(TcpClient client)
 		{
 			try
 			{
 				using (var context = new MessengerContext(Config))
 				{
-					var client = (TcpClient)clientSocket;
-
-					//var data1 = new byte[256];
-					//var response1 = new StringBuilder();
-					//var stream = client.GetStream();
-
-					//do
-					//{
-					//	var bytes = stream.Read(data1, 0, data1.Length);
-					//	response1.Append(Encoding.UTF8.GetString(data1, 0, bytes));
-					//} while (stream.DataAvailable);
+					//var client = client;
 
 					var s = client.GetStream();
 
@@ -181,10 +179,6 @@ namespace MyMessenger.Server
 
 						await SendResponseAsync(s, res);
 
-						//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
-						//var data = Encoding.UTF8.GetBytes(response);
-						//s.Write(data, 0, data.Length);
-
 						s.Close();
 						client.Close();
 
@@ -200,44 +194,21 @@ namespace MyMessenger.Server
 							var gm = new GetMessages(context, Tokens, q.Config);
 							await gm.ExecuteAsync();
 
-
-							//var res = gm.Result;
-							//var list = res.ToList();
-
 							await SendResponseAsync(s, gm.Response);
-
-							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.Register)
 						{
 							var gm = new Register(context, q.Config);
 							await gm.ExecuteAsync();
-							//var res = gm.Result;
-							//var list = res.ToList();
-							//var response = JsonConvert.SerializeObject(list, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 							await SendResponseAsync(s, gm.Response);
-							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.Login)
 						{
 							var gm = new Login(context, Tokens, q.Config);
 							await gm.ExecuteAsync();
-							//var res = gm.Token;
-							//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 							await SendResponseAsync(s, gm.Response);
-							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.SendMessage)
@@ -246,9 +217,6 @@ namespace MyMessenger.Server
 							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
-							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.CreateDialog)
@@ -257,9 +225,6 @@ namespace MyMessenger.Server
 							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
-							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.DialogSession)
@@ -295,9 +260,6 @@ namespace MyMessenger.Server
 							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
-							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.GetAccountById)
@@ -306,9 +268,6 @@ namespace MyMessenger.Server
 							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
-							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 						}
 
 						if (q.Config.CommandName == CommandType.GetDialogById)
@@ -317,9 +276,6 @@ namespace MyMessenger.Server
 							await gm.ExecuteAsync();
 
 							await SendResponseAsync(s, gm.Response);
-							//var response = JsonConvert.SerializeObject(gm.Response, Formatting.Indented);
-							//var data = Encoding.UTF8.GetBytes(response);
-							//s.Write(data, 0, data.Length);
 						}
 					}
 					catch (Exception e)
@@ -331,9 +287,6 @@ namespace MyMessenger.Server
 						var res = new CommonResponse(ResponseCode.UnknownError);
 
 						await SendResponseAsync(s, res);
-						//var response = JsonConvert.SerializeObject(res, Formatting.Indented);
-						//var data = Encoding.UTF8.GetBytes(response);
-						//s.Write(data, 0, data.Length);
 
 						s.Close();
 						client.Close();
@@ -346,6 +299,7 @@ namespace MyMessenger.Server
 			}
 			catch (Exception e)
 			{
+				Log.Error(e.Message);
 			}
 		}
 
