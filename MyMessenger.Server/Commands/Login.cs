@@ -25,10 +25,7 @@ namespace MyMessenger.Server.Commands
 		{
 		}
 
-		static Login()
-		{
-			CommandName = CommandType.Login;
-		}
+		public override CommandType CommandName { get; } = CommandType.Login;
 
 		protected override void ExecuteImpl()
 		{

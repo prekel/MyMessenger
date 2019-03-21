@@ -32,6 +32,8 @@ namespace MyMessenger.Server.Commands
 
 		//public IQueryable<Message> Result { get; private set; }
 
+		public override CommandType CommandName { get; } = CommandType.DialogSession;
+
 		private MessageNotifier Notifier { get; set; }
 
 		public EventHandler<DialogSessionEventArgs> NewMessage;
@@ -61,12 +63,7 @@ namespace MyMessenger.Server.Commands
 
 			NewMessage?.Invoke(this, new DialogSessionEventArgs(resp));
 		}
-
-		static DialogSession()
-		{
-			CommandName = CommandType.DialogSession;
-		}
-
+		
 		[Obsolete]
 		protected override void ExecuteImpl()
 		{

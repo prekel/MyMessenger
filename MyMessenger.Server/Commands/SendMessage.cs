@@ -26,10 +26,7 @@ namespace MyMessenger.Server.Commands
 			Notifiers = notifiers[Config1.DialogId];
 		}
 
-		static SendMessage()
-		{
-			CommandName = CommandType.SendMessage;
-		}
+		public override CommandType CommandName { get; } = CommandType.SendMessage;
 
 		protected override void ExecuteImpl()
 		{

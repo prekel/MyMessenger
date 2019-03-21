@@ -16,6 +16,17 @@ namespace MyMessenger.Server.Tests.Commands
 	[TestFixture]
 	public class RegisterTests
 	{
+		[Test]
+		public void CommandNameTest()
+		{
+			using (var context = new TestMessengerContext())
+			using (var server = new TestServer())
+			{
+				var cmd = new Register(context, new RegisterParameters());
+				Assert.AreEqual(CommandType.Register, cmd.CommandName);
+			}
+		}
+
 		//private MessengerContext Context { get; set; }
 		private IDictionary<string, IAccount> Tokens { get; } = new Dictionary<string, IAccount>();
 

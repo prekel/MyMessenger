@@ -15,6 +15,17 @@ namespace MyMessenger.Server.Tests.Commands
 	public class GetAccountByIdTests
 	{
 		[Test]
+		public void CommandNameTest()
+		{
+			using (var context = new TestMessengerContext())
+			using (var server = new TestServer())
+			{
+				var cmd = new GetAccountById(context, server.Tokens, new GetDialogByIdParameters());
+				Assert.AreEqual(CommandType.GetAccountById, cmd.CommandName);
+			}
+		}
+
+		[Test]
 		public async Task Test()
 		{
 			using (var context = new TestMessengerContext())

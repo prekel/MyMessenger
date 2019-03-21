@@ -15,6 +15,17 @@ namespace MyMessenger.Server.Tests.Commands
 	public class SendMessageTests
 	{
 		[Test]
+		public void CommandNameTest()
+		{
+			using (var context = new TestMessengerContext())
+			using (var server = new TestServer())
+			{
+				var cmd = new SendMessage(context, server.Tokens, server.Notifiers, new SendMessageParameters());
+				Assert.AreEqual(CommandType.SendMessage, cmd.CommandName);
+			}
+		}
+
+		[Test]
 		public async Task Test()
 		{
 			using (var context = new TestMessengerContext())

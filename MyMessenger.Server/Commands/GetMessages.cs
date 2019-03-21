@@ -21,10 +21,7 @@ namespace MyMessenger.Server.Commands
 		{
 		}
 
-		static GetMessages()
-		{
-			CommandName = CommandType.GetMessages;
-		}
+		public override CommandType CommandName { get; } = CommandType.GetMessages;
 
 		protected override void ExecuteImpl()
 		{

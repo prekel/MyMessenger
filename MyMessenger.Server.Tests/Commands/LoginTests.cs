@@ -15,6 +15,17 @@ namespace MyMessenger.Server.Tests.Commands
 	public class LoginTests
 	{
 		[Test]
+		public void CommandNameTest()
+		{
+			using (var context = new TestMessengerContext())
+			using (var server = new TestServer())
+			{
+				var cmd = new Login(context, server.Tokens, new LoginParameters());
+				Assert.AreEqual(CommandType.Login, cmd.CommandName);
+			}
+		}
+		
+		[Test]
 		public async Task Login1()
 		{
 			using (var context = new TestMessengerContext())

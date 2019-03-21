@@ -22,10 +22,7 @@ namespace MyMessenger.Server.Commands
 		{
 		}
 
-		static Register()
-		{
-			CommandName = CommandType.Register;
-		}
+		public override CommandType CommandName { get; } = CommandType.Register;
 
 		protected override void ExecuteImpl()
 		{

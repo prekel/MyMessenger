@@ -21,7 +21,7 @@ namespace MyMessenger.Server.Commands
 		
 		public AbstractResponse Response { get; set; }
 
-		public static CommandType CommandName { get; protected set; }
+		public abstract CommandType CommandName { get; }
 
 		public ResponseCode Code
 		{
