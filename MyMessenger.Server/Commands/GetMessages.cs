@@ -51,15 +51,9 @@ namespace MyMessenger.Server.Commands
 			Response = resp;
 
 			// Проверка на принадлежность того, кто сделал запрос, к диалогу
-			//var d = Context.Dialogs.First(p => p.DialogId == Config1.DialogId);
-			var requesterId = Tokens[Config1.Token].AccountId;
-
-			if (!await Context
-				.Dialogs
-				.Where(p => p.DialogId == Config1.DialogId)
-					.Where(p => p.MembersIds.Contains(requesterId))
-				.AnyAsync()
-			)
+			var d = await Context.Dialogs.FirstAsync(p => p.DialogId == Config1.DialogId);
+			var requesterid = Tokens[Config1.Token].AccountId;
+			if (d.Members.Select(p => p.Account).All(p => p.AccountId != requesterid))
 			{
 				Code = ResponseCode.AccessDenied;
 				return;
